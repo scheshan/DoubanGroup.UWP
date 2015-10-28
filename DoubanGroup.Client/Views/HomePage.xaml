@@ -9,6 +9,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:behavior="using:DoubanGroup.Client.Behaviors"
+    NavigationCacheMode="Required"
     xmlns:mvvm="using:Prism.Windows.Mvvm"
     d:DataContext="{d:DesignInstance Type=designData:HomePageData, IsDesignTimeCreatable=True}"
     Name="page"

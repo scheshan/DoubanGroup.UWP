@@ -27,9 +27,10 @@ namespace DoubanGroup.Client.Behaviors
 
         private void GridView_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var width = e.NewSize.Width;
-
             var gridView = sender as GridView;
+
+            var width = e.NewSize.Width - gridView.Padding.Left - gridView.Padding.Right;
+            
             var container = gridView.ItemsPanelRoot as ItemsWrapGrid;
 
             int columns = 1;

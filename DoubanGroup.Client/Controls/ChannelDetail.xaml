@@ -12,6 +12,55 @@
     d:DesignHeight="600"
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance Type=designData:ChannelDetailData, IsDesignTimeCreatable=True}">
+    <UserControl.Resources>
+        <Style TargetType="GridView" x:Key="GroupGridViewStyle">
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+            <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+            <Setter Property="IsItemClickEnabled" Value="True"/>
+            <Setter Property="SelectionMode" Value="None"/>
+            <Setter Property="ItemContainerStyle">
+                <Setter.Value>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Background" Value="Transparent"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="GridViewItem">
+                                    <Border Background="Transparent">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <PointerDownThemeAnimation TargetName="content"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PressedSelected">
+                                                    <Storyboard>
+                                                        <PointerDownThemeAnimation TargetName="content" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <ContentPresenter x:Name="content"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+    
+    
     <ScrollViewer Grid.Row="1" Padding="0" Background="#FFFFFF">
         <StackPanel Padding="20 10">
             <Grid>
@@ -20,7 +69,7 @@
                 <Button HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}" Content="查看更多..."></Button>
             </Grid>
 
-            <GridView Margin="0 10 0 0" Height="265" ItemsSource="{Binding GroupList}" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsItemClickEnabled="True" SelectionMode="None">
+            <GridView Margin="0 10 0 0" Height="205" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
                 <i:Interaction.Behaviors>
                     <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
                 </i:Interaction.Behaviors>
@@ -30,32 +79,26 @@
                         <ItemsWrapGrid Orientation="Horizontal" ItemWidth="250"></ItemsWrapGrid>
                     </ItemsPanelTemplate>
                 </GridView.ItemsPanel>
-                <GridView.ItemContainerStyle>
-                    <Style TargetType="GridViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Background" Value="Transparent"/>
-                    </Style>
-                </GridView.ItemContainerStyle>
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="10" BorderThickness="0 0 0 1" BorderBrush="#dddddd" Height="130">
+                        <Border Padding="10" Height="100">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="70"/>
+                                    <RowDefinition Height="40"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
 
-                                <Image Source="{Binding Avatar}" Height="60" Width="60" Margin="0 0 10 0"></Image>
+                                <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
 
-                                <TextBlock Text="{Binding Name}" MaxHeight="60" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" Style="{StaticResource SubtitleTextBlockStyle}"/>
+                                <TextBlock Text="{Binding Name}" MaxHeight="40" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
 
-                                <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="50" TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top" Style="{StaticResource BodyTextBlockStyle}"/>
+                                <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="40" 
+                                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 10 0 0"
+                                           Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
                             </Grid>
                         </Border>
                     </DataTemplate>
@@ -66,14 +109,19 @@
                 <TextBlock Text="推荐主题" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
             </Grid>
 
-            <ListView Margin="0 10 0 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
+            <GridView Margin="0 10 -20 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
+                <i:Interaction.Behaviors>
+                    <behavior:GridViewItemFitWidthBehavior MaxWidth="800"/>
+                </i:Interaction.Behaviors>
+                
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Margin" Value="0 0 20 0"/>
                         <Setter Property="Template">
                             <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
+                                <ControlTemplate TargetType="GridViewItem">
                                     <Border BorderThickness="0 0 0 1" BorderBrush="#eeeeee">
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroup x:Name="CommonStates">
@@ -101,15 +149,9 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                </ListView.ItemContainerStyle>
+                </GridView.ItemContainerStyle>
 
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel></VirtualizingStackPanel>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-
-                <ListView.ItemTemplate>
+                <GridView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="0 10" Background="Transparent">
                             <Grid.ColumnDefinitions>
@@ -117,19 +159,6 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-
-                            <Border Background="#fae9da" Padding="10" VerticalAlignment="Top" Width="65" Height="65" Margin="0 0 10 0">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-
-                                    <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Text="{Binding Topic.LikeCountString}"></TextBlock>
-
-                                    <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Grid.Row="1" Text="喜欢"></TextBlock>
-                                </Grid>
-                            </Border>
 
                             <Grid Grid.Column="1">
                                 <Grid.RowDefinitions>
@@ -152,8 +181,8 @@
                             </Image>
                         </Grid>
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </GridView.ItemTemplate>
+            </GridView>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

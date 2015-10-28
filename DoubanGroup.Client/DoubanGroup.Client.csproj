@@ -101,6 +101,7 @@
     </Compile>
     <Compile Include="Behaviors\BehaviorBase.cs" />
     <Compile Include="Behaviors\GridViewItemFitWidthBehavior.cs" />
+    <Compile Include="Behaviors\ItemClickBehavior.cs" />
     <Compile Include="Controls\ChannelDetail.xaml.cs">
       <DependentUpon>ChannelDetail.xaml</DependentUpon>
     </Compile>
@@ -109,6 +110,7 @@
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="DesignData\ChannelDetailData.cs" />
+    <Compile Include="DesignData\GroupDetailData.cs" />
     <Compile Include="DesignData\HomePageData.cs" />
     <Compile Include="Models\IncrementalLoadingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,8 +118,12 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ChannelDetailViewModel.cs" />
+    <Compile Include="ViewModels\GroupDetailPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\GroupDetailPage.xaml.cs">
+      <DependentUpon>GroupDetailPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
@@ -148,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Shell.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GroupDetailPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

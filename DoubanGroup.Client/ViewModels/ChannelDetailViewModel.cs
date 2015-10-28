@@ -1,5 +1,7 @@
 ﻿using DoubanGroup.Core.Api;
 using DoubanGroup.Core.Api.Entity;
+using Prism.Commands;
+using Prism.Windows.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,9 +29,12 @@ namespace DoubanGroup.Client.ViewModels
 
         private ApiClient ApiClient { get; set; }        
 
-        public ChannelDetailViewModel(ApiClient apiClient)
+        private INavigationService NavigationService { get; set; }
+
+        public ChannelDetailViewModel(ApiClient apiClient, INavigationService navigationService)
         {
             this.ApiClient = apiClient;
+            this.NavigationService = navigationService;
             this.GroupList = new ObservableCollection<Group>();
             this.TopicList = new ObservableCollection<ChannelTopic>();
         }
@@ -77,6 +82,25 @@ namespace DoubanGroup.Client.ViewModels
             {
                 this.IsLoading = false;
             }
+        }
+
+        private DelegateCommand<Group> _viewGroupCommand;
+
+        public DelegateCommand<Group> ViewGroupCommand
+        {
+            get
+            {
+                if (_viewGroupCommand == null)
+                {
+                    _viewGroupCommand = new DelegateCommand<Group>(this.ViewGroup);
+                }
+                return _viewGroupCommand;
+            }
+        }
+
+        private void ViewGroup(Group parameter)
+        {
+            this.NavigationService.Navigate("GroupDetail", parameter);
         }
     }
 }
