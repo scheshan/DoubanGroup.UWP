@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.Practices.Unity;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -45,8 +46,10 @@ namespace DoubanGroup.Client.Controls
             {
                 _isFirstLoaded = false;
 
-                var vm = this.DataContext as ViewModels.ChannelDetailViewModel;
-                vm?.Init(this.Channel);
+                var channel = this.Channel;
+                var vm = App.Current.Container.Resolve<ViewModels.ChannelDetailViewModel>();
+                this.DataContext = vm;
+                vm.Init(channel);
             }
         }
     }

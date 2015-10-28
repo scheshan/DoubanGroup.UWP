@@ -11,6 +11,8 @@ namespace DoubanGroup.Client.DesignData
     {
         public List<Group> GroupList { get; set; }
 
+        public List<ChannelTopic> TopicList { get; set; }
+
         public ChannelDetailData()
         {
             this.GroupList = new List<Group>();
@@ -25,6 +27,27 @@ namespace DoubanGroup.Client.DesignData
                     LargeAvatar = "http://img4.douban.com/view/group/medium/public/b76db7fdba3c448.jpg",
                     ID = 10156,
                     MemberCount = 103745
+                });
+            }
+
+            this.TopicList = new List<ChannelTopic>();
+
+            for (var i = 0; i < 20; i++)
+            {
+                this.TopicList.Add(new ChannelTopic
+                {
+                    TopicChannelDatetime = DateTime.Now.AddMinutes(-20),
+                    Topic = new Topic
+                    {
+                        CommentsCount = 606,
+                        Content = "今天看了一个帖子，贫穷对一个人的伤害有多大。没社交，没自信，没安全感，可怕的是在压力大，负担重，机会资源少的情况下还丢了自信，没能绞尽脑汁的摆脱贫困，奋发图强。没有经济基础，感情不可靠，我不狡辩，大家身边都有例子。经不起现实的轻轻一击，是不是该把个人的事放一下，即使会错过也不要将就。",
+                        Title = "你最穷的时候，是不是也不想恋爱结婚。",
+                        LikeCount = 219,
+                        Group = new Group
+                        {
+                            Name = "上班这件事"
+                        }
+                    }
                 });
             }
         }

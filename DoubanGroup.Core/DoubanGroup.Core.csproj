@@ -111,9 +111,14 @@
     <Compile Include="Api\ApiException.cs" />
     <Compile Include="Api\Entity\BasicUserInfo.cs" />
     <Compile Include="Api\Entity\Channel.cs" />
+    <Compile Include="Api\Entity\ChannelTopic.cs" />
+    <Compile Include="Api\Entity\ChannelTopicList.cs" />
     <Compile Include="Api\Entity\Group.cs" />
     <Compile Include="Api\Entity\GroupList.cs" />
+    <Compile Include="Api\Entity\Photo.cs" />
+    <Compile Include="Api\Entity\PhotoSize.cs" />
     <Compile Include="Api\Entity\Session.cs" />
+    <Compile Include="Api\Entity\Topic.cs" />
     <Compile Include="Api\Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\DoubanGroup.Core.rd.xml" />

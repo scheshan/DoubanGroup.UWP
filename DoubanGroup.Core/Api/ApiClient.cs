@@ -255,5 +255,26 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<GroupList>(url, null);
         }
+
+        /// <summary>
+        /// 根据频道得到主题列表
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<ChannelTopicList> GetTopicByChannel(string channel, int start, int count)
+        {
+            string url = $"channels/{channel}/topics";
+
+            var para = new Parameters();
+            if (start > 0)
+            {
+                para.Add("start", start.ToString());
+            }
+            para.Add("count", count.ToString());
+
+            return await this.Get<ChannelTopicList>(url, para);
+        }
     }
 }

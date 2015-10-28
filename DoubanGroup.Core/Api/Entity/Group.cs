@@ -24,6 +24,20 @@ namespace DoubanGroup.Core.Api.Entity
         [JsonProperty("desc")]
         public string Description { get; set; }
 
+        [JsonIgnore]
+        public string ShortDescription
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(this.Description))
+                {
+                    return null;
+                }
+
+                return this.Description.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+            }
+        }
+
         [JsonProperty("domain")]
         public string Domain { get; set; }
 
