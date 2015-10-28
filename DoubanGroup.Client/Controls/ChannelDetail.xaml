@@ -64,8 +64,36 @@
             <Grid Margin="0 10 0 0">
                 <TextBlock Text="推荐主题" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
             </Grid>
-            
-            
+
+            <ListView Margin="0 10 0 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderThickness="1" BorderBrush="#EEEEEE">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Text="{Binding Topic.Title}"/>
+                                
+                                
+                                <TextBlock Grid.Row="1">
+                                    
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackPanel>
     </ScrollViewer>
 </UserControl>
