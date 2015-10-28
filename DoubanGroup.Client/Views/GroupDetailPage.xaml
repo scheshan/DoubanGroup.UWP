@@ -13,30 +13,22 @@
 
     <GridView Background="#FFFFFF">
         <GridView.Header>
-            <Grid Margin="40 20">
+            <Grid Margin="20 10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                
+
+                <Image Grid.RowSpan="2" Source="{Binding Group.Avatar}" Height="100" Width="100" Margin="0 0 20 0"/>
                 <Image Grid.RowSpan="2" Source="{Binding Group.LargeAvatar}" Height="100" Width="100" Margin="0 0 20 0"/>
                 
                 <TextBlock Grid.Column="1" Text="{Binding Group.Name}" VerticalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
-                
-                <TextBlock Text="创建于2015年1月1日" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
 
-                <Border Grid.Row="2" Margin="0 10 0 0" Background="#fff4e8" Grid.ColumnSpan="2" Padding="10">
-                    <TextBlock Text="{Binding Group.Description}" TextWrapping="Wrap" MaxHeight="60">
-                        <ToolTipService.ToolTip>
-                            <TextBlock Text="{Binding Group.Description}"/>
-                        </ToolTipService.ToolTip>
-                    </TextBlock>
-                </Border>
+                <TextBlock Text="{Binding Group.Description}" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis"></TextBlock>
             </Grid>
         </GridView.Header>
     </GridView>

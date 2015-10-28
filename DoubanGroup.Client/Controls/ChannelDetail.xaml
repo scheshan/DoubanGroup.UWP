@@ -72,6 +72,7 @@
             <GridView Margin="0 10 0 0" Height="205" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
                 <i:Interaction.Behaviors>
                     <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                    <behavior:ItemClickBehavior Command="{Binding ViewGroupCommand}"/>
                 </i:Interaction.Behaviors>
 
                 <GridView.ItemsPanel>
