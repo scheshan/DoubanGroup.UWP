@@ -8,66 +8,34 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DoubanGroup.Core.Api;
 
 namespace DoubanGroup.Client.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
-        public ObservableCollection<ChannelModel> ChannelList { get; private set; }
+        public ObservableCollection<Channel> ChannelList { get; private set; }
 
-        private ChannelModel _currentChannel;
+        private ApiClient ApiClient { get; set; }
 
-        public ChannelModel CurrentChannel
+        public HomePageViewModel(ApiClient apiClient)
         {
-            get { return _currentChannel; }
-            set { this.SetProperty(ref _currentChannel, value); }
+            this.ApiClient = apiClient;
+
+            this.ChannelList = new ObservableCollection<Channel>();
+
+            this.InitChannels();
         }
 
-        public ObservableCollection<Group> GroupList { get; private set; }
-
-        public HomePageViewModel()
+        private void InitChannels()
         {
-            this.ChannelList = new ObservableCollection<ChannelModel>();
-
-            this.GroupList = new ObservableCollection<Group>();
-
-            this.ChannelList.Add(new ChannelModel(new Channel { NameCN = "精选" }));
-            this.ChannelList.Add(new ChannelModel(new Channel { NameCN = "文化" }));
-            this.ChannelList.Add(new ChannelModel(new Channel { NameCN = "行摄" }));
-            this.ChannelList.Add(new ChannelModel(new Channel { NameCN = "娱乐" }));
-            this.ChannelList.Add(new ChannelModel(new Channel { NameCN = "时尚" }));
-            this.ChannelList.Add(new ChannelModel(new Channel { NameCN = "生活" }));
-            this.ChannelList.Add(new ChannelModel(new Channel { NameCN = "科技" }));
-
-            this.CurrentChannel = this.ChannelList[0];
-            this.CurrentChannel.IsSelected = true;
+            this.ChannelList.Add(new Channel { NameCN = "精选", Name = "all" });
+            this.ChannelList.Add(new Channel { NameCN = "文化", Name = "culture" });
+            this.ChannelList.Add(new Channel { NameCN = "行摄", Name = "travel" });
+            this.ChannelList.Add(new Channel { NameCN = "娱乐", Name = "ent" });
+            this.ChannelList.Add(new Channel { NameCN = "时尚", Name = "fashion" });
+            this.ChannelList.Add(new Channel { NameCN = "生活", Name = "life" });
+            this.ChannelList.Add(new Channel { NameCN = "科技", Name = "tech" });
         }
-
-        private DelegateCommand<ChannelModel> _changeChannelCommand;
-
-        public DelegateCommand<ChannelModel> ChangeChannelCommand
-        {
-            get
-            {
-                if (_changeChannelCommand == null)
-                {
-                    _changeChannelCommand = new DelegateCommand<ChannelModel>(ChangeChannel);
-                }
-                return _changeChannelCommand;
-            }
-        }
-
-        private void ChangeChannel(ChannelModel parameter)
-        {
-            if (this.CurrentChannel == parameter)
-            {
-                return;
-            }
-
-            this.CurrentChannel.IsSelected = false;
-            this.CurrentChannel = parameter;
-            this.CurrentChannel.IsSelected = true;
-        }
-
     }
 }

@@ -77,7 +77,7 @@ namespace DoubanGroup.Core.Api
         private HttpClient CreateClient()
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "api-client/2.0 com.douban.group/3.3.10(340) Android/19 cancro_lte_ct Xiaomi MI 4LTE");
+            client.DefaultRequestHeaders.Add("User-Agent", "api-client/2.0 com.douban.group");
 
             if (AccessToken != null)
             {
@@ -242,6 +242,18 @@ namespace DoubanGroup.Core.Api
             string url = "channels";
 
             return await this.Get<List<Channel>>(url, null);
+        }
+
+        /// <summary>
+        /// 根据频道得到小组列表
+        /// </summary>
+        /// <param name="channel"></param>
+        /// <returns></returns>
+        public async Task<GroupList> GetGroupByChannel(string channel)
+        {
+            string url = $"channels/{channel}/groups";
+
+            return await this.Get<GroupList>(url, null);
         }
     }
 }

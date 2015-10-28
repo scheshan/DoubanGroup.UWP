@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 
 namespace DoubanGroup.Client
 {
@@ -35,6 +36,16 @@ namespace DoubanGroup.Client
         {
             var shell = new Shell(rootFrame);
             return shell;
+        }
+
+        protected override void ConfigureViewModelLocator()
+        {
+            base.ConfigureViewModelLocator();
+
+            Prism.Mvvm.ViewModelLocationProvider.Register(typeof(Controls.ChannelDetail).FullName, () =>
+            {
+                return this.Container.Resolve<ViewModels.ChannelDetailViewModel>();
+            });
         }
     }
 }

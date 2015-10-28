@@ -1,0 +1,65 @@
+﻿<UserControl
+    x:Class="DoubanGroup.Client.Controls.ChannelDetail"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DoubanGroup.Client.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:behavior="using:DoubanGroup.Client.Behaviors"
+    xmlns:designData="using:DoubanGroup.Client.DesignData"
+    d:DesignHeight="600"
+    d:DesignWidth="800"
+    d:DataContext="{d:DesignInstance Type=designData:ChannelDetailData, IsDesignTimeCreatable=True}">
+    <ScrollViewer Grid.Row="1">
+        <StackPanel Padding="10">
+            <Grid>
+                <TextBlock Text="值得加入的小组" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
+
+                <Button HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}" Content="查看更多..."></Button>
+            </Grid>
+
+            <GridView Margin="0 10 0 0" Height="185" ItemsSource="{Binding GroupList}" ScrollViewer.VerticalScrollBarVisibility="Disabled" IsItemClickEnabled="True" SelectionMode="None">
+                <i:Interaction.Behaviors>
+                    <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                </i:Interaction.Behaviors>
+
+                <GridView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="250"></ItemsWrapGrid>
+                    </ItemsPanelTemplate>
+                </GridView.ItemsPanel>
+                <GridView.ItemContainerStyle>
+                    <Style TargetType="GridViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Padding" Value="0"/>
+                    </Style>
+                </GridView.ItemContainerStyle>
+                <GridView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="10" BorderThickness="1" BorderBrush="#dddddd" Height="90">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <Image Source="{Binding Avatar}" Height="70" Width="70" Grid.RowSpan="2" Margin="0 0 10 0"></Image>
+
+                                <TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="Clip"/>
+
+                                <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </GridView.ItemTemplate>
+            </GridView>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
