@@ -28,5 +28,11 @@ namespace DoubanGroup.Client
         {
             return Task.FromResult<object>(null);
         }
+
+        protected override UIElement CreateShell(Frame rootFrame)
+        {
+            var shell = new Shell(rootFrame);
+            return shell;
+        }
     }
 }
