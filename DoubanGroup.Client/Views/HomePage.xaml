@@ -5,8 +5,84 @@
     xmlns:local="using:DoubanGroup.Client.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-    <Grid>
+    xmlns:designData="using:DoubanGroup.Client.DesignData"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:mvvm="using:Prism.Windows.Mvvm"
+    d:DataContext="{d:DesignInstance Type=designData:HomePageData, IsDesignTimeCreatable=True}"
+    Name="page"
+    mc:Ignorable="d" mvvm:ViewModelLocator.AutoWireViewModel="True">
+    <Page.Resources>
+        
+    </Page.Resources>
+    
+    <Grid Background="#FFFFFF">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <ItemsControl ItemsSource="{Binding ChannelList}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Stretch"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Border Height="50">
+                        <Button Padding="0" Style="{StaticResource TextBlockButtonStyle}" Command="{Binding DataContext.ChangeChannelCommand, ElementName=page}" CommandParameter="{Binding}">
+                            <Grid>
+                                <TextBlock Margin="20 10" Text="{Binding NameCN}" Foreground="#037b82"/>
+
+                                <Rectangle VerticalAlignment="Bottom" Height="5" Fill="#037b82" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                            </Grid>
+                        </Button>
+                    </Border>
+                    
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>        
+        
+        <ScrollViewer Grid.Row="1">
+            <StackPanel Padding="10">
+                <GridView ItemsSource="{Binding GroupList}">
+                    <GridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="250"></ItemsWrapGrid>
+                        </ItemsPanelTemplate>
+                    </GridView.ItemsPanel>
+                    <GridView.ItemContainerStyle>
+                        <Style TargetType="GridViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                            <Setter Property="Padding" Value="0"/>
+                        </Style>
+                    </GridView.ItemContainerStyle>
+                    <GridView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="10" BorderThickness="1" BorderBrush="#dddddd">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+
+                                    <Image Source="{Binding Avatar}" Height="70" Width="70" Grid.RowSpan="2" Margin="0 0 10 0"></Image>
+                                    
+                                    <TextBlock Text="{Binding Name}" Grid.Column="1" VerticalAlignment="Center" TextTrimming="Clip"/>
+                                    
+                                    <TextBlock Text="{Binding Description}" TextTrimming="CharacterEllipsis" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center"/>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </GridView.ItemTemplate>
+                </GridView>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

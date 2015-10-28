@@ -12,13 +12,13 @@
         <Style TargetType="Button" BasedOn="{StaticResource TextBlockButtonStyle}" x:Key="HamburgerButtonStyle">
             <Setter Property="Foreground" Value="#666666"/>
             <Setter Property="Height" Value="50"/>
-            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Padding" Value="15 10"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
     </UserControl.Resources>
-    
-    <SplitView OpenPaneLength="250" Background="#FFFFFF" DisplayMode="Inline" IsPaneOpen="True">
+
+    <SplitView PaneBackground="#f0f6f3" OpenPaneLength="250" CompactPaneLength="52" Background="#FFFFFF" DisplayMode="CompactInline" IsPaneOpen="False">
         <SplitView.Pane>
             <StackPanel>
                 <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Left">
@@ -26,5 +26,9 @@
                 </Button>
             </StackPanel>
         </SplitView.Pane>
+
+        <Grid>
+            <ContentPresenter HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Name="main_content"></ContentPresenter>
+        </Grid>
     </SplitView>
 </UserControl>

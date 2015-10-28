@@ -26,6 +26,8 @@ namespace DoubanGroup.Client
     {
         protected override Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
         {
+            this.NavigationService.Navigate("Home", null);
+
             return Task.FromResult<object>(null);
         }
 

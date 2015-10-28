@@ -112,6 +112,7 @@
     <Compile Include="Api\Entity\BasicUserInfo.cs" />
     <Compile Include="Api\Entity\Channel.cs" />
     <Compile Include="Api\Entity\Group.cs" />
+    <Compile Include="Api\Entity\GroupList.cs" />
     <Compile Include="Api\Entity\Session.cs" />
     <Compile Include="Api\Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -119,7 +120,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Api\Enums\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

@@ -4,6 +4,17 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DoubanGroup.Client"
+    xmlns:converters="using:DoubanGroup.Client.Converters"
     RequestedTheme="Light">
+
+    <prism:PrismUnityApplication.Resources>
+        <ResourceDictionary>
+
+            <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+            <converters:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+            <converters:InverseToVisibilityConverter x:Key="InverseToVisibilityConverter"/>
+        </ResourceDictionary>
+    </prism:PrismUnityApplication.Resources>
 
 </prism:PrismUnityApplication>

@@ -26,6 +26,8 @@ namespace DoubanGroup.Client
             this.RootFrame = rootFrame;
 
             this.InitializeComponent();
+
+            this.main_content.Content = this.RootFrame;
         }
     }
 }
