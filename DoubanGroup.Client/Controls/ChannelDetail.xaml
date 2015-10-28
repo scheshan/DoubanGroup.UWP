@@ -35,11 +35,12 @@
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
                         <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Background" Value="Transparent"/>
                     </Style>
                 </GridView.ItemContainerStyle>
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Border Padding="10" BorderThickness="1" BorderBrush="#dddddd" Height="130">
+                        <Border Padding="10" BorderThickness="0 0 0 1" BorderBrush="#dddddd" Height="130">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"/>
@@ -70,50 +71,86 @@
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Padding" Value="0"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <Border BorderThickness="0 0 0 1" BorderBrush="#eeeeee">
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal"/>
+                                                <VisualState x:Name="PointerOver">
+                                                    <Storyboard>
+                                                        <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="Pressed">
+                                                    <Storyboard>
+                                                        <PointerDownThemeAnimation TargetName="content"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                                <VisualState x:Name="PressedSelected">
+                                                    <Storyboard>
+                                                        <PointerDownThemeAnimation TargetName="content" />
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <ContentPresenter x:Name="content"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
                     </Style>
                 </ListView.ItemContainerStyle>
-                
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel></VirtualizingStackPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="0 0 0 1" BorderBrush="#EEEEEE" Padding="0 10">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="Auto"/>
-                                    <ColumnDefinition Width="*"/>
-                                </Grid.ColumnDefinitions>
+                        <Grid Padding="0 10" Background="Transparent">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                                <Border Background="#fae9da" Padding="10" VerticalAlignment="Top" Margin="0 0 10 0">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="Auto"/>
-                                            <RowDefinition Height="Auto"/>
-                                        </Grid.RowDefinitions>
-
-                                        <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Text="{Binding Topic.LikeCount}"></TextBlock>
-
-                                        <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Grid.Row="1" Text="喜欢"></TextBlock>
-                                    </Grid>
-                                </Border>
-
-                                <Grid Grid.Column="1">
+                            <Border Background="#fae9da" Padding="10" VerticalAlignment="Top" Width="65" Height="65" Margin="0 0 10 0">
+                                <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Text="{Binding Topic.Title}"/>
+                                    <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Text="{Binding Topic.LikeCountString}"></TextBlock>
 
-                                    <Grid Background="#f9f9f9" Grid.Row="1" Margin="0 10 0 0" Padding="10" MaxHeight="60">
-                                        <TextBlock Text="{Binding Topic.Content}" Foreground="#999999" TextWrapping="Wrap"/>
-                                    </Grid>
-
-                                    <TextBlock Text="{Binding Topic.Group.Name}" Grid.Row="2" Margin="0 10 0 0" Foreground="#666666" Style="{StaticResource CaptionTextBlockStyle}"></TextBlock>
+                                    <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Grid.Row="1" Text="喜欢"></TextBlock>
                                 </Grid>
-                                
-                                
+                            </Border>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Text="{Binding Topic.Title}"/>
+
+                                <Grid Background="#f9f9f9" Grid.Row="1" Margin="0 10 0 0" Padding="10">
+                                    <TextBlock Text="{Binding Topic.ShortContent}" Foreground="#666666" MaxHeight="20" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}"/>
+                                </Grid>
+
+                                <TextBlock Text="{Binding Topic.Group.Name}" Grid.Row="2" Margin="0 10 0 0" Foreground="#999999" Style="{StaticResource CaptionTextBlockStyle}"></TextBlock>
                             </Grid>
-                        </Border>
+
+                            <Image Visibility="{Binding Topic.Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="65" Height="65" Stretch="Fill" Grid.Column="2" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Topic.Avatar.Alt}">
+                                
+                            </Image>
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

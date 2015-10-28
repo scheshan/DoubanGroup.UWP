@@ -47,5 +47,55 @@ namespace DoubanGroup.Core.Api.Entity
         
         [JsonProperty("photos")]
         public List<Photo> Photos { get; set; }
+
+        [JsonIgnore]
+        public string ShortContent
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(this.Content))
+                {
+                    return string.Empty;
+                }
+
+                var content = this.Content.Replace("\r", "").Replace("\n", "").Replace(" ", "");
+
+                if (content.Length <= 200)
+                {
+                    return content;
+                }
+
+                return content.Substring(0, 200) + "...";
+            }
+        }
+
+        [JsonIgnore]
+        public string LikeCountString
+        {
+            get
+            {
+                if (this.LikeCount < 1000)
+                {
+                    return this.LikeCount.ToString();
+                }
+                else if (this.LikeCount < 10000)
+                {
+                    return $"{this.LikeCount / 1000}K";
+                }
+                else
+                {
+                    return "10K+";
+                }
+            }
+        }
+
+        [JsonIgnore]
+        public Photo Avatar
+        {
+            get
+            {
+                return this.Photos.FirstOrDefault();
+            }
+        }
     }
 }

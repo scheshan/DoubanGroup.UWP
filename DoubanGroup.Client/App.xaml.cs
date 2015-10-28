@@ -47,5 +47,10 @@ namespace DoubanGroup.Client
                 return this.Container.Resolve<ViewModels.ChannelDetailViewModel>();
             });
         }
+
+        public App()
+        {
+            //DebugSettings.IsTextPerformanceVisualizationEnabled = true;
+        }
     }
 }
