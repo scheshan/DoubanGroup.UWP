@@ -12,7 +12,7 @@
     d:DesignHeight="600"
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance Type=designData:ChannelDetailData, IsDesignTimeCreatable=True}">
-    <ScrollViewer Grid.Row="1" Padding="0">
+    <ScrollViewer Grid.Row="1" Padding="0" Background="#FFFFFF">
         <StackPanel Padding="20 10">
             <Grid>
                 <TextBlock Text="值得加入的小组" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
@@ -75,20 +75,43 @@
                 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Border BorderThickness="1" BorderBrush="#EEEEEE">
+                        <Border BorderThickness="0 0 0 1" BorderBrush="#EEEEEE" Padding="0 10">
                             <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Border Background="#fae9da" Padding="10" VerticalAlignment="Top" Margin="0 0 10 0">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Text="{Binding Topic.LikeCount}"></TextBlock>
+
+                                        <TextBlock Foreground="#ca6445" HorizontalAlignment="Center" Grid.Row="1" Text="喜欢"></TextBlock>
+                                    </Grid>
+                                </Border>
+
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="{Binding Topic.Title}"/>
+
+                                    <Grid Background="#f9f9f9" Grid.Row="1" Margin="0 10 0 0" Padding="10" MaxHeight="60">
+                                        <TextBlock Text="{Binding Topic.Content}" Foreground="#999999" TextWrapping="Wrap"/>
+                                    </Grid>
+
+                                    <TextBlock Text="{Binding Topic.Group.Name}" Grid.Row="2" Margin="0 10 0 0" Foreground="#666666" Style="{StaticResource CaptionTextBlockStyle}"></TextBlock>
+                                </Grid>
                                 
-                                <TextBlock Text="{Binding Topic.Title}"/>
                                 
-                                
-                                <TextBlock Grid.Row="1">
-                                    
-                                </TextBlock>
                             </Grid>
                         </Border>
                     </DataTemplate>
