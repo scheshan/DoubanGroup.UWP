@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DoubanGroup.Core.Api.Entity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +17,17 @@ namespace DoubanGroup.Core.Api
         /// <summary>
         /// APP ID
         /// </summary>
-        private const string APP_ID = "02f7751a55066bcb08e65f4eff134361";
+        private const string APP_ID = "00a0951fbec80b0501e1bf5f3c58210f";
 
         /// <summary>
         /// APP SECRET
         /// </summary>
-        private const string APP_SECRET = "63cf04ebd7b0ff3b";
+        private const string APP_SECRET = "77faec137e9bda16";
 
         /// <summary>
         /// REDIRECT URL
         /// </summary>
-        private const string REDIRECT_URI = "http://douban.fm";
+        private const string REDIRECT_URI = "http://group.douban.com/!service/android";
 
         /// <summary>
         /// 获取Token的请求路径
@@ -46,12 +47,12 @@ namespace DoubanGroup.Core.Api
         /// <summary>
         /// 常规的Api Host
         /// </summary>
-        private static readonly Uri NORMAL_API_HOST = new Uri("http://api.douban.com/v2/fm/", UriKind.Absolute);
+        private static readonly Uri NORMAL_API_HOST = new Uri("http://api.douban.com/v2/group/", UriKind.Absolute);
 
         /// <summary>
         /// 需要SSL加密的Api Host
         /// </summary>
-        private static readonly Uri SSL_API_HOST = new Uri("https://api.douban.com/v2/fm/", UriKind.Absolute);
+        private static readonly Uri SSL_API_HOST = new Uri("https://api.douban.com/v2/group/", UriKind.Absolute);
 
         #endregion
 
@@ -66,12 +67,6 @@ namespace DoubanGroup.Core.Api
         {
             var para = new Parameters();
 
-            if (addClientAndVersion)
-            {
-                para.Add("app_name", APP_NAME);
-                para.Add("version", VERSION);
-            }
-
             return para;
         }
 
@@ -82,7 +77,7 @@ namespace DoubanGroup.Core.Api
         private HttpClient CreateClient()
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("User-Agent", "android");
+            client.DefaultRequestHeaders.Add("User-Agent", "api-client/2.0 com.douban.group/3.3.10(340) Android/19 cancro_lte_ct Xiaomi MI 4LTE");
 
             if (AccessToken != null)
             {
@@ -217,6 +212,36 @@ namespace DoubanGroup.Core.Api
         public static void ClearAccessToken()
         {
             AccessToken = null;
+        }
+
+        /// <summary>
+        /// 用户登录
+        /// </summary>
+        /// <param name="userName">用户名</param>
+        /// <param name="password">密码</param>
+        /// <returns></returns>
+        public async Task<Session> Login(string userName, string password)
+        {
+            var para = this.CreateParameters(false);
+            para.Add("client_id", APP_ID);
+            para.Add("client_secret", APP_SECRET);
+            para.Add("redirect_uri", REDIRECT_URI);
+            para.Add("grant_type", "password");
+            para.Add("username", userName);
+            para.Add("password", password);
+
+            return await this.Post<Session>(TOKEN_URL, para);
+        }
+
+        /// <summary>
+        /// 得到频道列表
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<Channel>> GetChannelList()
+        {
+            string url = "channels";
+
+            return await this.Get<List<Channel>>(url, null);
         }
     }
 }

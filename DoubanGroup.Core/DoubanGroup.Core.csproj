@@ -109,13 +109,17 @@
   <ItemGroup>
     <Compile Include="Api\ApiClient.cs" />
     <Compile Include="Api\ApiException.cs" />
+    <Compile Include="Api\Entity\BasicUserInfo.cs" />
+    <Compile Include="Api\Entity\Channel.cs" />
+    <Compile Include="Api\Entity\Group.cs" />
+    <Compile Include="Api\Entity\Session.cs" />
     <Compile Include="Api\Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\DoubanGroup.Core.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Api\Entity\" />
     <Folder Include="Api\Enums\" />
+    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
