@@ -10,26 +10,62 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
+    <Page.Resources>
+        <Style TargetType="GridView" x:Key="GroupDetailGridViewStyle">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Padding" Value="20 10"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GridView">
+                        <ScrollViewer>
+                            <Grid Background="{TemplateBinding Background}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
 
-    <GridView Background="#FFFFFF">
-        <GridView.Header>
-            <Grid Margin="20 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                                <Grid Height="Auto" Padding="40 20">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    <Image Source="{Binding Group.LargeAvatar}" Width="100" Height="100" Margin="0 0 10 0"/>
 
-                <Image Grid.RowSpan="2" Source="{Binding Group.Avatar}" Height="100" Width="100" Margin="0 0 20 0"/>
-                <Image Grid.RowSpan="2" Source="{Binding Group.LargeAvatar}" Height="100" Width="100" Margin="0 0 20 0"/>
-                
-                <TextBlock Grid.Column="1" Text="{Binding Group.Name}" VerticalAlignment="Center" Style="{StaticResource TitleTextBlockStyle}"/>
+                                    <StackPanel Grid.Column="1">
+                                        <Grid>
+                                            <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                <TextBlock Text="{Binding Group.Description}" Grid.Column="1" Grid.Row="1" TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis"></TextBlock>
-            </Grid>
-        </GridView.Header>
+                                            <Button Grid.Column="1" HorizontalAlignment="Right" Background="#6ebfc3" Foreground="#FFFFFF">加入小组</Button>
+                                        </Grid>
+                                        
+                                        <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="40" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
+                                    </StackPanel>
+                                    
+                                    
+                                </Grid>
+
+                                <ItemsPresenter Grid.Row="1" Padding="{TemplateBinding Padding}" HeaderTemplate="{TemplateBinding HeaderTemplate}" Header="{TemplateBinding Header}" HeaderTransitions="{TemplateBinding HeaderTransitions}"
+                                            Footer="{TemplateBinding Footer}" FooterTemplate="{TemplateBinding FooterTemplate}" FooterTransitions="{TemplateBinding FooterTransitions}">
+
+                                </ItemsPresenter>
+                            </Grid>
+                        </ScrollViewer>                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Page.Resources>
+
+    <GridView Style="{StaticResource GroupDetailGridViewStyle}">
+        <GridView.Items>
+            <x:String>123</x:String>
+            <x:String>123</x:String>
+            <x:String>123</x:String>
+            <x:String>123</x:String>
+            <x:String>123</x:String>
+        </GridView.Items>
     </GridView>
+
+
 </Page>
