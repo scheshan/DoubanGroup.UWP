@@ -12,6 +12,9 @@ namespace DoubanGroup.Core.Api.Entity
         [JsonProperty("admin_role_name")]
         public string AdminRoleName { get; set; }
 
+        [JsonProperty("member_role_name")]
+        public string MemberRoleName { get; set; }
+
         [JsonProperty("alt")]
         public string Alt { get; set; }
 

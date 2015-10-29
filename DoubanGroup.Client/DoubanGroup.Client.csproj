@@ -121,10 +121,15 @@
     </Compile>
     <Compile Include="ViewModels\ChannelDetailViewModel.cs" />
     <Compile Include="ViewModels\GroupDetailPageViewModel.cs" />
+    <Compile Include="DesignData\GroupMembersData.cs" />
+    <Compile Include="ViewModels\GroupMembersPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\GroupDetailPage.xaml.cs">
       <DependentUpon>GroupDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\GroupMembersPage.xaml.cs">
+      <DependentUpon>GroupMembersPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
@@ -168,6 +173,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\GroupDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\GroupMembersPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -115,6 +115,7 @@
     <Compile Include="Api\Entity\ChannelTopicList.cs" />
     <Compile Include="Api\Entity\Group.cs" />
     <Compile Include="Api\Entity\GroupList.cs" />
+    <Compile Include="Api\Entity\GroupMemberList.cs" />
     <Compile Include="Api\Entity\Photo.cs" />
     <Compile Include="Api\Entity\PhotoSize.cs" />
     <Compile Include="Api\Entity\Session.cs" />

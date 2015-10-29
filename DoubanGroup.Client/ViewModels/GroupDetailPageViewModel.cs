@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Prism.Windows.Navigation;
 using DoubanGroup.Client.Models;
 using DoubanGroup.Core.Api;
+using Prism.Commands;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -65,6 +66,25 @@ namespace DoubanGroup.Client.ViewModels
         {
             var group = await this.ApiClient.GetGroup(this.GroupID);
             this.Group = group;
+        }
+
+        private DelegateCommand _viewMembersCommand;
+
+        public DelegateCommand ViewMembersCommand
+        {
+            get
+            {
+                if (_viewMembersCommand == null)
+                {
+                    _viewMembersCommand = new DelegateCommand(this.ViewMembers);
+                }
+                return _viewMembersCommand;
+            }
+        }
+
+        private void ViewMembers()
+        {
+            this.NavigationService.Navigate("GroupMembers", this.GroupID);
         }
     }
 }

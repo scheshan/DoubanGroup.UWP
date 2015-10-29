@@ -267,7 +267,7 @@ namespace DoubanGroup.Core.Api
         {
             string url = $"channels/{channel}/topics";
 
-            var para = new Parameters();
+            var para = this.CreateParameters();
             if (start > 0)
             {
                 para.Add("start", start.ToString());
@@ -288,7 +288,7 @@ namespace DoubanGroup.Core.Api
         {
             string url = $"{groupID}/topics";
 
-            var para = new Parameters();
+            var para = this.CreateParameters();
             if (start > 0)
             {
                 para.Add("start", start.ToString());
@@ -308,6 +308,24 @@ namespace DoubanGroup.Core.Api
             string url = $"{groupID}/";
 
             return await this.Get<Group>(url, null);
+        }
+
+        /// <summary>
+        /// 得到小组成员列表
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<GroupMemberList> GetGroupMembers(long groupID, int start, int count)
+        {
+            string url = $"{groupID}/members";
+
+            var para = this.CreateParameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<GroupMemberList>(url, para);
         }
     }
 }

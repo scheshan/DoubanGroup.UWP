@@ -18,7 +18,7 @@
         </Style>
     </UserControl.Resources>
 
-    <SplitView PaneBackground="#f0f6f3" OpenPaneLength="250" CompactPaneLength="52" Background="#FFFFFF" DisplayMode="CompactInline" IsPaneOpen="True">
+    <SplitView PaneBackground="#f0f6f3" OpenPaneLength="250" CompactPaneLength="52" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="True">
         <SplitView.Pane>
             <StackPanel>
                 <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Left">
