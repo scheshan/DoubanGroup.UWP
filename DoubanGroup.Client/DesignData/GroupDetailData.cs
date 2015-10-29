@@ -20,7 +20,40 @@ namespace DoubanGroup.Client.DesignData
                 Avatar = "http://img3.douban.com/icon/g10156-13.jpg",
                 LargeAvatar = "http://img4.douban.com/view/group/medium/public/b76db7fdba3c448.jpg",
                 ID = 10156,
-                MemberCount = 103745
+                MemberCount = 103745,
+                Owner = new BasicUserInfo
+                {
+                    Name = "冰海蓝",
+                    Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
+                    LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
+                },
+                AdminList = new List<BasicUserInfo>
+                {
+                    new BasicUserInfo
+                    {
+                        Name = "旯旯",
+                        Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
+                        LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
+                    },
+                    new BasicUserInfo
+                    {
+                        Name = "倾城",
+                        Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
+                        LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
+                    },
+                    new BasicUserInfo
+                    {
+                        Name = "。桑-♥.娃儿",
+                        Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
+                        LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
+                    },
+                    new BasicUserInfo
+                    {
+                        Name = "冰海蓝",
+                        Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
+                        LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
+                    }
+                    }
             };
         }
     }

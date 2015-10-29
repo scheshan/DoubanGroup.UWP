@@ -14,6 +14,10 @@
             <converters:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <converters:InverseToVisibilityConverter x:Key="InverseToVisibilityConverter"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </prism:PrismUnityApplication.Resources>
 

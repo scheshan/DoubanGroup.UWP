@@ -11,6 +11,68 @@
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
     <Page.Resources>
+        <DataTemplate x:Key="UserAvatarDataTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image Source="{Binding Avatar}" HorizontalAlignment="Left"/>
+
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Grid.Column="1" Margin="10 0 0 0"/>
+            </Grid>
+        </DataTemplate>
+        
+        <Style TargetType="Button" x:Key="UserAvatarButtonStyle">
+            <Setter Property="BorderThickness" Value="0 0 0 1"/>
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="BorderBrush" Value="#cccccc"/>
+            <Setter Property="Padding" Value="0 0 0 5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="content" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <PointerDownThemeAnimation Storyboard.TargetName="content" Duration="0"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            
+                            <ContentPresenter x:Name="content" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="ContentTemplate">
+                <Setter.Value>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Image Source="{Binding Avatar}" HorizontalAlignment="Left"/>
+
+                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Grid.Column="1" Margin="10 0 0 0"/>
+                        </Grid>
+                    </DataTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
+        
         <Style TargetType="GridView" x:Key="GroupDetailGridViewStyle">
             <Setter Property="Background" Value="#FFFFFF"/>
             <Setter Property="Padding" Value="20 10"/>
@@ -23,32 +85,51 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="*"/>
                                 </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
 
-                                <Grid Height="Auto" Padding="40 20">
+                                <Grid Height="Auto" Padding="40 20" Grid.ColumnSpan="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
                                     
-                                    <Image Source="{Binding Group.LargeAvatar}" Width="100" Height="100" Margin="0 0 10 0"/>
+                                    <Image Source="{Binding Group.LargeAvatar}" Width="120" Height="120" Margin="0 0 10 0"/>
 
                                     <StackPanel Grid.Column="1">
                                         <Grid>
                                             <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                                            <Button Grid.Column="1" HorizontalAlignment="Right" Background="#6ebfc3" Foreground="#FFFFFF">加入小组</Button>
+                                            
                                         </Grid>
                                         
                                         <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="40" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
+
+                                        <Button Background="#6ebfc3" Foreground="#FFFFFF" Margin="0 10 0 0">加入小组</Button>
                                     </StackPanel>
-                                    
-                                    
                                 </Grid>
 
                                 <ItemsPresenter Grid.Row="1" Padding="{TemplateBinding Padding}" HeaderTemplate="{TemplateBinding HeaderTemplate}" Header="{TemplateBinding Header}" HeaderTransitions="{TemplateBinding HeaderTransitions}"
                                             Footer="{TemplateBinding Footer}" FooterTemplate="{TemplateBinding FooterTemplate}" FooterTransitions="{TemplateBinding FooterTransitions}">
-
                                 </ItemsPresenter>
+
+                                <StackPanel Name="spSide" Grid.Column="1" Grid.Row="1" Width="250" Padding="10">
+                                    <TextBlock Text="创建者" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+
+                                    <Button Style="{StaticResource UserAvatarButtonStyle}" Margin="0 10 0 0" Content="{Binding Group.Owner}">
+                                        
+                                    </Button>
+                                    
+                                    <TextBlock Text="管理员" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 10 0 0"/>
+
+                                    <ListView ItemTemplate="{StaticResource UserAvatarDataTemplate}" ItemsSource="{Binding Group.AdminList}" Style="{StaticResource NonSelectListViewStyle}">
+
+                                    </ListView>
+                                    
+                                </StackPanel>
                             </Grid>
                         </ScrollViewer>                        
                     </ControlTemplate>
