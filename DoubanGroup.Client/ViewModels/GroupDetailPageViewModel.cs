@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Prism.Windows.Navigation;
+using DoubanGroup.Client.Models;
+using DoubanGroup.Core.Api;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -18,11 +20,35 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _group, value); }
         }
 
+        private ApiClient ApiClient { get; set; }
+
+        private INavigationService NavigationService { get; set; }
+
+        public IncrementalLoadingList<Topic> TopicList { get; private set; }
+
+        public GroupDetailPageViewModel(ApiClient apiClient, INavigationService navigationService)
+        {
+            this.ApiClient = apiClient;
+            this.NavigationService = navigationService;
+            this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
+        }
+
         public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
         {
             base.OnNavigatedTo(e, viewModelState);
 
             this.Group = e.Parameter as Group;
+        }
+
+        private async Task<IEnumerable<Topic>> LoadTopics(uint count)
+        {
+            this.IsLoading = true;
+
+            var topicList = await this.ApiClient.GetTopicByGroup(this.Group.ID, this.TopicList.Count, 30);
+
+            this.IsLoading = false;
+
+            return topicList.Items;
         }
     }
 }

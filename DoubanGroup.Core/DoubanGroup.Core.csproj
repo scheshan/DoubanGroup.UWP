@@ -119,6 +119,7 @@
     <Compile Include="Api\Entity\PhotoSize.cs" />
     <Compile Include="Api\Entity\Session.cs" />
     <Compile Include="Api\Entity\Topic.cs" />
+    <Compile Include="Api\Entity\TopicList.cs" />
     <Compile Include="Api\Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\DoubanGroup.Core.rd.xml" />

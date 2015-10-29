@@ -276,5 +276,26 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<ChannelTopicList>(url, para);
         }
+
+        /// <summary>
+        /// 得到小组的主题列表
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetTopicByGroup(long groupID, int start, int count)
+        {
+            string url = $"{groupID}/topics";
+
+            var para = new Parameters();
+            if (start > 0)
+            {
+                para.Add("start", start.ToString());
+            }
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
     }
 }
