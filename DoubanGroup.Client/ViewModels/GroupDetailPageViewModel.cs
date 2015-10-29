@@ -12,6 +12,14 @@ namespace DoubanGroup.Client.ViewModels
 {
     public class GroupDetailPageViewModel : ViewModelBase
     {
+        private long _groupID;
+
+        public long GroupID
+        {
+            get { return _groupID; }
+            set { this.SetProperty(ref _groupID, value); }
+        }
+
         private Group _group;
 
         public Group Group
@@ -37,18 +45,26 @@ namespace DoubanGroup.Client.ViewModels
         {
             base.OnNavigatedTo(e, viewModelState);
 
-            this.Group = e.Parameter as Group;
+            this.GroupID = (long)e.Parameter;
+
+            this.LoadGroup();
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
         {
             this.IsLoading = true;
 
-            var topicList = await this.ApiClient.GetTopicByGroup(this.Group.ID, this.TopicList.Count, 30);
+            var topicList = await this.ApiClient.GetTopicByGroup(this.GroupID, this.TopicList.Count, 30);
 
             this.IsLoading = false;
 
             return topicList.Items;
+        }
+
+        private async Task LoadGroup()
+        {
+            var group = await this.ApiClient.GetGroup(this.GroupID);
+            this.Group = group;
         }
     }
 }

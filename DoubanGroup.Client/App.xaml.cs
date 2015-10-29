@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
+using DoubanGroup.Core.Api.Entity;
 
 namespace DoubanGroup.Client
 {
@@ -48,9 +49,9 @@ namespace DoubanGroup.Client
             });
         }
 
-        public App()
+        protected override void OnRegisterKnownTypesForSerialization()
         {
-            //DebugSettings.IsTextPerformanceVisualizationEnabled = true;
+            base.OnRegisterKnownTypesForSerialization();
         }
     }
 }

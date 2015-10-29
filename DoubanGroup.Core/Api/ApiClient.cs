@@ -297,5 +297,17 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<TopicList>(url, para);
         }
+
+        /// <summary>
+        /// 得到小组信息
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public async Task<Group> GetGroup(long groupID)
+        {
+            string url = $"{groupID}/";
+
+            return await this.Get<Group>(url, null);
+        }
     }
 }

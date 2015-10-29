@@ -100,7 +100,7 @@ namespace DoubanGroup.Client.ViewModels
 
         private void ViewGroup(Group parameter)
         {
-            this.NavigationService.Navigate("GroupDetail", parameter);
+            this.NavigationService.Navigate("GroupDetail", parameter.ID);
         }
     }
 }
