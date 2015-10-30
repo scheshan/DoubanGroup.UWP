@@ -50,7 +50,15 @@ namespace DoubanGroup.Client.DesignData
                         LargeAvatar = "http://img3.douban.com/icon/up80138337-11.jpg"
                     },
                     Text = "留学中介好像就一二线城市城市都多点，其他城市就业也比较少，有同学做了一年也出来了",
-                    Time = DateTime.Now.AddMinutes(-20)
+                    Time = DateTime.Now.AddMinutes(-20),
+                    QuoteComment = new Comment
+                    {
+                        Text = "倒数第二张，还没有开的时候真的很像双色冰淇淋",
+                        Author = new BasicUserInfo
+                        {
+                            Name = "梅子是六月成熟"
+                        }
+                    }
                 };
 
                 if (i < 3)

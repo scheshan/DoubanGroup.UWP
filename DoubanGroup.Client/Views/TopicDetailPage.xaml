@@ -30,17 +30,30 @@
                         <TextBlock Text="{Binding Time, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <TextBlock Text="{Binding Text}" Margin="0 10 0 0"/>
+                    <Grid Padding="10" Margin="0 10 0 0" Visibility="{Binding QuoteComment, Converter={StaticResource NotNullToVisibilityConverter}}">
+                        <Rectangle HorizontalAlignment="Left" Width="2" Fill="#EEEEEE" Margin="-10"/>
+
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding QuoteComment.Text}" TextWrapping="Wrap"/>
+
+                            <TextBlock Foreground="#3377aa" Margin="0 2 0 0" Text="{Binding QuoteComment.Author.Name}" Style="{StaticResource SecondaryTextBlockStyle}"/>
+                        </StackPanel>
+
+                        
+
+                    </Grid>
+
+                    <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0 10 0 0"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
     </Page.Resources>
 
-    <GridView Padding="20 10" Background="{StaticResource DefaultBackground}" Style="{StaticResource DefaultGridViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
+    <ListView Padding="20 10" Background="{StaticResource DefaultBackground}" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
         <i:Interaction.Behaviors>
             <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
         </i:Interaction.Behaviors>
-        <GridView.Header>
+        <ListView.Header>
             <StackPanel>
                 <StackPanel Background="#FFFFFF" Padding="10 0">
                     <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource TitleTextBlockStyle}"/>
@@ -59,14 +72,14 @@
 
                 <TextBlock Margin="0 10 0 0" Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
 
-                <GridView Margin="0 10 0 0" Style="{StaticResource DefaultGridViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
+                <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
                     <i:Interaction.Behaviors>
                         <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
                     </i:Interaction.Behaviors>
-                </GridView>
+                </ListView>
 
                 <TextBlock Margin="0 0 0 10" Text="全部回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
             </StackPanel>
-        </GridView.Header>
-    </GridView>
+        </ListView.Header>
+    </ListView>
 </Page>

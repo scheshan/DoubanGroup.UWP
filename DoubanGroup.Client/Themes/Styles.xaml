@@ -6,12 +6,14 @@
     <SolidColorBrush x:Key="SecondaryForegroundBrush" Color="#999999"/>
     <SolidColorBrush x:Key="DefaultBackground" Color="#F9F9F9"/>
 
-    <Style x:Key="NonSelectListViewItemStyle" TargetType="ListViewItem">
+    <Style x:Key="DefaultListViewItemStyle" TargetType="ListViewItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="Padding" Value="0 10"/>
-        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Margin" Value="0 0 0 10"/>
         <Setter Property="BorderBrush" Value="#cccccc"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Background" Value="#FFFFFF"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ListViewItem">
@@ -44,8 +46,8 @@
         </Setter>
     </Style>
 
-    <Style x:Key="NonSelectListViewStyle" TargetType="ListView">
-        <Setter Property="ItemContainerStyle" Value="{StaticResource NonSelectListViewItemStyle}"/>
+    <Style x:Key="DefaultListViewStyle" TargetType="ListView">
+        <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListViewItemStyle}"/>
         <Setter Property="IsItemClickEnabled" Value="True"/>
         <Setter Property="SelectionMode" Value="None"/>
     </Style>
