@@ -15,25 +15,23 @@
 
     <Page.Resources>
         <DataTemplate x:Key="CommentDataTemplate">
-            <Grid>
+            <Grid Padding="10 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
                 
-                <Image Source="{Binding Author.Avatar}" Style="{StaticResource SmallUserAvatarImageStyle}" Grid.RowSpan="2" VerticalAlignment="Top" Margin="0 0 10 0"/>
+                <Image Source="{Binding Author.Avatar}" Style="{StaticResource SmallUserAvatarImageStyle}" VerticalAlignment="Top" Margin="0 0 10 0"/>
 
-                <StackPanel Orientation="Horizontal" Grid.Column="1">
-                    <TextBlock Text="{Binding Author.Name}"/>
-                    
-                    <TextBlock Text="{Binding Time, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center"/>
+                <StackPanel Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                        <TextBlock Text="{Binding Author.Name}" Foreground="#3377aa"/>
+
+                        <TextBlock Text="{Binding Time, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <TextBlock Text="{Binding Text}" Margin="0 10 0 0"/>
                 </StackPanel>
-                
-                <TextBlock Grid.Column="1" Grid.Row="1" Text="{Binding Text}" TextWrapping="Wrap" Margin="0 10 0 0"/>
             </Grid>
         </DataTemplate>
     </Page.Resources>
@@ -44,15 +42,19 @@
         </i:Interaction.Behaviors>
         <GridView.Header>
             <StackPanel>
-                <StackPanel Margin="-20 -10 -20 0" Background="#FFFFFF" Padding="20 10">
+                <StackPanel Background="#FFFFFF" Padding="10 0">
                     <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource TitleTextBlockStyle}"/>
 
-                    <StackPanel Orientation="Horizontal" Margin="0 10 0 0">
+                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
                         <Image Source="{Binding Topic.Author.Avatar}" Width="40" Height="40"/>
                         <TextBlock Text="{Binding Topic.Author.Name}" Margin="10 0 0 0" VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <TextBlock Margin="0 10 0 0" Text="{Binding Topic.Content}" TextWrapping="Wrap"></TextBlock>
+                    <RichTextBlock Margin="50 20 50 10" TextWrapping="Wrap" LineHeight="30">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TopicContentBehavior Topic="{Binding Topic}"/>
+                        </i:Interaction.Behaviors>
+                    </RichTextBlock>
                 </StackPanel>
 
                 <TextBlock Margin="0 10 0 0" Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>

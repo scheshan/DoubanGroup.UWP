@@ -63,9 +63,10 @@ namespace DoubanGroup.Core.Api
         /// </summary>
         /// <param name="addClientAndVersion">是否将客户端信息添加到Parameters里</param>
         /// <returns></returns>
-        private Parameters CreateParameters(bool addClientAndVersion = true)
+        private Parameters CreateQueryParameters(bool addClientAndVersion = true)
         {
             var para = new Parameters();
+            para.Add("apiKey", APP_ID);
 
             return para;
         }
@@ -100,16 +101,23 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         private string BuildUrl(string url, Parameters parameters)
         {
-            if (parameters != null)
+            var para = this.CreateQueryParameters();
+
+            if (parameters != null && parameters.Count > 0)
             {
-                if (url.IndexOf("?") > -1)
+                foreach (string name in parameters)
                 {
-                    url = url + "&" + parameters.ToString();
+                    para.Add(name, parameters[name]);
                 }
-                else
-                {
-                    url = url + "?" + parameters.ToString();
-                }
+            }
+
+            if (url.IndexOf("?") > -1)
+            {
+                url = url + "&" + para.ToString();
+            }
+            else
+            {
+                url = url + "?" + para.ToString();
             }
 
             return url;
@@ -222,7 +230,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<Session> Login(string userName, string password)
         {
-            var para = this.CreateParameters(false);
+            var para = this.CreateQueryParameters(false);
             para.Add("client_id", APP_ID);
             para.Add("client_secret", APP_SECRET);
             para.Add("redirect_uri", REDIRECT_URI);
@@ -267,11 +275,8 @@ namespace DoubanGroup.Core.Api
         {
             string url = $"channels/{channel}/topics";
 
-            var para = this.CreateParameters();
-            if (start > 0)
-            {
-                para.Add("start", start.ToString());
-            }
+            var para = new Parameters();
+            para.Add("start", start.ToString());
             para.Add("count", count.ToString());
 
             return await this.Get<ChannelTopicList>(url, para);
@@ -288,11 +293,8 @@ namespace DoubanGroup.Core.Api
         {
             string url = $"{groupID}/topics";
 
-            var para = this.CreateParameters();
-            if (start > 0)
-            {
-                para.Add("start", start.ToString());
-            }
+            var para = new Parameters();
+            para.Add("start", start.ToString());
             para.Add("count", count.ToString());
 
             return await this.Get<TopicList>(url, para);
@@ -321,7 +323,7 @@ namespace DoubanGroup.Core.Api
         {
             string url = $"{groupID}/members";
 
-            var para = this.CreateParameters();
+            var para = new Parameters();
             para.Add("start", start.ToString());
             para.Add("count", count.ToString());
 
@@ -339,7 +341,7 @@ namespace DoubanGroup.Core.Api
         {
             string url = $"topic/{topicID}/comments";
 
-            var para = this.CreateParameters();
+            var para = new Parameters();
             para.Add("start", start.ToString());
             para.Add("count", count.ToString());
 

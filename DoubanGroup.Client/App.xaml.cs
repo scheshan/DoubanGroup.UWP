@@ -18,6 +18,8 @@ using Windows.UI.Xaml.Navigation;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using DoubanGroup.Core.Api.Entity;
+using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace DoubanGroup.Client
 {
@@ -52,6 +54,16 @@ namespace DoubanGroup.Client
         protected override void OnRegisterKnownTypesForSerialization()
         {
             base.OnRegisterKnownTypesForSerialization();
+        }
+
+        public App()
+        {
+            this.UnhandledException += App_UnhandledException;
+        }
+
+        private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Debug.Write(e.Exception);
         }
     }
 }
