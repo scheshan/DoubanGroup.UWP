@@ -115,5 +115,24 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.NavigationService.Navigate("TopicDetail", parameter.Topic.ID);
         }
+
+        private DelegateCommand _loadMoreCommand;
+
+        public DelegateCommand LoadMoreCommand
+        {
+            get
+            {
+                if (_loadMoreCommand == null)
+                {
+                    _loadMoreCommand = new DelegateCommand(this.LoadMore);
+                }
+                return _loadMoreCommand;
+            }
+        }
+
+        private void LoadMore()
+        {
+            this.LoadTopics();
+        }
     }
 }

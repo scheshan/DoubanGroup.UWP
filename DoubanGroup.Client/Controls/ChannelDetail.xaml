@@ -197,6 +197,11 @@
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>
+
+            <Grid Margin="0 -10 0 10" Height="28">
+                <Button Visibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource TextBlockButtonStyle}" HorizontalAlignment="Right" Content="加载更多..." Command="{Binding LoadMoreCommand}"/>
+            </Grid>
+            
         </StackPanel>
     </ScrollViewer>
 </UserControl>
