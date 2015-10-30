@@ -11,18 +11,33 @@
     <UserControl.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource TextBlockButtonStyle}" x:Key="HamburgerButtonStyle">
             <Setter Property="Foreground" Value="#666666"/>
-            <Setter Property="Height" Value="50"/>
-            <Setter Property="Padding" Value="15 10"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Padding" Value="14 10"/>
             <Setter Property="HorizontalAlignment" Value="Stretch"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
         </Style>
+        <Style TargetType="Button" BasedOn="{StaticResource HamburgerButtonStyle}" x:Key="ConfigButtonStyle">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="Width" Value="48"/>
+        </Style>
     </UserControl.Resources>
 
-    <SplitView PaneBackground="#f0f6f3" OpenPaneLength="250" CompactPaneLength="52" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="True">
+    <SplitView PaneBackground="#f0f6f3" OpenPaneLength="250" CompactPaneLength="48" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="False">
         <SplitView.Pane>
             <StackPanel>
-                <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Left">
+                <Button Style="{StaticResource ConfigButtonStyle}" HorizontalAlignment="Left">
                     <FontIcon Glyph="&#xE700;"></FontIcon>
+                </Button>
+                <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <FontIcon Glyph="&#xE700;"></FontIcon>
+
+                        <TextBlock Grid.Column="1" Margin="15 0 0 0">设置</TextBlock>
+                    </Grid>
                 </Button>
             </StackPanel>
         </SplitView.Pane>

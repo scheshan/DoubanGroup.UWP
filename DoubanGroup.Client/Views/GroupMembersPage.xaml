@@ -13,7 +13,7 @@
     d:DataContext="{d:DesignInstance Type=designData:GroupMembersData, IsDesignTimeCreatable=True}" mvvm:ViewModelLocator.AutoWireViewModel="True">
     <Page.Resources>
         <DataTemplate x:Key="UserDataTemplate">
-            <Border Padding="0 10">
+            <Border Padding="10 0">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -28,7 +28,7 @@
     </Page.Resources>
 
 
-    <GridView Padding="20" Background="#FFFFFF" ItemsSource="{Binding UserList}" SelectionMode="None" IsItemClickEnabled="True"
+    <GridView Padding="20" ItemsSource="{Binding UserList}" SelectionMode="None" IsItemClickEnabled="True"
               ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" ItemTemplate="{StaticResource UserDataTemplate}">
         <i:Interaction.Behaviors>
             <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>

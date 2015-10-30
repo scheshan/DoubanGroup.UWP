@@ -7,109 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designData="using:DoubanGroup.Client.DesignData"
     xmlns:mvvm="using:Prism.Windows.Mvvm"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:behaviors="using:DoubanGroup.Client.Behaviors"
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
-    <Page.Resources>
-        <DataTemplate x:Key="UserAvatarDataTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Image Source="{Binding Avatar}" HorizontalAlignment="Left"/>
-
-                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" Grid.Column="1" Margin="10 0 0 0"/>
-            </Grid>
-        </DataTemplate>
-
-        <Style TargetType="ListView" x:Key="GroupDetailListViewStyle">
-            <Setter Property="SelectionMode" Value="None"/>
-            <Setter Property="IsItemClickEnabled" Value="True"/>
-            <Setter Property="Background" Value="#FFFFFF"/>
-            <Setter Property="Padding" Value="20 10"/>
-            <Setter Property="ItemContainerStyle">
-                <Setter.Value>
-                    <Style TargetType="ListViewItem" BasedOn="{StaticResource NonSelectListViewItemStyle}">
-                        <Setter Property="BorderThickness" Value="0 0 0 1"/>
-                    </Style>
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ListView">
-                        <ScrollViewer x:Name="ScrollViewer">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="WideSideStates">
-                                    <VisualState x:Name="WideSideState">
-                                        <VisualState.StateTriggers>
-                                            <AdaptiveTrigger MinWindowWidth="1100"></AdaptiveTrigger>
-                                        </VisualState.StateTriggers>
-                                        <VisualState.Setters>
-                                            <Setter Target="spSide.Visibility" Value="Visible"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            
-                            <Grid Background="{TemplateBinding Background}">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="*"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-
-                                <Grid Height="Auto" Padding="40 20" Grid.ColumnSpan="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    
-                                    <Image Source="{Binding Group.LargeAvatar}" Width="120" Height="120" Margin="0 0 10 0"/>
-
-                                    <StackPanel Grid.Column="1">
-                                        <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
-                                        
-                                        <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="40" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
-
-                                        <Button Background="#6ebfc3" Foreground="#FFFFFF" Margin="0 10 0 0">加入小组</Button>
-                                    </StackPanel>
-                                </Grid>
-
-                                <Rectangle Height="1" Fill="#cccccc" Grid.ColumnSpan="2" VerticalAlignment="Bottom" Margin="20 0"/>
-
-                                <ItemsPresenter Grid.Row="1" Padding="{TemplateBinding Padding}" HeaderTemplate="{TemplateBinding HeaderTemplate}" Header="{TemplateBinding Header}" HeaderTransitions="{TemplateBinding HeaderTransitions}"
-                                            Footer="{TemplateBinding Footer}" FooterTemplate="{TemplateBinding FooterTemplate}" FooterTransitions="{TemplateBinding FooterTransitions}">
-                                </ItemsPresenter>
-
-                                <StackPanel Name="spSide" Visibility="Collapsed" Grid.Column="1" Grid.Row="1" Width="250" Padding="10">
-                                    <TextBlock Text="创建者" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
-
-                                    <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" 
-                                              Style="{StaticResource NonSelectListViewStyle}">
-                                        <ListViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource UserAvatarDataTemplate}"/>
-                                    </ListView>
-                                    
-                                    <TextBlock Text="管理员" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 10 0 0"/>
-
-                                    <ListView ItemTemplate="{StaticResource UserAvatarDataTemplate}" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" 
-                                              ItemsSource="{Binding Group.AdminList}" Style="{StaticResource NonSelectListViewStyle}">
-
-                                    </ListView>
-                                    
-                                </StackPanel>
-                            </Grid>
-                        </ScrollViewer>                        
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Page.Resources>
 
     <Page.BottomAppBar>
         <CommandBar>
@@ -119,41 +21,74 @@
         </CommandBar>
     </Page.BottomAppBar>
 
-    <ListView Style="{StaticResource GroupDetailListViewStyle}" ItemsSource="{Binding TopicList}">
-        <ListView.ItemTemplate>
+    <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10">
+        <i:Interaction.Behaviors>
+            <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+        </i:Interaction.Behaviors>
+
+        <GridView.Header>
+            <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Width="120" Height="120" Margin="0 0 10 0">
+                    <Image Source="{Binding Group.Avatar}" />
+                    <Image Source="{Binding Group.LargeAvatar}" />
+                </Grid>                
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+
+                    <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="65" Style="{StaticResource SecondaryTextBlockStyle}"/>
+                </StackPanel>
+            </Grid>
+        </GridView.Header>
+        
+        <GridView.ItemTemplate>
             <DataTemplate>
-                <Grid>
+                <Grid Padding="10 0" Background="#FFFFFF">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+
+                        <TextBlock Grid.Row="1" Margin="0 10 0 0" Text="{Binding ShortContent}" Foreground="#666666" Height="40" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        
+                    </Grid>
+
+                    <Image Visibility="{Binding Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="60" Height="60" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Avatar.Alt}">
+
+                    </Image>
                     
-                    <Image Source="{Binding Author.Avatar}" Height="40" Width="40" VerticalAlignment="Top" Grid.RowSpan="2" Stretch="Fill" Margin="0 0 10 0"/>
-                    
-                    <TextBlock Grid.Column="1" Text="{Binding Title}" TextWrapping="Wrap"/>
-
-                    <Grid Grid.Column="1" Grid.Row="1" Margin="0 10 0 0">
-                        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                            <TextBlock Text="{Binding Author.Name}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="#999999"/>
-
-                            <TextBlock Text="{Binding Updated, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource CaptionTextBlockStyle}" Foreground="#999999" Margin="10 0 0 0"/>
-
-                            <Viewbox Height="12" Margin="10 0 0 0" Visibility="{Binding Avatar, Converter={StaticResource NotNullToVisibilityConverter}}">
-                                <PathIcon Foreground="#999999" Data="M139.007,42.772056C139.08701,42.864753 139.16501,42.955653 139.239,43.052256 139.34401,42.986853 139.46001,42.935153 139.57201,42.876555 139.38101,42.847754 139.19301,42.817954 139.007,42.772056z M140.58801,29.564C144.29601,29.564 147.30501,32.564013 147.30501,36.271026 147.30501,36.486827 147.261,36.689929 147.24101,36.900931 147.841,36.252429 148.69501,35.838424 149.65601,35.838424 151.455,35.838424 152.93001,37.314032 152.93001,39.122638 152.93001,40.932147 151.455,42.407752 149.65601,42.407752 149.33101,42.407752 149.024,42.346251 148.72801,42.260352 148.759,42.460952 148.79001,42.661654 148.79001,42.869655 148.79001,44.867263 147.375,46.521068 145.49501,46.89067 145.35001,48.355578 144.438,49.692981 142.98801,50.295485 141.88701,50.742286 140.70601,50.661685 139.703,50.187583 138.58701,52.126593 136.51801,53.442996 134.117,53.442996 130.69301,53.442996 127.922,50.774985 127.69801,47.399974L127.62601,47.403872C123.07201,47.403872 119.354,43.686057 119.354,39.122638 119.354,34.540519 123.07201,30.842305 127.62601,30.842305 130.343,30.842305 132.73801,32.138209 134.25,34.138217 135.147,31.484408 137.63101,29.564 140.58801,29.564z M14.653799,13.257799L14.653799,109.155C22.317101,108.582 37.683102,107.495 43.971401,107.495 45.7925,107.495 47.904301,107.557 50.204601,107.641 56.319099,104.249 55.955799,93.624999 55.412102,88.650901 53.710899,89.735801 51.695999,90.372596 49.528099,90.372596 45.8008,90.372596 42.510502,88.510299 40.5261,85.670401 39.642601,85.899901 38.721401,86.035201 37.765598,86.035201 31.707001,86.035201 26.789801,81.117202 26.789799,75.060096 26.789801,69.001502 31.707001,64.093802 37.765598,64.093802 37.908901,64.093802 38.048302,64.109397 38.189499,64.114699 37.919899,63.1626 37.765598,62.1626 37.765598,61.1235 37.765598,55.064898 42.683102,50.157699 48.731201,50.157699 48.731201,44.099097 53.658199,39.182097 59.707001,39.182097 65.128403,39.182097 69.628899,43.136699 70.506599,48.318801 71.248802,48.160197 72.017097,48.072799 72.806602,48.072799 78.855003,48.072799 83.781998,52.980498 83.781998,59.0391 83.781998,59.958499 83.6558,60.846198 83.441399,61.700698 84.537804,61.332 85.708504,61.1235 86.929199,61.1235 92.997597,61.1235 97.904999,66.031302 97.904999,72.088401 97.904999,77.9766 93.267097,82.773398 87.436302,83.0391 85.694099,86.790496 81.9077,89.398398 77.507797,89.398398 75.205803,89.398398 73.072998,88.689002 71.310097,87.478995 69.660202,88.592299 67.676498,89.273398 65.5308,89.372596 64.311302,101.392 69.279297,106.412 71.488998,108.021 74.330101,107.941 77.166,107.783 79.917503,107.495 92.722198,106.156 96.980499,102.479 105.212,102.145L113.434,101.81C113.434,101.81 119.6,96.478995 127.635,93.804702 135.67999,91.128898 148.24899,93.135299 152.92999,93.804702 155.88,94.225097 160.23199,93.578101 163.05,93.040496L163.05,13.257799z M0,0L177.94,0 177.94,135.01199 0,135.01199z"/>
-                            </Viewbox>
+                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Author.Name}"/>
+                            <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Updated, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0"/>
                         </StackPanel>
 
-                        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="#999999" Style="{StaticResource CaptionTextBlockStyle}">
+                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource SecondaryTextBlockStyle}">
                             <Run Text="{Binding CommentsCount}"/>
                             <Run Text="人回应"/>
                         </TextBlock>
                     </Grid>
                 </Grid>
             </DataTemplate>
-        </ListView.ItemTemplate>
-    </ListView>
+        </GridView.ItemTemplate>
+    </GridView>
 </Page>
