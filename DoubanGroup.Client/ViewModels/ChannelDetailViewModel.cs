@@ -27,14 +27,8 @@ namespace DoubanGroup.Client.ViewModels
 
         public ObservableCollection<ChannelTopic> TopicList { get; private set; }
 
-        private ApiClient ApiClient { get; set; }        
-
-        private INavigationService NavigationService { get; set; }
-
-        public ChannelDetailViewModel(ApiClient apiClient, INavigationService navigationService)
+        public ChannelDetailViewModel()
         {
-            this.ApiClient = apiClient;
-            this.NavigationService = navigationService;
             this.GroupList = new ObservableCollection<Group>();
             this.TopicList = new ObservableCollection<ChannelTopic>();
         }
@@ -101,6 +95,25 @@ namespace DoubanGroup.Client.ViewModels
         private void ViewGroup(Group parameter)
         {
             this.NavigationService.Navigate("GroupDetail", parameter.ID);
+        }
+
+        private DelegateCommand<ChannelTopic> _viewTopicCommand;
+
+        public DelegateCommand<ChannelTopic> ViewTopicCommand
+        {
+            get
+            {
+                if (_viewTopicCommand == null)
+                {
+                    _viewTopicCommand = new DelegateCommand<ChannelTopic>(ViewTopic);
+                }
+                return _viewTopicCommand;
+            }
+        }
+
+        private void ViewTopic(ChannelTopic parameter)
+        {
+            this.NavigationService.Navigate("TopicDetail", parameter.Topic.ID);
         }
     }
 }

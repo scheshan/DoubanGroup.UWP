@@ -31,15 +31,8 @@ namespace DoubanGroup.Client.ViewModels
 
         public Models.IncrementalLoadingList<BasicUserInfo> UserList { get; private set; }
 
-        private ApiClient ApiClient { get; set; }
-
-        private INavigationService NavigationService { get; set; }
-
-        public GroupMembersPageViewModel(ApiClient apiClient, INavigationService navigationService)
+        public GroupMembersPageViewModel()
         {
-            this.ApiClient = apiClient;
-            this.NavigationService = navigationService;
-
             this.UserList = new Models.IncrementalLoadingList<BasicUserInfo>(this.LoadUser);
         }
 

@@ -103,4 +103,10 @@
     <Style x:Key="SecondaryTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
         <Setter Property="Foreground" Value="{StaticResource SecondaryForegroundBrush}"/>
     </Style>
+
+    <Style x:Key="SmallUserAvatarImageStyle" TargetType="Image">
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+        <Setter Property="Stretch" Value="UniformToFill"/>
+    </Style>
 </ResourceDictionary>

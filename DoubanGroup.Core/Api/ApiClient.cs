@@ -327,5 +327,35 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<GroupMemberList>(url, para);
         }
+
+        /// <summary>
+        /// 得到文章下的评论
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<CommentList> GetCommentList(long topicID, int start, int count)
+        {
+            string url = $"topic/{topicID}/comments";
+
+            var para = this.CreateParameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<CommentList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到主题信息
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <returns></returns>
+        public async Task<Topic> GetTopic(long topicID)
+        {
+            string url = $"topic/{topicID}/";
+
+            return await this.Get<Topic>(url, null);
+        }
     }
 }

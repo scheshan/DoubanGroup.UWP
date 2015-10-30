@@ -29,16 +29,10 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _group, value); }
         }
 
-        private ApiClient ApiClient { get; set; }
-
-        private INavigationService NavigationService { get; set; }
-
         public IncrementalLoadingList<Topic> TopicList { get; private set; }
 
-        public GroupDetailPageViewModel(ApiClient apiClient, INavigationService navigationService)
+        public GroupDetailPageViewModel()
         {
-            this.ApiClient = apiClient;
-            this.NavigationService = navigationService;
             this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
         }
 
