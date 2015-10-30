@@ -106,6 +106,7 @@
     <Compile Include="Controls\ChannelDetail.xaml.cs">
       <DependentUpon>ChannelDetail.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CommentListStyleSelector.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\InverseToVisibilityConverter.cs" />
@@ -121,6 +122,7 @@
       <DependentUpon>Shell.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\ChannelDetailViewModel.cs" />
+    <Compile Include="ViewModels\CommentListViewModel.cs" />
     <Compile Include="ViewModels\GroupDetailPageViewModel.cs" />
     <Compile Include="DesignData\GroupMembersData.cs" />
     <Compile Include="ViewModels\GroupMembersPageViewModel.cs" />

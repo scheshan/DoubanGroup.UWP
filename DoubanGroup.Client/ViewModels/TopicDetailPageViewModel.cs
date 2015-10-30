@@ -20,16 +20,34 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _topic, value); }
         }
 
+        private int PageSize { get; set; } = 30;
+
+        private long _totalPage;
+
+        public long TotalPage
+        {
+            get { return _totalPage; }
+            set { this.SetProperty(ref _totalPage, value); }
+        }
+
         private long TopicID { get; set; }
 
         public ObservableCollection<Comment> PopularCommentList { get; private set; }
 
-        public IncrementalLoadingList<Comment> CommentList { get; private set; }
+        public ObservableCollection<CommentListViewModel> CommentList { get; private set; }
+
+        public bool HasPopularComments
+        {
+            get
+            {
+                return this.PopularCommentList.Count > 0;
+            }
+        }
 
         public TopicDetailPageViewModel()
         {
             this.PopularCommentList = new ObservableCollection<Comment>();
-            this.CommentList = new IncrementalLoadingList<Comment>(this.LoadComments);
+            this.CommentList = new ObservableCollection<CommentListViewModel>();
         }
 
         public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
@@ -40,6 +58,46 @@ namespace DoubanGroup.Client.ViewModels
             base.OnNavigatedTo(e, viewModelState);
 
             this.LoadTopic();
+            this.LoadComments();
+        }
+
+        private async Task LoadComments()
+        {
+            if (this.IsLoading)
+            {
+                return;
+            }
+
+            this.IsLoading = true;
+
+            var commentList = await this.ApiClient.GetCommentList(this.TopicID, 0, PageSize);
+
+            this.IsLoading = false;
+
+            var totalPage = commentList.Total / PageSize;
+            if (commentList.Total % PageSize > 0)
+            {
+                totalPage++;
+            }
+
+            this.TotalPage = totalPage;
+
+            if (this.TotalPage > this.CommentList.Count)
+            {
+                for (var i = this.CommentList.Count; i < this.TotalPage; i++)
+                {
+                    var item = new CommentListViewModel(this.TopicID, i + 1, this.PageSize);
+
+                    if (i == 0)
+                    {
+                        item.Topic = this;
+                    }
+
+                    this.CommentList.Add(item);
+                }
+            }
+
+            this.OnPropertyChanged(() => this.HasPopularComments);
         }
 
         private async Task<IEnumerable<Comment>> LoadComments(uint count)
@@ -60,7 +118,7 @@ namespace DoubanGroup.Client.ViewModels
 
             return commentList.Comments;
         }
-        
+
         private async Task LoadTopic()
         {
             var topic = await this.ApiClient.GetTopic(this.TopicID);

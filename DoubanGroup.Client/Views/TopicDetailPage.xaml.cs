@@ -25,6 +25,18 @@ namespace DoubanGroup.Client.Views
         public TopicDetailPage()
         {
             this.InitializeComponent();
+            this.Loaded += TopicDetailPage_Loaded;
+        }
+
+        private void TopicDetailPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            fvMain.Focus(FocusState.Pointer);
+        }
+
+        private void fvMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var vm = this.fvMain.SelectedItem as ViewModels.CommentListViewModel;
+            vm?.LoadData();
         }
     }
 }

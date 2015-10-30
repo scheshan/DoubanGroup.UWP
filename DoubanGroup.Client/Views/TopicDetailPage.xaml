@@ -7,10 +7,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designData="using:DoubanGroup.Client.DesignData"
     xmlns:mvvm="using:Prism.Windows.Mvvm"
-    xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:behaviors="using:DoubanGroup.Client.Behaviors"
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:behaviors="using:DoubanGroup.Client.Behaviors"
+    xmlns:controls="using:DoubanGroup.Client.Controls"
+    Name="page"
     d:DataContext="{d:DesignInstance Type=designData:TopicDetailData, IsDesignTimeCreatable=True}">
 
     <Page.Resources>
@@ -20,7 +23,7 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <Image Source="{Binding Author.Avatar}" Style="{StaticResource SmallUserAvatarImageStyle}" VerticalAlignment="Top" Margin="0 0 10 0"/>
 
                 <StackPanel Grid.Column="1">
@@ -38,22 +41,14 @@
 
                             <TextBlock Foreground="#3377aa" Margin="0 2 0 0" Text="{Binding QuoteComment.Author.Name}" Style="{StaticResource SecondaryTextBlockStyle}"/>
                         </StackPanel>
-
-                        
-
                     </Grid>
 
                     <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0 10 0 0"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
-    </Page.Resources>
 
-    <ListView Padding="20 10" Background="{StaticResource DefaultBackground}" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
-        <i:Interaction.Behaviors>
-            <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
-        </i:Interaction.Behaviors>
-        <ListView.Header>
+        <DataTemplate x:Key="TopicDataTemplate">
             <StackPanel>
                 <StackPanel Background="#FFFFFF" Padding="10 0">
                     <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource TitleTextBlockStyle}"/>
@@ -70,16 +65,97 @@
                     </RichTextBlock>
                 </StackPanel>
 
-                <TextBlock Margin="0 10 0 0" Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+                <StackPanel Visibility="{Binding HasPopularComments, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Margin="0 10 0 0" Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
 
-                <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
-                    <i:Interaction.Behaviors>
-                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
-                    </i:Interaction.Behaviors>
-                </ListView>
+                    <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
+                        </i:Interaction.Behaviors>
+                    </ListView>
+                </StackPanel>
 
-                <TextBlock Margin="0 0 0 10" Text="全部回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+                <TextBlock Margin="0 10" Text="全部回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
             </StackPanel>
-        </ListView.Header>
-    </ListView>
+        </DataTemplate>
+
+        <DataTemplate x:Key="CommentListDataTemplate">
+            <StackPanel>
+                <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource CommentDataTemplate}"></ListView>
+            </StackPanel>            
+        </DataTemplate>
+
+        <Style x:Key="NoTopicFlipViewItemStyle" TargetType="FlipViewItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="TabNavigation" Value="Local" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="FlipViewItem">
+                        <ScrollViewer Padding="20 10">
+                            <StackPanel> 
+                                <ContentPresenter Content="{TemplateBinding Content}"                                            
+                                              Background="{TemplateBinding Background}"                          
+                                              BorderBrush="{TemplateBinding BorderBrush}"                          
+                                              BorderThickness="{TemplateBinding BorderThickness}"                          
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"                          
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"                          
+                                              Padding="{TemplateBinding Padding}"                          
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"                          
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </StackPanel>                            
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TopicFlipViewItemStyle" TargetType="FlipViewItem">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="TabNavigation" Value="Local" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="FlipViewItem">
+                        <ScrollViewer Padding="20 10">
+                            <StackPanel>
+                                <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ContentTemplate="{StaticResource TopicDataTemplate}" Content="{Binding Topic}"/>                                
+
+                                <ContentPresenter Content="{TemplateBinding Content}"                                            
+                                              Background="{TemplateBinding Background}"                          
+                                              BorderBrush="{TemplateBinding BorderBrush}"                          
+                                              BorderThickness="{TemplateBinding BorderThickness}"                          
+                                              ContentTransitions="{TemplateBinding ContentTransitions}"                          
+                                              ContentTemplate="{TemplateBinding ContentTemplate}"                          
+                                              Padding="{TemplateBinding Padding}"                          
+                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"                          
+                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <controls:CommentListStyleSelector x:Key="CommentListStyleSelector" NoTopicStyle="{StaticResource NoTopicFlipViewItemStyle}" TopicStyle="{StaticResource TopicFlipViewItemStyle}">
+
+        </controls:CommentListStyleSelector>
+    </Page.Resources>
+
+    <Grid>
+        <FlipView Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
+              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyleSelector="{StaticResource CommentListStyleSelector}"></FlipView>
+
+        <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 40 40" Background="#7F000000" Padding="10">
+            <TextBlock Foreground="#FFFFFF">
+                <Run Text="{Binding SelectedItem.Page, ElementName=fvMain}"></Run>
+                <Run Text="/"/>
+                <Run Text="{Binding TotalPage}"/>
+            </TextBlock>
+        </Border>
+    </Grid>
+    
+    
 </Page>
