@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DoubanGroup.Core.Api.Entity
 {
-    public class BasicUserInfo
+    public class User
     {
         [JsonProperty("alt")]
         public string Alt { get; set; }
@@ -32,5 +32,11 @@ namespace DoubanGroup.Core.Api.Entity
 
         [JsonProperty("uid")]
         public string UID { get; set; }
+
+        [JsonProperty("created")]
+        public DateTime Created { get; set; }
+
+        [JsonProperty("signature")]
+        public string Signature { get; set; }
     }
 }

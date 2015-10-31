@@ -60,9 +60,9 @@ namespace DoubanGroup.Core.Api.Entity
         public string Name { get; set; }
 
         [JsonProperty("admins")]
-        public List<BasicUserInfo> AdminList { get; set; }
+        public List<User> AdminList { get; set; }
 
         [JsonProperty("owner")]
-        public BasicUserInfo Owner { get; set; }
+        public User Owner { get; set; }
     }
 }

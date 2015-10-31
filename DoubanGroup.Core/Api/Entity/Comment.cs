@@ -16,7 +16,7 @@ namespace DoubanGroup.Core.Api.Entity
         public int VoteCount { get; set; }
 
         [JsonProperty("author")]
-        public BasicUserInfo Author { get; set; }
+        public User Author { get; set; }
 
         [JsonProperty("id")]
         public long ID { get; set; }

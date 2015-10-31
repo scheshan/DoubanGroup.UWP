@@ -16,7 +16,7 @@ namespace DoubanGroup.Core.Api.Entity
         public int Start { get; set; }
 
         [JsonProperty("members")]
-        public List<BasicUserInfo> Items { get; set; }
+        public List<User> Items { get; set; }
 
         [JsonProperty("total")]
         public long Total { get; set; }

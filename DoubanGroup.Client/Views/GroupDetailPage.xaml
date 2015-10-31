@@ -24,6 +24,7 @@
     <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10">
         <i:Interaction.Behaviors>
             <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+            <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
         </i:Interaction.Behaviors>
 
         <GridView.Header>

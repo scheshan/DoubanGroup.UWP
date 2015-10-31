@@ -97,6 +97,14 @@ namespace DoubanGroup.Client.ViewModels
                 }
             }
 
+            if (this.PopularCommentList.Count == 0)
+            {
+                foreach (var comment in commentList.PopularComments)
+                {
+                    this.PopularCommentList.Add(comment);
+                }
+            }
+
             this.OnPropertyChanged(() => this.HasPopularComments);
         }
 

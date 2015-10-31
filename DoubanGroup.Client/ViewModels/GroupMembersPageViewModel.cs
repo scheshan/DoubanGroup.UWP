@@ -29,11 +29,11 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _totalMembers, value); }
         }
 
-        public Models.IncrementalLoadingList<BasicUserInfo> UserList { get; private set; }
+        public Models.IncrementalLoadingList<User> UserList { get; private set; }
 
         public GroupMembersPageViewModel()
         {
-            this.UserList = new Models.IncrementalLoadingList<BasicUserInfo>(this.LoadUser);
+            this.UserList = new Models.IncrementalLoadingList<User>(this.LoadUser);
         }
 
         public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
@@ -51,7 +51,7 @@ namespace DoubanGroup.Client.ViewModels
             this.Group = group;
         }
 
-        private async Task<IEnumerable<BasicUserInfo>> LoadUser(uint count)
+        private async Task<IEnumerable<User>> LoadUser(uint count)
         {
             this.IsLoading = true;
 

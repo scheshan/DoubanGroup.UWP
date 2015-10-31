@@ -5,10 +5,15 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DoubanGroup.Client"
     xmlns:converters="using:DoubanGroup.Client.Converters"
+    xmlns:commands="using:DoubanGroup.Client.Commands"
     RequestedTheme="Light">
 
     <prism:PrismUnityApplication.Resources>
         <ResourceDictionary>
+
+            <commands:ViewTopicCommand x:Key="ViewTopicCommand"/>
+            <commands:ViewGroupCommand x:Key="ViewGroupCommand"/>
+            <commands:ViewUserCommand x:Key="ViewUserCommand"/>
 
             <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
             <converters:NotNullToVisibilityConverter x:Key="NotNullToVisibilityConverter"/>

@@ -23,33 +23,33 @@ namespace DoubanGroup.Client.DesignData
                 LargeAvatar = "http://img4.douban.com/view/group/medium/public/b76db7fdba3c448.jpg",
                 ID = 10156,
                 MemberCount = 103745,
-                Owner = new BasicUserInfo
+                Owner = new User
                 {
                     Name = "冰海蓝",
                     Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                     LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                 },
-                AdminList = new List<BasicUserInfo>
+                AdminList = new List<User>
                 {
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "旯旯",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                         LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                     },
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "倾城",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                         LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                     },
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "。桑-♥.娃儿",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                         LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                     },
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "冰海蓝",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
@@ -73,7 +73,7 @@ namespace DoubanGroup.Client.DesignData
                             Alt = "http://img3.douban.com/view/group_topic/large/public/p37623231.jpg"
                         }
                     },
-                    Author = new BasicUserInfo
+                    Author = new User
                     {
                         Name = "澈目",
                         Avatar = "http://img3.douban.com/icon/u80138337-11.jpg",

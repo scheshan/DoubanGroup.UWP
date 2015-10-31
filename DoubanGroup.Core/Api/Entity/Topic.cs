@@ -13,7 +13,7 @@ namespace DoubanGroup.Core.Api.Entity
         public string Alt { get; set; }
 
         [JsonProperty("author")]
-        public BasicUserInfo Author { get; set; }
+        public User Author { get; set; }
 
         [JsonProperty("comments_count")]
         public int CommentsCount { get; set; }

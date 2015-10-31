@@ -28,7 +28,7 @@ namespace DoubanGroup.Client.DesignData
                         Alt = "http://img3.douban.com/view/group_topic/large/public/p37623231.jpg"
                     }
                 },
-                Author = new BasicUserInfo
+                Author = new User
                 {
                     Name = "澈目",
                     Avatar = "http://img3.douban.com/icon/u80138337-11.jpg",
@@ -43,7 +43,7 @@ namespace DoubanGroup.Client.DesignData
             {
                 var comment = new Comment
                 {
-                    Author = new BasicUserInfo
+                    Author = new User
                     {
                         Name = "澈目",
                         Avatar = "http://img3.douban.com/icon/u80138337-11.jpg",
@@ -54,7 +54,7 @@ namespace DoubanGroup.Client.DesignData
                     QuoteComment = new Comment
                     {
                         Text = "倒数第二张，还没有开的时候真的很像双色冰淇淋",
-                        Author = new BasicUserInfo
+                        Author = new User
                         {
                             Name = "梅子是六月成熟"
                         }

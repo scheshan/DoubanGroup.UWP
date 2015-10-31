@@ -14,6 +14,8 @@ namespace DoubanGroup.Client.Behaviors
 {
     public class TopicContentBehavior : BehaviorBase
     {
+        private static readonly Regex regex_photo = new Regex(@"<图片(\d{1,})>+");
+
         public Topic Topic
         {
             get { return (Topic)GetValue(TopicProperty); }
@@ -48,29 +50,104 @@ namespace DoubanGroup.Client.Behaviors
             string[] contentArray = this.Topic.Content.Split(new string[] { "\r\n" }, StringSplitOptions.None);
             foreach (var content in contentArray)
             {
-                var para = new Paragraph();
+                Block block;
 
-                var inline = this.CreateContentInline(content);
+                if (regex_photo.IsMatch(content))
+                {
+                    block = this.CreateImageBlock(content);
+                }
+                else
+                {
+                    block = this.CreateTextBlock(content);
+                }
 
-                para.Inlines.Add(inline);
-
-                tb.Blocks.Add(para);
+                tb.Blocks.Add(block);
             }
         }
 
-        private Inline CreateContentInline(string content)
+        private Block CreateTextBlock(string content)
         {
-            Regex regex = new Regex(@"<图片(\d+?)>");
-            var m = regex.Match(content);
+            var para = new Paragraph();
 
-            if (m.Success)
+            var run = new Run() { Text = content };
+
+            para.Inlines.Add(run);
+
+            return para;
+        }
+
+        private Block CreateImageBlock(string content)
+        {
+            var para = new Paragraph();
+
+            var matches = regex_photo.Matches(content);
+
+            int lastIndex = 0;
+
+            InlineUIContainer container = new InlineUIContainer();
+            container.Child = new StackPanel();
+            para.Inlines.Add(container);
+
+            foreach (Match match in matches)
             {
-                int photoIndex = Convert.ToInt32(m.Groups[1].Value);
+                if (match.Index != lastIndex)
+                {
+                    string text = content.Substring(lastIndex, match.Index - lastIndex);
+                    para.Inlines.Add(new Run() { Text = text });
+                    para.Inlines.Add(new LineBreak());
+
+                    container = new InlineUIContainer();
+                    container.Child = new StackPanel();
+                    para.Inlines.Add(container);
+                }
+
+                lastIndex = match.Index + match.Length;
+
+                int photoIndex = Convert.ToInt32(match.Groups[1].Value);
 
                 if (this.Topic.Photos.Count >= photoIndex)
                 {
                     var photo = this.Topic.Photos[photoIndex - 1];
-                    var container = new InlineUIContainer();
+
+                    var img = new Image();
+
+                    BitmapImage bi = new BitmapImage();
+                    bi.UriSource = new Uri(photo.Alt);
+                    img.Source = bi;
+                    img.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
+                    img.MaxWidth = photo.Size.Width;
+                    img.MaxHeight = photo.Size.Height;
+                    img.Margin = new Thickness(0, 10, 0, 0);
+
+                    ((StackPanel)container.Child).Children.Add(img);
+                }
+            }
+
+            return para;
+        }
+
+        private Inline CreateContentInline(string content)
+        {
+            Regex regex = new Regex(@"<图片(\d{1,})>*");
+
+            var matches = regex.Matches(content);
+
+            if (matches.Count == 0)
+            {
+                return new Run() { Text = content };
+            }
+
+            InlineUIContainer container = new InlineUIContainer();
+            var root = new StackPanel();
+            container.Child = root;
+
+            foreach (Match match in matches)
+            {
+                int photoIndex = Convert.ToInt32(match.Groups[1].Value);
+
+                if (this.Topic.Photos.Count >= photoIndex)
+                {
+                    var photo = this.Topic.Photos[photoIndex - 1];
 
                     var img = new Image();
 
@@ -82,19 +159,11 @@ namespace DoubanGroup.Client.Behaviors
                     img.MaxHeight = photo.Size.Height;
                     img.Margin = new Thickness(0, 0, 0, 10);
 
-                    container.Child = img;
+                    root.Children.Add(img);
+                }
+            }
 
-                    return container;
-                }
-                else
-                {
-                    return new Run() { Text = m.Value };
-                }
-            }
-            else
-            {
-                return new Run() { Text = content };
-            }
+            return container;
         }
     }
 }

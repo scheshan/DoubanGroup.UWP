@@ -58,7 +58,7 @@
                         <TextBlock Text="{Binding Topic.Author.Name}" Margin="10 0 0 0" VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <RichTextBlock Margin="50 20 50 10" TextWrapping="Wrap" LineHeight="30">
+                    <RichTextBlock Margin="50 20 50 10" TextWrapping="Wrap">
                         <i:Interaction.Behaviors>
                             <behaviors:TopicContentBehavior Topic="{Binding Topic}"/>
                         </i:Interaction.Behaviors>

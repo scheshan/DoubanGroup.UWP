@@ -109,7 +109,7 @@
   <ItemGroup>
     <Compile Include="Api\ApiClient.cs" />
     <Compile Include="Api\ApiException.cs" />
-    <Compile Include="Api\Entity\BasicUserInfo.cs" />
+    <Compile Include="Api\Entity\User.cs" />
     <Compile Include="Api\Entity\Channel.cs" />
     <Compile Include="Api\Entity\ChannelTopic.cs" />
     <Compile Include="Api\Entity\ChannelTopicList.cs" />

@@ -11,7 +11,7 @@ namespace DoubanGroup.Client.DesignData
     {
         public Group Group { get; set; }
 
-        public List<BasicUserInfo> UserList { get; set; }
+        public List<User> UserList { get; set; }
 
         public GroupMembersData()
         {
@@ -24,33 +24,33 @@ namespace DoubanGroup.Client.DesignData
                 AdminRoleName = "管理员",                
                 ID = 10156,
                 MemberCount = 103745,
-                Owner = new BasicUserInfo
+                Owner = new User
                 {
                     Name = "冰海蓝",
                     Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                     LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                 },
-                AdminList = new List<BasicUserInfo>
+                AdminList = new List<User>
                 {
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "旯旯",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                         LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                     },
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "倾城",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                         LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                     },
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "。桑-♥.娃儿",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
                         LargeAvatar = "http://img3.douban.com/icon/user_large.jpg"
                     },
-                    new BasicUserInfo
+                    new User
                     {
                         Name = "冰海蓝",
                         Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",
@@ -59,11 +59,11 @@ namespace DoubanGroup.Client.DesignData
                 }
             };
 
-            this.UserList = new List<BasicUserInfo>();
+            this.UserList = new List<User>();
 
             for (var i = 0; i < 50; i++)
             {
-                this.UserList.Add(new BasicUserInfo
+                this.UserList.Add(new User
                 {
                     Name = "冰海蓝",
                     Avatar = "http://img3.douban.com/icon/u1001081-1.jpg",

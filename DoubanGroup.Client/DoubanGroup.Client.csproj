@@ -103,6 +103,10 @@
     <Compile Include="Behaviors\GridViewItemFitWidthBehavior.cs" />
     <Compile Include="Behaviors\ItemClickBehavior.cs" />
     <Compile Include="Behaviors\TopicContentBehavior.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\ViewGroupCommand.cs" />
+    <Compile Include="Commands\ViewTopicCommand.cs" />
+    <Compile Include="Commands\ViewUserCommand.cs" />
     <Compile Include="Controls\ChannelDetail.xaml.cs">
       <DependentUpon>ChannelDetail.xaml</DependentUpon>
     </Compile>
