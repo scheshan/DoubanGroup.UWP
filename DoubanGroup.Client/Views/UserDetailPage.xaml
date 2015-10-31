@@ -5,9 +5,20 @@
     xmlns:local="using:DoubanGroup.Client.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:designData="using:DoubanGroup.Client.DesignData"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=designData:UserDetailData, IsDesignTimeCreatable=True}">
 
     <ScrollViewer Background="{StaticResource DefaultBackground}">
-        
+        <StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                
+                <Image Source="{Binding User.LargeAvatar}"/>
+            </Grid>
+        </StackPanel>
     </ScrollViewer>
 </Page>
