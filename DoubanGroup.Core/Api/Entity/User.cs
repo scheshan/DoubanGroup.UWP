@@ -38,5 +38,8 @@ namespace DoubanGroup.Core.Api.Entity
 
         [JsonProperty("signature")]
         public string Signature { get; set; }
+
+        [JsonProperty("desc")]
+        public string Description { get; set; }
     }
 }
