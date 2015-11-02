@@ -63,18 +63,37 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
+            if (this.IsLoading)
+            {
+                return;
+            }
+
+            this.IsLoading = true;
+
             try
             {
                 var session = await this.ApiClient.Login(this.UserName, this.Password);
                 this.CurrentUser.SetSession(session);
+
+                var handler = this.LoginSuccessed;
+                if (handler != null)
+                {
+                    handler.Invoke(this, new RoutedEventArgs());
+                }
+
+                this.Hide();
             }
             catch (ApiException)
             {
                 this.Alert("用户名或密码错误");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 this.Alert("登录发生错误");
+            }
+            finally
+            {
+                this.IsLoading = false;
             }
         }
     }

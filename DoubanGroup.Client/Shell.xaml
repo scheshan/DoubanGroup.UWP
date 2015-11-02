@@ -61,38 +61,26 @@
                 </Button>
 
                 <StackPanel Grid.Row="1">
-
-                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="Home">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <FontIcon Glyph="&#xE7C3;"></FontIcon>
+                            <FontIcon Glyph="&#xE80F;"></FontIcon>
 
-                            <TextBlock Grid.Column="1" Margin="15 0 0 0">我的发言</TextBlock>
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0">推荐内容</TextBlock>
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="My">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <FontIcon Glyph="&#xE134;"></FontIcon>
+                            <FontIcon Glyph="&#xE77B;"></FontIcon>
 
-                            <TextBlock Grid.Column="1" Margin="15 0 0 0">我的回应</TextBlock>
-                        </Grid>
-                    </Button>
-                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <FontIcon Glyph="&#xE006;"></FontIcon>
-
-                            <TextBlock Grid.Column="1" Margin="15 0 0 0">我喜欢的</TextBlock>
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0">我的首页</TextBlock>
                         </Grid>
                     </Button>
 

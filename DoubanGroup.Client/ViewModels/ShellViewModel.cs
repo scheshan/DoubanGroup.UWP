@@ -56,5 +56,24 @@ namespace DoubanGroup.Client.ViewModels
             var vm = new LoginPageViewModel();
             vm.Show();
         }
+
+        private DelegateCommand<string> _navigateCommand;
+
+        public DelegateCommand<string> NavigateCommand
+        {
+            get
+            {
+                if (_navigateCommand == null)
+                {
+                    _navigateCommand = new DelegateCommand<string>(this.Navigate);
+                }
+                return _navigateCommand;
+            }
+        }
+
+        private void Navigate(string parameter)
+        {
+            this.NavigationService.Navigate(parameter.ToString(), null);
+        }
     }
 }

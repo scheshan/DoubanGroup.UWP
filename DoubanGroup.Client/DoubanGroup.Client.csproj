@@ -121,6 +121,7 @@
     <Compile Include="DesignData\HomePageData.cs" />
     <Compile Include="DesignData\TopicDetailData.cs" />
     <Compile Include="DesignData\UserDetailData.cs" />
+    <Compile Include="Extensions\ApplicationDataContainerExtensions.cs" />
     <Compile Include="Extensions\ISessionStateServiceExtensions.cs" />
     <Compile Include="ViewModels\CurrentUserViewModel.cs" />
     <Compile Include="Models\IncrementalLoadingList.cs" />
@@ -151,6 +152,9 @@
     </Compile>
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyPage.xaml.cs">
+      <DependentUpon>MyPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TopicDetailPage.xaml.cs">
       <DependentUpon>TopicDetailPage.xaml</DependentUpon>
@@ -212,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

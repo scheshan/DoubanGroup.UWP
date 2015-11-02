@@ -175,6 +175,8 @@ namespace DoubanGroup.Core.Api
         /// <exception cref="ApiException"></exception>
         private async Task<T> Post<T>(string url, Parameters parameters)
         {
+            url = this.BuildUrl(url, null);
+
             using (var client = this.CreateClient())
             {
                 HttpResponseMessage response;
@@ -363,6 +365,56 @@ namespace DoubanGroup.Core.Api
             para.Add("count", count.ToString());
 
             return await this.Get<UserDetail>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户加入的小组列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<GroupList> GetUserJoinedGroups(long userID, int start, int count)
+        {
+            string url = $"user/{userID}/joined_groups";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<GroupList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户管理的小组列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<GroupList> GetUserManagedGroups(long userID, int start, int count)
+        {
+            string url = $"user/{userID}/managed_groups";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<GroupList>(url, para);
+        }
+
+        /// <summary>
+        /// 加入小组
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public async Task JoinGroup(long groupID)
+        {
+            string url = $"group/{groupID}/join";
+            var para = new Parameters();
+            para.Add("type", "join");
+
+            await this.Post<object>(url, para);
         }
     }
 }

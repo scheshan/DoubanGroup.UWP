@@ -9,12 +9,16 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using DoubanGroup.Client.Extensions;
+using Windows.Storage;
+using System.Collections.ObjectModel;
 
 namespace DoubanGroup.Client.ViewModels
 {
     public class CurrentUserViewModel : BindableBase, IAccessTokenProvider
     {
-        private const string SESSION_KEY = "UserSession";
+        private const string SESSION_KEY = "Cache_UserSession";
+
+        private const string USER_KEY = "Cache_User";
 
         private User _user;
 
@@ -23,6 +27,10 @@ namespace DoubanGroup.Client.ViewModels
             get { return _user; }
             set { this.SetProperty(ref _user, value); }
         }
+
+        public ObservableCollection<Group> JoinedGroupList { get; private set; }
+
+        public ObservableCollection<Group> ManagedGroupList { get; private set; }
 
         private Session _session;
 
@@ -52,29 +60,23 @@ namespace DoubanGroup.Client.ViewModels
             {
                 return this.Session != null;
             }
-        }
+        } 
 
-        private Lazy<ApiClient> _apiClient = new Lazy<ApiClient>(() =>
-        {
-            return App.Current.Container.Resolve<ApiClient>();
-        });
+        private ApiClient ApiClient { get; set; }
 
-        private ApiClient ApiClient
+        public CurrentUserViewModel()
         {
-            get
+            this.ApiClient = new ApiClient(this);
+            this.JoinedGroupList = new ObservableCollection<Group>();
+            this.ManagedGroupList = new ObservableCollection<Group>();
+
+            var session = ApplicationData.Current.LocalSettings.Get<Session>(SESSION_KEY);
+            _session = session;
+
+            if (this.IsLogin)
             {
-                return _apiClient.Value;
+                this.LoadUser();
             }
-        }
-
-        private ISessionStateService SessionStateService { get; set; }
-
-        public CurrentUserViewModel(ISessionStateService sessionStateService)
-        {
-            this.SessionStateService = sessionStateService;
-
-            var session = sessionStateService.Get<Session>(SESSION_KEY);
-            this.SetSession(session);
         }
 
         public void SetSession(Session session)
@@ -83,12 +85,12 @@ namespace DoubanGroup.Client.ViewModels
 
             if (this.IsLogin)
             {
-                this.SessionStateService.Set(SESSION_KEY, this.Session);
+                ApplicationData.Current.LocalSettings.Set(SESSION_KEY, session);
                 this.LoadUser();
             }
             else
             {
-                this.SessionStateService.Remove(SESSION_KEY);
+                ApplicationData.Current.LocalSettings.Remove(SESSION_KEY);
             }
         }
 
@@ -96,6 +98,41 @@ namespace DoubanGroup.Client.ViewModels
         {
             var userDetail = await this.ApiClient.GetUserDetail(this.Session.DoubanUserID, 0);
             this.User = userDetail.User;
+
+            this.LoadJoinedGroups();
+            this.LoadManagedGroups();
+        }
+
+        public async Task LoadJoinedGroups()
+        {
+            var groupList = await this.ApiClient.GetUserJoinedGroups(this.User.ID, 0, 200);
+
+            foreach (var group in groupList.Items)
+            {
+                this.JoinedGroupList.Add(group);
+            }
+        }
+
+        public async Task LoadManagedGroups()
+        {
+            var groupList = await this.ApiClient.GetUserManagedGroups(this.User.ID, 0, 200);
+
+            foreach (var group in groupList.Items)
+            {
+                this.JoinedGroupList.Add(group);
+            }
+        }
+
+        public bool IsGroupMember(long groupID)
+        {
+            return this.JoinedGroupList.Any(t => t.ID == groupID);
+        }
+
+        public void LogOff()
+        {
+            this.SetSession(null);
+            this.JoinedGroupList.Clear();
+            this.ManagedGroupList.Clear();
         }
     }
 }

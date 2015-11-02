@@ -29,6 +29,14 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _group, value); }
         }
 
+        private bool _isGroupMember;
+
+        public bool IsGroupMember
+        {
+            get { return _isGroupMember; }
+            set { this.SetProperty(ref _isGroupMember, value); }
+        }
+
         public IncrementalLoadingList<Topic> TopicList { get; private set; }
 
         public GroupDetailPageViewModel()
@@ -43,6 +51,8 @@ namespace DoubanGroup.Client.ViewModels
             this.GroupID = (long)e.Parameter;
 
             this.LoadGroup();
+
+            this.IsGroupMember = this.CurrentUser.IsGroupMember(this.GroupID);
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
@@ -79,6 +89,34 @@ namespace DoubanGroup.Client.ViewModels
         private void ViewMembers()
         {
             this.NavigationService.Navigate("GroupMembers", this.GroupID);
+        }
+
+        private DelegateCommand _joinGroupCommand;
+
+        public DelegateCommand JoinGroupCommand
+        {
+            get
+            {
+                if (_joinGroupCommand == null)
+                {
+                    _joinGroupCommand = new DelegateCommand(this.JoinGroup);
+                }
+                return _joinGroupCommand;
+            }
+        }
+
+        private async void JoinGroup()
+        {
+            //if (!this.CurrentUser.IsLogin)
+            {
+                var vm = new LoginPageViewModel();
+                var result = await vm.Show();
+
+                if (result != Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
+                {
+                    return;
+                }
+            }
         }
     }
 }

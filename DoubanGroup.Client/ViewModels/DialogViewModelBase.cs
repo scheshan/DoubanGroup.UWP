@@ -19,23 +19,9 @@ namespace DoubanGroup.Client.ViewModels
             this.DialogInstance.DataContext = this;
         }
 
-        private DelegateCommand _showCommand;
-
-        public DelegateCommand ShowCommand
+        public virtual async Task<ContentDialogResult> Show()
         {
-            get
-            {
-                if (_showCommand == null)
-                {
-                    _showCommand = new DelegateCommand(Show);
-                }
-                return _showCommand;
-            }
-        }
-
-        public virtual async void Show()
-        {
-            await this.DialogInstance.ShowAsync();
+            return await this.DialogInstance.ShowAsync();
         }
 
         private DelegateCommand _hideCommand;
