@@ -28,6 +28,39 @@ namespace DoubanGroup.Client
             this.InitializeComponent();
 
             this.main_content.Content = this.RootFrame;
+
+            sv_container.PaneClosed += Sv_container_PaneClosed;
+
+            this.SetConfigButtonPosition();
+        }
+
+        private void Sv_container_PaneClosed(SplitView sender, object args)
+        {
+            this.SetConfigButtonPosition();
+        }
+
+        private void btnTogglePan_Click(object sender, RoutedEventArgs e)
+        {
+            sv_container.IsPaneOpen = !sv_container.IsPaneOpen;
+
+            if (sv_container.IsPaneOpen)
+            {
+                this.SetConfigButtonPosition();
+            }
+        }
+
+        private void SetConfigButtonPosition()
+        {
+            if (sv_container.IsPaneOpen)
+            {
+                Grid.SetRow(btnConfig, 0);
+                Grid.SetColumn(btnConfig, 1);
+            }
+            else
+            {
+                Grid.SetRow(btnConfig, 1);
+                Grid.SetColumn(btnConfig, 0);
+            }
         }
     }
 }
