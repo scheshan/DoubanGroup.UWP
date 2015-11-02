@@ -359,5 +359,31 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<Topic>(url, null);
         }
+
+        /// <summary>
+        /// 得到用户详细信息
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<UserDetail> GetUserDetail(long userID, int count)
+        {
+            string url = $"user/{userID}/";
+
+            var para = new Parameters();
+
+            List<string> fields = new List<string>();
+            fields.Add("rec_topic_count");
+            fields.Add("like_topic_count");
+            fields.Add("join_group_count");
+            fields.Add("join_groups");
+            fields.Add("album_count");
+            fields.Add("user");
+
+            para.Add("fields", string.Join(",", fields.ToArray()));
+            para.Add("count", count.ToString());
+
+            return await this.Get<UserDetail>(url, para);
+        }
     }
 }

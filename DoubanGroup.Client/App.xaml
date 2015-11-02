@@ -23,6 +23,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Themes/DataTemplates.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </prism:PrismUnityApplication.Resources>

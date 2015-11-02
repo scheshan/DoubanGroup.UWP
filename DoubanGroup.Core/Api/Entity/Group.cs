@@ -50,8 +50,25 @@ namespace DoubanGroup.Core.Api.Entity
         [JsonProperty("join_type")]
         public string JoinType { get; set; }
 
+        private string _largeAvatar;
+
         [JsonProperty("large_avatar")]
-        public string LargeAvatar { get; set; }
+        public string LargeAvatar
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(_largeAvatar))
+                {
+                    return _largeAvatar;
+                }
+
+                return this.Avatar;
+            }
+            set
+            {
+                _largeAvatar = value;
+            }
+        }
 
         [JsonProperty("member_count")]
         public long MemberCount { get; set; }

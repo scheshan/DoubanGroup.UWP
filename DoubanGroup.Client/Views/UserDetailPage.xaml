@@ -6,19 +6,68 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designData="using:DoubanGroup.Client.DesignData"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:behavior="using:DoubanGroup.Client.Behaviors"
+    xmlns:mvvm="using:Prism.Windows.Mvvm"
     mc:Ignorable="d"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:UserDetailData, IsDesignTimeCreatable=True}">
+    
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton Label="关注" Icon="AddFriend"/>
+            <AppBarButton Label="取消关注" Icon="BlockContact"/>
+            <AppBarButton Label="固定到首页" Icon="Pin"/>
+        </CommandBar>
+    </Page.BottomAppBar>    
 
     <ScrollViewer Background="{StaticResource DefaultBackground}">
-        <StackPanel>
-            <Grid>
+        <StackPanel Padding="20 10">
+            <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
-                
-                <Image Source="{Binding User.LargeAvatar}"/>
+
+                <Ellipse Width="120" Height="120" Margin="0 0 10 0">
+                    <Ellipse.Fill>
+                        <ImageBrush ImageSource="{Binding User.LargeAvatar}"/>
+                    </Ellipse.Fill>
+                </Ellipse>                
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Grid.Column="1" Text="{Binding User.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
+
+                    <TextBlock Margin="0 10 0 0">
+                        <Run Text="常居:"/>
+                        <Run Text="{Binding User.LocationName}"/>
+                    </TextBlock>
+
+                    <TextBlock Text="{Binding User.Description}" Margin="0 10 0 0" MaxHeight="65" Style="{StaticResource SecondaryTextBlockStyle}"/>
+                </StackPanel>
             </Grid>
+
+            <StackPanel>
+                <Grid>
+                    <TextBlock Text="加入的小组" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+                    <Button Style="{StaticResource TextBlockButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看所有...</Button>
+                </Grid>                
+
+                <GridView MaxHeight="130" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding JoinedGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
+                    <i:Interaction.Behaviors>
+                        <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
+                        <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                    </i:Interaction.Behaviors>
+                </GridView>
+            </StackPanel>
+
+            <StackPanel Margin="0 10 0 0">
+                <Grid>
+                    <TextBlock Text="最近上传的照片" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+                    <Button Style="{StaticResource TextBlockButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看相册...</Button>
+                </Grid>
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Page>

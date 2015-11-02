@@ -21,8 +21,25 @@ namespace DoubanGroup.Core.Api.Entity
         [JsonProperty("is_suicide")]
         public bool IsSuicide { get; set; }
 
+        private string _largeAvatar;
+
         [JsonProperty("large_avatar")]
-        public string LargeAvatar { get; set; }
+        public string LargeAvatar
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(_largeAvatar))
+                {
+                    return _largeAvatar;
+                }
+
+                return this.Avatar;
+            }
+            set
+            {
+                _largeAvatar = value;
+            }
+        }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -41,5 +58,11 @@ namespace DoubanGroup.Core.Api.Entity
 
         [JsonProperty("desc")]
         public string Description { get; set; }
+
+        [JsonProperty("loc_id")]
+        public long LocationID { get; set; }
+
+        [JsonProperty("loc_name")]
+        public string LocationName { get; set; }
     }
 }
