@@ -119,7 +119,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Button Name="btnLogin" Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
+                    <Button Name="btnLogin" Click="btnLogin_Click" Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>

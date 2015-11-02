@@ -62,5 +62,11 @@ namespace DoubanGroup.Client
                 Grid.SetColumn(btnConfig, 0);
             }
         }
+
+        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = new ViewModels.LoginPageViewModel();
+            vm.Show();
+        }
     }
 }

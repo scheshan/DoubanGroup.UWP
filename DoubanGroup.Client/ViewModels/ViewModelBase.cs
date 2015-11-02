@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Practices.Unity;
 using DoubanGroup.Core.Api;
+using Windows.UI.Popups;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -40,6 +41,21 @@ namespace DoubanGroup.Client.ViewModels
             {
                 return _apiClient.Value;
             }
+        }
+
+        public virtual void Alert(string content, string title = null)
+        {
+            MessageDialog dialog;
+
+            if (title == null)
+            {
+                dialog = new MessageDialog(content);
+            }
+            else
+            {
+                dialog = new MessageDialog(content, title);
+            }
+            dialog.ShowAsync();
         }
     }
 }

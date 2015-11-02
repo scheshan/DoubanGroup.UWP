@@ -124,6 +124,7 @@
     <Compile Include="Api\Entity\Topic.cs" />
     <Compile Include="Api\Entity\TopicList.cs" />
     <Compile Include="Api\Entity\UserDetail.cs" />
+    <Compile Include="Api\IAccessTokenProvider.cs" />
     <Compile Include="Api\Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Properties\DoubanGroup.Core.rd.xml" />

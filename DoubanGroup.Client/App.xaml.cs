@@ -20,6 +20,7 @@ using Microsoft.Practices.Unity;
 using DoubanGroup.Core.Api.Entity;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using DoubanGroup.Core.Api;
 
 namespace DoubanGroup.Client
 {
@@ -49,6 +50,12 @@ namespace DoubanGroup.Client
             {
                 return this.Container.Resolve<ViewModels.ChannelDetailViewModel>();
             });
+        }
+
+        protected override void ConfigureContainer()
+        {
+            base.ConfigureContainer();
+            this.Container.RegisterInstance<IAccessTokenProvider>(this.Container.Resolve<ViewModels.CurrentUserViewModel>());
         }
 
         protected override void OnRegisterKnownTypesForSerialization()

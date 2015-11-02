@@ -80,10 +80,10 @@ namespace DoubanGroup.Core.Api
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "api-client/2.0 com.douban.group");
 
-            if (AccessToken != null)
+            if (this.AccessTokenProvider?.AccessToken != null)
             {
                 client.BaseAddress = SSL_API_HOST;
-                client.DefaultRequestHeaders.Add("Authorization", string.Format($"Bearer {AccessToken}"));
+                client.DefaultRequestHeaders.Add("Authorization", string.Format($"Bearer {this.AccessTokenProvider.AccessToken}"));
             }
             else
             {
@@ -194,32 +194,11 @@ namespace DoubanGroup.Core.Api
 
         #endregion
 
-        /// <summary>
-        /// 保存的AccessToken
-        /// </summary>
-        private static string AccessToken { get; set; }
+        private IAccessTokenProvider AccessTokenProvider { get; set; }
 
-        /// <summary>
-        /// 设置AccessToken
-        /// 登录成功后，通过此方法设置AccessToken，才能调用需要认证的接口
-        /// </summary>
-        /// <param name="accessToken"></param>
-        public static void SetAccessToken(string accessToken)
+        public ApiClient(IAccessTokenProvider accessTokenProvider)
         {
-            if (string.IsNullOrWhiteSpace(accessToken))
-            {
-                throw new ArgumentNullException("accessToken");
-            }
-            AccessToken = accessToken;
-        }
-
-        /// <summary>
-        /// 清除AccessToken
-        /// 注销登录后，需要通过此方法清除AccessToken
-        /// </summary>
-        public static void ClearAccessToken()
-        {
-            AccessToken = null;
+            this.AccessTokenProvider = accessTokenProvider;
         }
 
         /// <summary>
