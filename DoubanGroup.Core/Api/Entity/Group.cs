@@ -48,7 +48,7 @@ namespace DoubanGroup.Core.Api.Entity
         public long ID { get; set; }
 
         /// <summary>
-        /// A表示需要填写申请信息，R表示可以直接加入
+        /// R表示需要填写申请信息，A表示可以直接加入
         /// </summary>
         [JsonProperty("join_type")]
         public string JoinType { get; set; }

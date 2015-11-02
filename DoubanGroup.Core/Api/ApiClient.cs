@@ -410,7 +410,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task JoinGroup(long groupID)
         {
-            string url = $"group/{groupID}/join";
+            string url = $"{groupID}/join";
             var para = new Parameters();
             para.Add("type", "join");
 

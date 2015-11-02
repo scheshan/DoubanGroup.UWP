@@ -107,15 +107,27 @@ namespace DoubanGroup.Client.ViewModels
 
         private async void JoinGroup()
         {
-            //if (!this.CurrentUser.IsLogin)
+            if (!this.CurrentUser.IsLogin)
             {
-                var vm = new LoginPageViewModel();
-                var result = await vm.Show();
+                this.Alert("请先登录");
+                return;
+            }            
 
-                if (result != Windows.UI.Xaml.Controls.ContentDialogResult.Primary)
+            if (this.Group.JoinType == "A")
+            {
+                try
                 {
-                    return;
+                    await this.ApiClient.JoinGroup(this.GroupID);
+                    this.CurrentUser.JoinedGroupList.Add(this.Group);
                 }
+                catch (ApiException ex)
+                {
+                    this.Alert(ex.Message);
+                }
+            }
+            else
+            {
+
             }
         }
     }
