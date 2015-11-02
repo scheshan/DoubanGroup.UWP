@@ -26,7 +26,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             get { return _password; }
             set { this.SetProperty(ref _password, value); }
-        }
+        }            
 
         public event RoutedEventHandler LoginSuccessed;
 
@@ -66,12 +66,13 @@ namespace DoubanGroup.Client.ViewModels
             try
             {
                 var session = await this.ApiClient.Login(this.UserName, this.Password);
+                this.CurrentUser.SetSession(session);
             }
-            catch (ApiException ex)
+            catch (ApiException)
             {
                 this.Alert("用户名或密码错误");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 this.Alert("登录发生错误");
             }

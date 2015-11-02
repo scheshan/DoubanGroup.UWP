@@ -43,6 +43,14 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
+        public CurrentUserViewModel CurrentUser
+        {
+            get
+            {
+                return App.Current.Container.Resolve<CurrentUserViewModel>();
+            }
+        }
+
         public virtual void Alert(string content, string title = null)
         {
             MessageDialog dialog;

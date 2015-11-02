@@ -21,29 +21,30 @@ namespace DoubanGroup.Client
     {
         private Frame RootFrame { get; set; }
 
+        private ViewModels.ShellViewModel ViewModel { get; set; }
+
         public Shell(Frame rootFrame)
         {
             this.RootFrame = rootFrame;
 
             this.InitializeComponent();
 
+            this.Loaded += Shell_Loaded;
+        }
+
+        private void Shell_Loaded(object sender, RoutedEventArgs e)
+        {
             this.main_content.Content = this.RootFrame;
+            this.ViewModel = (ViewModels.ShellViewModel)this.DataContext;
 
-            sv_container.PaneClosed += Sv_container_PaneClosed;
+            this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
 
             this.SetConfigButtonPosition();
         }
 
-        private void Sv_container_PaneClosed(SplitView sender, object args)
+        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            this.SetConfigButtonPosition();
-        }
-
-        private void btnTogglePan_Click(object sender, RoutedEventArgs e)
-        {
-            sv_container.IsPaneOpen = !sv_container.IsPaneOpen;
-
-            if (sv_container.IsPaneOpen)
+            if (e.PropertyName == nameof(this.ViewModel.IsPaneOpen))
             {
                 this.SetConfigButtonPosition();
             }

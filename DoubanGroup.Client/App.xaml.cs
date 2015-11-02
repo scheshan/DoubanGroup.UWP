@@ -21,6 +21,8 @@ using DoubanGroup.Core.Api.Entity;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using DoubanGroup.Core.Api;
+using Prism.Mvvm;
+using DoubanGroup.Client.Controls;
 
 namespace DoubanGroup.Client
 {
@@ -46,16 +48,24 @@ namespace DoubanGroup.Client
         {
             base.ConfigureViewModelLocator();
 
-            Prism.Mvvm.ViewModelLocationProvider.Register(typeof(Controls.ChannelDetail).FullName, () =>
+            ViewModelLocationProvider.Register(typeof(ChannelDetail).FullName, () =>
             {
                 return this.Container.Resolve<ViewModels.ChannelDetailViewModel>();
+            });
+            ViewModelLocationProvider.Register(typeof(Shell).FullName, () =>
+            {
+                return this.Container.Resolve<ViewModels.ShellViewModel>();
             });
         }
 
         protected override void ConfigureContainer()
         {
             base.ConfigureContainer();
-            this.Container.RegisterInstance<IAccessTokenProvider>(this.Container.Resolve<ViewModels.CurrentUserViewModel>());
+
+            var currentUserViewModel = this.Container.Resolve<ViewModels.CurrentUserViewModel>();
+
+            this.Container.RegisterInstance<IAccessTokenProvider>(currentUserViewModel);
+            this.Container.RegisterInstance(currentUserViewModel);
         }
 
         protected override void OnRegisterKnownTypesForSerialization()

@@ -7,9 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:mvvm="using:Prism.Windows.Mvvm"
     mc:Ignorable="d"
     d:DesignHeight="720"
-    d:DesignWidth="1280">
+    d:DesignWidth="1280"
+    mvvm:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource TextBlockButtonStyle}" x:Key="HamburgerButtonStyle">
             <Setter Property="Foreground" Value="#666666"/>
@@ -24,7 +26,7 @@
         </Style>
     </UserControl.Resources>
 
-    <SplitView Name="sv_container" PaneBackground="#f0f6f3" OpenPaneLength="200" CompactPaneLength="48" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="False">
+    <SplitView Name="sv_container" PaneBackground="#f0f6f3" OpenPaneLength="200" CompactPaneLength="48" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="{Binding IsPaneOpen}">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="WideGroups">
                 <VisualState x:Name="LargeScreen">
@@ -54,7 +56,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <Button Name="btnTogglePan" Click="btnTogglePan_Click" Style="{StaticResource ConfigButtonStyle}" HorizontalAlignment="Left">
+                <Button Command="{Binding TogglePaneCommand}" Name="btnTogglePan" Style="{StaticResource ConfigButtonStyle}" HorizontalAlignment="Left">
                     <FontIcon Glyph="&#xE700;"></FontIcon>
                 </Button>
 
@@ -119,7 +121,8 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
-                    <Button Name="btnLogin" Click="btnLogin_Click" Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
+                    <Button Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource HamburgerButtonStyle}" 
+                            HorizontalAlignment="Stretch" Command="{Binding LoginCommand}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -131,6 +134,19 @@
                         </Grid>
                     </Button>
 
+                    <Button Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}" Style="{StaticResource HamburgerButtonStyle}" 
+                            HorizontalAlignment="Stretch">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Width="20" Height="20" Source="{Binding CurrentUser.User.Avatar}"/>
+
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0" VerticalAlignment="Center" Text="{Binding CurrentUser.User.Name}"/>
+                        </Grid>
+                    </Button>
+                    
                     <Button Name="btnConfig" Grid.Column="1" HorizontalAlignment="Left" Width="50" Height="50" Style="{StaticResource HamburgerButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -142,8 +158,6 @@
                     </Button>
                 </Grid>
             </Grid>
-            
-            
         </SplitView.Pane>
 
         <Grid>

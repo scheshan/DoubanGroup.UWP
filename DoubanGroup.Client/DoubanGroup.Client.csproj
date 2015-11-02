@@ -121,6 +121,7 @@
     <Compile Include="DesignData\HomePageData.cs" />
     <Compile Include="DesignData\TopicDetailData.cs" />
     <Compile Include="DesignData\UserDetailData.cs" />
+    <Compile Include="Extensions\ISessionStateServiceExtensions.cs" />
     <Compile Include="ViewModels\CurrentUserViewModel.cs" />
     <Compile Include="Models\IncrementalLoadingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="ViewModels\GroupMembersPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
     <Compile Include="ViewModels\UserDetailPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
