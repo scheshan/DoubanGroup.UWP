@@ -17,7 +17,7 @@
                 <Setter Property="FontWeight" Value="Normal" />
                 <Setter Property="CharacterSpacing" Value="{ThemeResource PivotHeaderItemCharacterSpacing}" />
                 <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="#037b82" />
+                <Setter Property="Foreground" Value="{StaticResource HighlightForeground}" />
                 <Setter Property="Padding" Value="20 10" />
                 <Setter Property="Height" Value="50" />
                 <Setter Property="VerticalContentAlignment" Value="Center" />
