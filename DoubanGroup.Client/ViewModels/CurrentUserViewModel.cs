@@ -99,8 +99,8 @@ namespace DoubanGroup.Client.ViewModels
             var userDetail = await this.ApiClient.GetUserDetail(this.Session.DoubanUserID, 0);
             this.User = userDetail.User;
 
-            this.LoadJoinedGroups();
-            this.LoadManagedGroups();
+            await this.LoadJoinedGroups();
+            await this.LoadManagedGroups();
         }
 
         public async Task LoadJoinedGroups()

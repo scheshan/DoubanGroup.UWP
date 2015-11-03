@@ -376,7 +376,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<GroupList> GetUserJoinedGroups(long userID, int start, int count)
         {
-            string url = $"user/{userID}/joined_groups";
+            string url = $"people/{userID}/joined_groups";
 
             var para = new Parameters();
             para.Add("start", start.ToString());
@@ -394,7 +394,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<GroupList> GetUserManagedGroups(long userID, int start, int count)
         {
-            string url = $"user/{userID}/managed_groups";
+            string url = $"people/{userID}/managed_groups";
 
             var para = new Parameters();
             para.Add("start", start.ToString());

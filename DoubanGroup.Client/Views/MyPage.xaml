@@ -5,6 +5,7 @@
     xmlns:local="using:DoubanGroup.Client.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:view="using:DoubanGroup.Client.Views"
     mc:Ignorable="d">
 
     <Pivot ItemsSource="{Binding ChannelList}">
@@ -136,7 +137,9 @@
         </Pivot.ItemContainerStyle>
 
         <PivotItem Header="主题"></PivotItem>
-        <PivotItem Header="小组"></PivotItem>
+        <PivotItem Header="小组">
+            <view:MyGroupPage/>
+        </PivotItem>
         <PivotItem Header="喜欢"></PivotItem>
         <PivotItem Header="足迹"></PivotItem>
     </Pivot>
