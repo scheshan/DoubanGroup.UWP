@@ -29,12 +29,12 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _group, value); }
         }
 
-        private bool _isGroupMember;
-
         public bool IsGroupMember
         {
-            get { return _isGroupMember; }
-            set { this.SetProperty(ref _isGroupMember, value); }
+            get
+            {
+                return this.CurrentUser.IsGroupMember(this.GroupID);
+            }
         }
 
         public IncrementalLoadingList<Topic> TopicList { get; private set; }
@@ -51,8 +51,6 @@ namespace DoubanGroup.Client.ViewModels
             this.GroupID = (long)e.Parameter;
 
             this.LoadGroup();
-
-            this.IsGroupMember = this.CurrentUser.IsGroupMember(this.GroupID);
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
@@ -86,6 +84,8 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
+        public bool IsJoining { get; set; }
+
         private void ViewMembers()
         {
             this.NavigationService.Navigate("GroupMembers", this.GroupID);
@@ -109,16 +109,31 @@ namespace DoubanGroup.Client.ViewModels
         {
             if (!this.CurrentUser.IsLogin)
             {
-                this.Alert("请先登录");
+                var vm = new LoginPageViewModel();
+
+                var result = await vm.Show();
+
+                if (!result)
+                {
+                    return;
+                }
+            }
+
+            if (this.IsJoining)
+            {
+                this.Alert("操作尚未完成，请稍候");
                 return;
-            }            
+            }
+
+            this.IsJoining = true;
 
             if (this.Group.JoinType == "A")
             {
                 try
                 {
                     await this.ApiClient.JoinGroup(this.GroupID);
-                    this.CurrentUser.JoinedGroupList.Add(this.Group);
+                    this.EventAggretator.GetEvent<Events.JoinGroupEvent>().Publish(this.Group);
+                    this.OnPropertyChanged(() => this.IsGroupMember);
                 }
                 catch (ApiException ex)
                 {
@@ -129,6 +144,63 @@ namespace DoubanGroup.Client.ViewModels
             {
 
             }
+
+            this.IsJoining = false;
+        }
+
+        private DelegateCommand _quitGroupCommand;
+
+        public DelegateCommand QuitGroupCommand
+        {
+            get
+            {
+                if (_quitGroupCommand == null)
+                {
+                    _quitGroupCommand = new DelegateCommand(QuitGroup);
+                }
+                return _quitGroupCommand;
+            }
+        }
+
+        private async void QuitGroup()
+        {
+            if (!this.CurrentUser.IsLogin)
+            {
+                var vm = new LoginPageViewModel();
+
+                var result = await vm.Show();
+
+                if (!result)
+                {
+                    return;
+                }
+            }
+
+            if (this.IsJoining)
+            {
+                this.Alert("操作尚未完成，请稍候");
+                return;
+            }
+
+            if (!await this.Confirm("确认退出该小组?"))
+            {
+                return;
+            }
+
+            this.IsJoining = true;
+
+            try
+            {
+                await this.ApiClient.QuitGroup(this.GroupID);
+                this.EventAggretator.GetEvent<Events.QuitGroupEvent>().Publish(this.Group);
+                this.OnPropertyChanged(() => this.IsGroupMember);
+            }
+            catch (ApiException ex)
+            {
+                this.Alert(ex.Message);
+            }
+
+            this.IsJoining = false;
         }
     }
 }

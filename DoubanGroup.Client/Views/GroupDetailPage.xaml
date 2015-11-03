@@ -17,7 +17,7 @@
         <CommandBar>
             <AppBarButton Icon="People" Label="查看成员" Command="{Binding ViewMembersCommand}"></AppBarButton>
             <AppBarButton Command="{Binding JoinGroupCommand}" Icon="AddFriend" Label="加入小组" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}"></AppBarButton>
-            <AppBarButton Icon="BlockContact" Label="退出小组" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}"></AppBarButton>
+            <AppBarButton Command="{Binding QuitGroupCommand}" Icon="BlockContact" Label="退出小组" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}"></AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
 

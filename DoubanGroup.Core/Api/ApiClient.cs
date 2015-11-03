@@ -418,6 +418,20 @@ namespace DoubanGroup.Core.Api
         }
 
         /// <summary>
+        /// 退出小组
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public async Task QuitGroup(long groupID)
+        {
+            string url = $"{groupID}/join";
+            var para = new Parameters();
+            para.Add("type", "quit");
+
+            await this.Post<object>(url, para);
+        }
+
+        /// <summary>
         /// 得到用户首页主题
         /// </summary>
         /// <param name="start"></param>

@@ -128,6 +128,8 @@
     <Compile Include="DesignData\MyGroupData.cs" />
     <Compile Include="DesignData\TopicDetailData.cs" />
     <Compile Include="DesignData\UserDetailData.cs" />
+    <Compile Include="Events\JoinGroupEvent.cs" />
+    <Compile Include="Events\QuitGroupEvent.cs" />
     <Compile Include="Extensions\ApplicationDataContainerExtensions.cs" />
     <Compile Include="Extensions\ISessionStateServiceExtensions.cs" />
     <Compile Include="ViewModels\CurrentUserViewModel.cs" />

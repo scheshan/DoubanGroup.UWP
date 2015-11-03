@@ -11,6 +11,7 @@ using Microsoft.Practices.Unity;
 using DoubanGroup.Client.Extensions;
 using Windows.Storage;
 using System.Collections.ObjectModel;
+using Prism.Events;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -64,11 +65,18 @@ namespace DoubanGroup.Client.ViewModels
 
         private ApiClient ApiClient { get; set; }
 
+        private IEventAggregator EventAggregator { get; set; }
+
         public CurrentUserViewModel()
         {
             this.ApiClient = new ApiClient(this);
+            this.EventAggregator = App.Current.Container.Resolve<IEventAggregator>();
+
             this.JoinedGroupList = new ObservableCollection<Group>();
             this.ManagedGroupList = new ObservableCollection<Group>();
+
+            this.EventAggregator.GetEvent<Events.JoinGroupEvent>().Subscribe(this.OnJoinGroup);
+            this.EventAggregator.GetEvent<Events.QuitGroupEvent>().Subscribe(this.OnQuitGroup);
 
             var session = ApplicationData.Current.LocalSettings.Get<Session>(SESSION_KEY);
             _session = session;
@@ -105,6 +113,8 @@ namespace DoubanGroup.Client.ViewModels
 
         public async Task LoadJoinedGroups()
         {
+            this.JoinedGroupList.Clear();
+
             var groupList = await this.ApiClient.GetUserJoinedGroups(this.User.ID, 0, 200);
 
             foreach (var group in groupList.Items)
@@ -115,11 +125,13 @@ namespace DoubanGroup.Client.ViewModels
 
         public async Task LoadManagedGroups()
         {
+            this.ManagedGroupList.Clear();
+
             var groupList = await this.ApiClient.GetUserManagedGroups(this.User.ID, 0, 200);
 
             foreach (var group in groupList.Items)
             {
-                this.JoinedGroupList.Add(group);
+                this.ManagedGroupList.Add(group);
             }
         }
 
@@ -133,6 +145,27 @@ namespace DoubanGroup.Client.ViewModels
             this.SetSession(null);
             this.JoinedGroupList.Clear();
             this.ManagedGroupList.Clear();
+        }
+
+        private void OnJoinGroup(Group group)
+        {
+            lock(this.JoinedGroupList)
+            {
+                this.JoinedGroupList.Add(group);
+            }
+        }
+
+        private void OnQuitGroup(Group group)
+        {
+            lock(this.JoinedGroupList)
+            {
+                var list = this.JoinedGroupList.Where(t => t.ID == group.ID).ToList();
+
+                foreach (var item in list)
+                {
+                    this.JoinedGroupList.Remove(item);
+                }
+            }
         }
     }
 }

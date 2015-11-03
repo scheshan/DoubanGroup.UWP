@@ -10,7 +10,7 @@ using Windows.UI.Xaml;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class LoginPageViewModel : DialogViewModelBase
+    public class LoginPageViewModel : DialogViewModelBase<bool>
     {
         private string _userName;
 
@@ -26,14 +26,12 @@ namespace DoubanGroup.Client.ViewModels
         {
             get { return _password; }
             set { this.SetProperty(ref _password, value); }
-        }            
-
-        public event RoutedEventHandler LoginSuccessed;
+        }
 
         public LoginPageViewModel()
             : base(typeof(Views.LoginPage))
         {
-
+            this.DialogResult = false;
         }
 
         private DelegateCommand _loginCommand;
@@ -75,11 +73,7 @@ namespace DoubanGroup.Client.ViewModels
                 var session = await this.ApiClient.Login(this.UserName, this.Password);
                 this.CurrentUser.SetSession(session);
 
-                var handler = this.LoginSuccessed;
-                if (handler != null)
-                {
-                    handler.Invoke(this, new RoutedEventArgs());
-                }
+                this.DialogResult = true;
 
                 this.Hide();
             }

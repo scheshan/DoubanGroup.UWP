@@ -9,8 +9,16 @@ using Prism.Commands;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public abstract class DialogViewModelBase : ViewModelBase
+    public abstract class DialogViewModelBase<T> : ViewModelBase
     {
+        private T _dialogResult;
+
+        public T DialogResult
+        {
+            get { return _dialogResult; }
+            protected set { this.SetProperty(ref _dialogResult, value); }
+        }
+
         protected ContentDialog DialogInstance { get; private set; }
 
         public DialogViewModelBase(Type dialogType)
@@ -19,9 +27,12 @@ namespace DoubanGroup.Client.ViewModels
             this.DialogInstance.DataContext = this;
         }
 
-        public virtual async Task<ContentDialogResult> Show()
+
+        public virtual async Task<T> Show()
         {
-            return await this.DialogInstance.ShowAsync();
+            await this.DialogInstance.ShowAsync();
+
+            return this.DialogResult;
         }
 
         private DelegateCommand _hideCommand;
