@@ -133,6 +133,8 @@
     <Compile Include="Events\QuitGroupEvent.cs" />
     <Compile Include="Extensions\ApplicationDataContainerExtensions.cs" />
     <Compile Include="Extensions\ISessionStateServiceExtensions.cs" />
+    <Compile Include="Service\FileCacheService.cs" />
+    <Compile Include="Service\ICacheService.cs" />
     <Compile Include="ViewModels\CurrentUserViewModel.cs" />
     <Compile Include="Models\IncrementalLoadingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

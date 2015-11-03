@@ -145,7 +145,7 @@
     </Page.Resources>
 
     <Page.BottomAppBar>
-        <CommandBar>
+        <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
             <AppBarButton Command="{Binding LikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource InverseToVisibilityConverter}}" Label="喜欢主题" Icon="Like"/>
             <AppBarButton Command="{Binding DislikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource BooleanToVisibilityConverter}}" Label="取消喜欢" Icon="Dislike"/>
         </CommandBar>
@@ -162,6 +162,8 @@
                 <Run Text="{Binding TotalPage}"/>
             </TextBlock>
         </Border>
+        
+        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>
     
     

@@ -50,6 +50,6 @@
             </GridView.Header>
         </GridView>
 
-        <ProgressRing HorizontalAlignment="Center" VerticalAlignment="Center" Width="80" Height="80" Foreground="{StaticResource HighlightForeground}" IsActive="{Binding IsLoading}"/>
+        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>
 </Page>

@@ -494,7 +494,7 @@ namespace DoubanGroup.Core.Api
         /// </summary>
         /// <param name="topicID"></param>
         /// <returns></returns>
-        public async Task<object> UnlikeTopic(long topicID)
+        public async Task<object> DislikeTopic(long topicID)
         {
             string url = $"group/topic/{topicID}/remove_like";
 

@@ -8,6 +8,7 @@ using Prism.Windows.Navigation;
 using DoubanGroup.Client.Models;
 using DoubanGroup.Core.Api;
 using Prism.Commands;
+using Windows.UI.Xaml.Navigation;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -44,13 +45,28 @@ namespace DoubanGroup.Client.ViewModels
             this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
         }
 
-        public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override async void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
         {
             base.OnNavigatedTo(e, viewModelState);
 
             this.GroupID = (long)e.Parameter;
 
-            this.LoadGroup();
+            if (e.NavigationMode == NavigationMode.New)
+            {
+                this.LoadGroup();
+            }
+            else
+            {
+                await this.LoadGroupFromCache();
+            }
+        }
+
+        public override void OnNavigatingFrom(NavigatingFromEventArgs e, Dictionary<string, object> viewModelState, bool suspending)
+        {
+            base.OnNavigatingFrom(e, viewModelState, suspending);
+
+            this.Cache.Set(this.GetGroupCacheKey(), this.Group);
+            this.Cache.Set(this.GetTopicListCacheKey(), this.TopicList.ToList());
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
@@ -67,7 +83,23 @@ namespace DoubanGroup.Client.ViewModels
         private async Task LoadGroup()
         {
             var group = await this.ApiClient.GetGroup(this.GroupID);
-            this.Group = group;
+            this.Group = group;            
+        }
+
+        private async Task LoadGroupFromCache()
+        {
+            this.TopicList.NoMore();
+
+            this.Group = await this.Cache.Get<Group>(this.GetGroupCacheKey());
+
+            var topicList = await this.Cache.Get<List<Topic>>(this.GetTopicListCacheKey());
+
+            foreach (var topic in topicList)
+            {
+                this.TopicList.Add(topic);
+            }
+
+            this.TopicList.HasMore();
         }
 
         private DelegateCommand _viewMembersCommand;
@@ -183,6 +215,16 @@ namespace DoubanGroup.Client.ViewModels
             }
 
             this.IsLoading = false;
+        }
+
+        private string GetGroupCacheKey()
+        {
+            return $"group_{this.GroupID}";
+        }
+
+        private string GetTopicListCacheKey()
+        {
+            return $"group_{this.GroupID}_topics";
         }
     }
 }

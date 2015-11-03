@@ -13,14 +13,22 @@ namespace DoubanGroup.Client.ViewModels
 {
     public abstract class ViewModelBase : Prism.Windows.Mvvm.ViewModelBase
     {
+        #region 属性
+
         private bool _isLoading;
 
+        /// <summary>
+        /// 标记是否处于忙碌状态
+        /// </summary>
         public bool IsLoading
         {
             get { return _isLoading; }
             set { this.SetProperty(ref _isLoading, value); }
         }
 
+        /// <summary>
+        /// 导航服务
+        /// </summary>
         protected INavigationService NavigationService
         {
             get
@@ -29,13 +37,14 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        private static ApiClient CreateApiClient()
+        private Lazy<ApiClient> _apiClient = new Lazy<ApiClient>(() =>
         {
             return App.Current.Container.Resolve<ApiClient>();
-        }
+        });
 
-        private Lazy<ApiClient> _apiClient = new Lazy<ApiClient>(CreateApiClient);
-
+        /// <summary>
+        /// API代理
+        /// </summary>
         protected ApiClient ApiClient
         {
             get
@@ -44,6 +53,9 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
+        /// <summary>
+        /// 表示当前用户的视图模型对象
+        /// </summary>
         public CurrentUserViewModel CurrentUser
         {
             get
@@ -52,6 +64,9 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
+        /// <summary>
+        /// 事件订阅服务
+        /// </summary>
         public IEventAggregator EventAggretator
         {
             get
@@ -60,12 +75,41 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        public virtual void Alert(string content, string title = null)
+        /// <summary>
+        /// 缓存服务
+        /// </summary>
+        public Service.ICacheService Cache { get; private set; }
+
+        #endregion
+
+        #region 构造器
+
+        public ViewModelBase()
         {
-            MessageDialog dialog = this.CreateMessageDialog(content, title);
-            dialog.ShowAsync();
+            this.Cache = new Service.FileCacheService();
         }
 
+        #endregion
+
+        #region 方法
+
+        /// <summary>
+        /// 弹出警告提示框
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="title"></param>
+        public virtual async Task Alert(string content, string title = null)
+        {
+            MessageDialog dialog = this.CreateMessageDialog(content, title);
+            await dialog.ShowAsync();
+        }
+
+        /// <summary>
+        /// 弹出询问提示框
+        /// </summary>
+        /// <param name="content"></param>
+        /// <param name="title"></param>
+        /// <returns></returns>
         public virtual async Task<bool> Confirm(string content, string title = null)
         {
             MessageDialog dialog = this.CreateMessageDialog(content, title);
@@ -102,6 +146,11 @@ namespace DoubanGroup.Client.ViewModels
             return dialog;
         }
 
+        /// <summary>
+        /// 判断登录状态
+        /// 如果未登录，则弹出登录界面
+        /// </summary>
+        /// <returns></returns>
         protected async Task<bool> RequireLogin()
         {
             if (this.CurrentUser.IsLogin)
@@ -112,5 +161,7 @@ namespace DoubanGroup.Client.ViewModels
             var vm = new LoginPageViewModel();
             return await vm.Show();
         }
+
+        #endregion
     }
 }

@@ -28,7 +28,7 @@ namespace DoubanGroup.Client.ViewModels
 
             if (!userTopicList.HasMore)
             {
-                this.TopicList.NoMoreItems();
+                this.TopicList.NoMore();
             }
 
             return userTopicList.Topics;

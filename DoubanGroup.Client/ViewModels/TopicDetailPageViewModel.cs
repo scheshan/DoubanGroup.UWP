@@ -70,6 +70,10 @@ namespace DoubanGroup.Client.ViewModels
             this.LoadComments();
         }
 
+        /// <summary>
+        /// 加载评论
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadComments()
         {
             if (this.IsLoading)
@@ -122,25 +126,10 @@ namespace DoubanGroup.Client.ViewModels
             this.OnPropertyChanged(() => this.HasPopularComments);
         }
 
-        private async Task<IEnumerable<Comment>> LoadComments(uint count)
-        {
-            this.IsLoading = true;
-
-            var commentList = await this.ApiClient.GetCommentList(this.TopicID, this.CommentList.Count, 30);
-
-            this.IsLoading = false;
-
-            if (this.PopularCommentList.Count == 0)
-            {
-                foreach (var comment in commentList.PopularComments)
-                {
-                    this.PopularCommentList.Add(comment);
-                }
-            }
-
-            return commentList.Comments;
-        }
-
+        /// <summary>
+        /// 加载主题
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadTopic()
         {
             var topic = await this.ApiClient.GetTopic(this.TopicID);
@@ -164,8 +153,25 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        private void LikeTopic()
+        private async void LikeTopic()
         {
+            if (!await this.RequireLogin())
+            {
+                return;
+            }
+
+            if (this.IsLoading)
+            {
+                return;
+            }
+
+            this.IsLoading = true;
+
+            await this.ApiClient.LikeTopic(this.TopicID);
+            this.Liked = true;
+            this.Topic.Liked = true;
+
+            this.IsLoading = false;
         }
 
         private DelegateCommand _dislikeTopicCommand;
@@ -182,8 +188,25 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        private void DislikeTopic()
+        private async void DislikeTopic()
         {
+            if (!await this.RequireLogin())
+            {
+                return;
+            }
+
+            if (this.IsLoading)
+            {
+                return;
+            }
+
+            this.IsLoading = true;
+
+            await this.ApiClient.DislikeTopic(this.TopicID);
+            this.Liked = false;
+            this.Topic.Liked = false;
+
+            this.IsLoading = false;
         }
     }
 }
