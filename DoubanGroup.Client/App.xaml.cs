@@ -25,6 +25,7 @@ using Prism.Mvvm;
 using DoubanGroup.Client.Controls;
 using DoubanGroup.Client.CacheItem;
 using AutoMapper;
+using MyToolkit.Paging;
 
 namespace DoubanGroup.Client
 {
@@ -44,6 +45,11 @@ namespace DoubanGroup.Client
         {
             var shell = new Shell(rootFrame);
             return shell;
+        }
+
+        protected override Frame OnCreateRootFrame()
+        {
+            return base.OnCreateRootFrame();
         }
 
         protected override void ConfigureViewModelLocator()
@@ -95,6 +101,26 @@ namespace DoubanGroup.Client
             Mapper.CreateMap<TopicCacheInfo, Topic>();
 
             await base.OnInitializeAsync(args);
+        }
+    }
+
+    public class App2 : MtApplication
+    {
+        public new static App2 Current { get { return (App2)Application.Current; } }
+
+        public IUnityContainer Container { get; private set; }
+
+        public override Type StartPageType
+        {
+            get
+            {
+                return typeof(Views.HomePage);
+            }
+        }
+
+        public App2()
+        {
+            this.Container = new UnityContainer();
         }
     }
 }
