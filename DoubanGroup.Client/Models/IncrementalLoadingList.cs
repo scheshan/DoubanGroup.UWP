@@ -31,9 +31,14 @@ namespace DoubanGroup.Client.Models
             return AsyncInfo.Run(ct => InnerLoadMoreItems(count));
         }
 
-        public void NoMoreItems()
+        public void NoMore()
         {
             this.HasMoreItems = false;
+        }
+
+        public void HasMore()
+        {
+            this.HasMoreItems = true;
         }
 
         private async Task<LoadMoreItemsResult> InnerLoadMoreItems(uint count)

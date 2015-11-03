@@ -5,6 +5,86 @@
     
     <SolidColorBrush x:Key="SecondaryForegroundBrush" Color="#999999"/>
     <SolidColorBrush x:Key="DefaultBackground" Color="#F9F9F9"/>
+    <SolidColorBrush x:Key="HighlightForeground" Color="#037b82"/>
+
+    <Style TargetType="GridView" x:Key="GroupGridViewStyle">
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
+        <Setter Property="IsItemClickEnabled" Value="True"/>
+        <Setter Property="SelectionMode" Value="None"/>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="GridViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="GridViewItem">
+                                <Border Background="Transparent">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal"/>
+                                            <VisualState x:Name="PointerOver">
+                                                <Storyboard>
+                                                    <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <PointerDownThemeAnimation TargetName="content"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="PressedSelected">
+                                                <Storyboard>
+                                                    <PointerDownThemeAnimation TargetName="content" />
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    <ContentPresenter x:Name="content"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal" ItemWidth="250"></ItemsWrapGrid>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border Padding="10" Height="100" Background="#FFFFFF">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+
+                            <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
+
+                            <TextBlock Text="{Binding Name}" MaxHeight="40" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
+
+                            <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="40" 
+                                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 10 0 0"
+                                           Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="DefaultListViewItemStyle" TargetType="ListViewItem">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -112,5 +192,13 @@
         <Setter Property="Width" Value="40"/>
         <Setter Property="Height" Value="40"/>
         <Setter Property="Stretch" Value="UniformToFill"/>
+    </Style>
+
+    <Style x:Key="LoadingProgressRingStyle" TargetType="ProgressRing">
+        <Setter Property="Width" Value="80"/>
+        <Setter Property="Height" Value="80"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Foreground" Value="{StaticResource HighlightForeground}"/>
     </Style>
 </ResourceDictionary>

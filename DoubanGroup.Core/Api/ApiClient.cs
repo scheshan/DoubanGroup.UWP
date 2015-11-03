@@ -47,12 +47,12 @@ namespace DoubanGroup.Core.Api
         /// <summary>
         /// 常规的Api Host
         /// </summary>
-        private static readonly Uri NORMAL_API_HOST = new Uri("http://api.douban.com/v2/group/", UriKind.Absolute);
+        private static readonly Uri NORMAL_API_HOST = new Uri("http://api.douban.com/v2/", UriKind.Absolute);
 
         /// <summary>
         /// 需要SSL加密的Api Host
         /// </summary>
-        private static readonly Uri SSL_API_HOST = new Uri("https://api.douban.com/v2/group/", UriKind.Absolute);
+        private static readonly Uri SSL_API_HOST = new Uri("https://api.douban.com/v2/", UriKind.Absolute);
 
         #endregion
 
@@ -80,10 +80,10 @@ namespace DoubanGroup.Core.Api
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "api-client/2.0 com.douban.group");
 
-            if (AccessToken != null)
+            if (this.AccessTokenProvider?.AccessToken != null)
             {
                 client.BaseAddress = SSL_API_HOST;
-                client.DefaultRequestHeaders.Add("Authorization", string.Format($"Bearer {AccessToken}"));
+                client.DefaultRequestHeaders.Add("Authorization", string.Format($"Bearer {this.AccessTokenProvider.AccessToken}"));
             }
             else
             {
@@ -175,6 +175,8 @@ namespace DoubanGroup.Core.Api
         /// <exception cref="ApiException"></exception>
         private async Task<T> Post<T>(string url, Parameters parameters)
         {
+            url = this.BuildUrl(url, null);
+
             using (var client = this.CreateClient())
             {
                 HttpResponseMessage response;
@@ -194,32 +196,11 @@ namespace DoubanGroup.Core.Api
 
         #endregion
 
-        /// <summary>
-        /// 保存的AccessToken
-        /// </summary>
-        private static string AccessToken { get; set; }
+        private IAccessTokenProvider AccessTokenProvider { get; set; }
 
-        /// <summary>
-        /// 设置AccessToken
-        /// 登录成功后，通过此方法设置AccessToken，才能调用需要认证的接口
-        /// </summary>
-        /// <param name="accessToken"></param>
-        public static void SetAccessToken(string accessToken)
+        public ApiClient(IAccessTokenProvider accessTokenProvider)
         {
-            if (string.IsNullOrWhiteSpace(accessToken))
-            {
-                throw new ArgumentNullException("accessToken");
-            }
-            AccessToken = accessToken;
-        }
-
-        /// <summary>
-        /// 清除AccessToken
-        /// 注销登录后，需要通过此方法清除AccessToken
-        /// </summary>
-        public static void ClearAccessToken()
-        {
-            AccessToken = null;
+            this.AccessTokenProvider = accessTokenProvider;
         }
 
         /// <summary>
@@ -247,7 +228,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<List<Channel>> GetChannelList()
         {
-            string url = "channels";
+            string url = "group/channels";
 
             return await this.Get<List<Channel>>(url, null);
         }
@@ -259,7 +240,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<GroupList> GetGroupByChannel(string channel)
         {
-            string url = $"channels/{channel}/groups";
+            string url = $"group/channels/{channel}/groups";
 
             return await this.Get<GroupList>(url, null);
         }
@@ -273,7 +254,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<ChannelTopicList> GetTopicByChannel(string channel, int start, int count)
         {
-            string url = $"channels/{channel}/topics";
+            string url = $"group/channels/{channel}/topics";
 
             var para = new Parameters();
             para.Add("start", start.ToString());
@@ -291,7 +272,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<TopicList> GetTopicByGroup(long groupID, int start, int count)
         {
-            string url = $"{groupID}/topics";
+            string url = $"group/{groupID}/topics";
 
             var para = new Parameters();
             para.Add("start", start.ToString());
@@ -307,7 +288,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<Group> GetGroup(long groupID)
         {
-            string url = $"{groupID}/";
+            string url = $"group/{groupID}/";
 
             return await this.Get<Group>(url, null);
         }
@@ -321,7 +302,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<GroupMemberList> GetGroupMembers(long groupID, int start, int count)
         {
-            string url = $"{groupID}/members";
+            string url = $"group/{groupID}/members";
 
             var para = new Parameters();
             para.Add("start", start.ToString());
@@ -339,7 +320,7 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<CommentList> GetCommentList(long topicID, int start, int count)
         {
-            string url = $"topic/{topicID}/comments";
+            string url = $"group/topic/{topicID}/comments";
 
             var para = new Parameters();
             para.Add("start", start.ToString());
@@ -355,9 +336,169 @@ namespace DoubanGroup.Core.Api
         /// <returns></returns>
         public async Task<Topic> GetTopic(long topicID)
         {
-            string url = $"topic/{topicID}/";
+            string url = $"group/topic/{topicID}/";
 
             return await this.Get<Topic>(url, null);
+        }
+
+        /// <summary>
+        /// 得到用户详细信息
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<UserDetail> GetUserDetail(long userID, int count)
+        {
+            string url = $"group/user/{userID}/";
+
+            var para = new Parameters();
+
+            List<string> fields = new List<string>();
+            fields.Add("rec_topic_count");
+            fields.Add("like_topic_count");
+            fields.Add("join_group_count");
+            fields.Add("join_groups");
+            fields.Add("album_count");
+            fields.Add("user");
+
+            para.Add("fields", string.Join(",", fields.ToArray()));
+            para.Add("count", count.ToString());
+
+            return await this.Get<UserDetail>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户加入的小组列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<GroupList> GetUserJoinedGroups(long userID, int start, int count)
+        {
+            string url = $"group/people/{userID}/joined_groups";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<GroupList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户管理的小组列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<GroupList> GetUserManagedGroups(long userID, int start, int count)
+        {
+            string url = $"group/people/{userID}/managed_groups";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<GroupList>(url, para);
+        }
+
+        /// <summary>
+        /// 加入小组
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public async Task JoinGroup(long groupID)
+        {
+            string url = $"group/{groupID}/join";
+            var para = new Parameters();
+            para.Add("type", "join");
+
+            await this.Post<object>(url, para);
+        }
+
+        /// <summary>
+        /// 退出小组
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <returns></returns>
+        public async Task QuitGroup(long groupID)
+        {
+            string url = $"group/{groupID}/join";
+            var para = new Parameters();
+            para.Add("type", "quit");
+
+            await this.Post<object>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户首页主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<UserTopicList> GetUserTopics(int start, int count)
+        {
+            string url = "group/user_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<UserTopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户喜欢的主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetLikedTopis(int start, int count)
+        {
+            string url = "group/liked_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 关注用户
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public async Task<User> FollowUser(long userID)
+        {
+            string url = $"user/{userID}/follow";
+
+            return await this.Post<User>(url, null);
+        }
+
+        /// <summary>
+        /// 喜欢主题
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <returns></returns>
+        public async Task<object> LikeTopic(long topicID)
+        {
+            string url = $"group/topic/{topicID}/like";
+
+            return await this.Post<object>(url, null);
+        }
+
+        /// <summary>
+        /// 取消喜欢主题
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <returns></returns>
+        public async Task<object> DislikeTopic(long topicID)
+        {
+            string url = $"group/topic/{topicID}/remove_like";
+
+            return await this.Post<object>(url, null);
         }
     }
 }

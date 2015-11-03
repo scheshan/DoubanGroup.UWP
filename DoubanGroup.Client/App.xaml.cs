@@ -20,6 +20,11 @@ using Microsoft.Practices.Unity;
 using DoubanGroup.Core.Api.Entity;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using DoubanGroup.Core.Api;
+using Prism.Mvvm;
+using DoubanGroup.Client.Controls;
+using DoubanGroup.Client.CacheItem;
+using AutoMapper;
 
 namespace DoubanGroup.Client
 {
@@ -45,10 +50,24 @@ namespace DoubanGroup.Client
         {
             base.ConfigureViewModelLocator();
 
-            Prism.Mvvm.ViewModelLocationProvider.Register(typeof(Controls.ChannelDetail).FullName, () =>
+            ViewModelLocationProvider.Register(typeof(ChannelDetail).FullName, () =>
             {
                 return this.Container.Resolve<ViewModels.ChannelDetailViewModel>();
             });
+            ViewModelLocationProvider.Register(typeof(Shell).FullName, () =>
+            {
+                return this.Container.Resolve<ViewModels.ShellViewModel>();
+            });
+        }
+
+        protected override void ConfigureContainer()
+        {
+            base.ConfigureContainer();
+
+            var currentUserViewModel = this.Container.Resolve<ViewModels.CurrentUserViewModel>();
+
+            this.Container.RegisterInstance<IAccessTokenProvider>(currentUserViewModel);
+            this.Container.RegisterInstance(currentUserViewModel);
         }
 
         protected override void OnRegisterKnownTypesForSerialization()
@@ -64,6 +83,18 @@ namespace DoubanGroup.Client
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Debug.Write(e.Exception);
+        }
+
+        protected override async Task OnInitializeAsync(IActivatedEventArgs args)
+        {
+            //注册AutoMapper
+            Mapper.CreateMap<Topic, TopicCacheInfo>().ForMember(t => t.Content, t =>
+            {
+                t.MapFrom(j => j.ShortContent);
+            });
+            Mapper.CreateMap<TopicCacheInfo, Topic>();
+
+            await base.OnInitializeAsync(args);
         }
     }
 }

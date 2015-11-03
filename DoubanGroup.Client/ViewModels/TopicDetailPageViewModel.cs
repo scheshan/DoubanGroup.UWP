@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Prism.Windows.Navigation;
+using Prism.Commands;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -31,6 +32,14 @@ namespace DoubanGroup.Client.ViewModels
         }
 
         private long TopicID { get; set; }
+
+        private bool _liked;
+
+        public bool Liked
+        {
+            get { return _liked; }
+            set { this.SetProperty(ref _liked, value); }
+        }
 
         public ObservableCollection<Comment> PopularCommentList { get; private set; }
 
@@ -61,6 +70,10 @@ namespace DoubanGroup.Client.ViewModels
             this.LoadComments();
         }
 
+        /// <summary>
+        /// 加载评论
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadComments()
         {
             if (this.IsLoading)
@@ -78,6 +91,11 @@ namespace DoubanGroup.Client.ViewModels
             if (commentList.Total % PageSize > 0)
             {
                 totalPage++;
+            }
+
+            if (totalPage == 0)
+            {
+                totalPage = 1;
             }
 
             this.TotalPage = totalPage;
@@ -108,30 +126,87 @@ namespace DoubanGroup.Client.ViewModels
             this.OnPropertyChanged(() => this.HasPopularComments);
         }
 
-        private async Task<IEnumerable<Comment>> LoadComments(uint count)
-        {
-            this.IsLoading = true;
-
-            var commentList = await this.ApiClient.GetCommentList(this.TopicID, this.CommentList.Count, 30);
-
-            this.IsLoading = false;
-
-            if (this.PopularCommentList.Count == 0)
-            {
-                foreach (var comment in commentList.PopularComments)
-                {
-                    this.PopularCommentList.Add(comment);
-                }
-            }
-
-            return commentList.Comments;
-        }
-
+        /// <summary>
+        /// 加载主题
+        /// </summary>
+        /// <returns></returns>
         private async Task LoadTopic()
         {
             var topic = await this.ApiClient.GetTopic(this.TopicID);
 
             this.Topic = topic;
+
+            this.Liked = this.Topic.Liked;
+        }
+
+        private DelegateCommand _likeTopicCommand;
+
+        public DelegateCommand LikeTopicCommand
+        {
+            get
+            {
+                if (_likeTopicCommand == null)
+                {
+                    _likeTopicCommand = new DelegateCommand(LikeTopic);
+                }
+                return _likeTopicCommand;
+            }
+        }
+
+        private async void LikeTopic()
+        {
+            if (!await this.RequireLogin())
+            {
+                return;
+            }
+
+            if (this.IsLoading)
+            {
+                return;
+            }
+
+            this.IsLoading = true;
+
+            await this.ApiClient.LikeTopic(this.TopicID);
+            this.Liked = true;
+            this.Topic.Liked = true;
+
+            this.IsLoading = false;
+        }
+
+        private DelegateCommand _dislikeTopicCommand;
+
+        public DelegateCommand DislikeTopicCommand
+        {
+            get
+            {
+                if (_dislikeTopicCommand == null)
+                {
+                    _dislikeTopicCommand = new DelegateCommand(DislikeTopic);
+                }
+                return _dislikeTopicCommand;
+            }
+        }
+
+        private async void DislikeTopic()
+        {
+            if (!await this.RequireLogin())
+            {
+                return;
+            }
+
+            if (this.IsLoading)
+            {
+                return;
+            }
+
+            this.IsLoading = true;
+
+            await this.ApiClient.DislikeTopic(this.TopicID);
+            this.Liked = false;
+            this.Topic.Liked = false;
+
+            this.IsLoading = false;
         }
     }
 }

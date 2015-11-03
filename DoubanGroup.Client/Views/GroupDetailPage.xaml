@@ -12,84 +12,44 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
-
+    
     <Page.BottomAppBar>
-        <CommandBar>
+        <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
             <AppBarButton Icon="People" Label="查看成员" Command="{Binding ViewMembersCommand}"></AppBarButton>
-            <AppBarButton Icon="AddFriend" Label="加入小组"></AppBarButton>
-            <AppBarButton Icon="BlockContact" Label="退出小组" Visibility="Collapsed"></AppBarButton>
+            <AppBarButton Command="{Binding JoinGroupCommand}" Icon="AddFriend" Label="加入小组" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}"></AppBarButton>
+            <AppBarButton Command="{Binding QuitGroupCommand}" Icon="BlockContact" Label="退出小组" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}"></AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
 
-    <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10">
-        <i:Interaction.Behaviors>
-            <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
-            <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
-        </i:Interaction.Behaviors>
+    <Grid>
+        <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
+            <i:Interaction.Behaviors>
+                <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
+            </i:Interaction.Behaviors>
 
-        <GridView.Header>
-            <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <Grid Width="120" Height="120" Margin="0 0 10 0">
-                    <Image Source="{Binding Group.Avatar}" />
-                    <Image Source="{Binding Group.LargeAvatar}" />
-                </Grid>                
-
-                <StackPanel Grid.Column="1">
-                    <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
-
-                    <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="65" Style="{StaticResource SecondaryTextBlockStyle}"/>
-                </StackPanel>
-            </Grid>
-        </GridView.Header>
-        
-        <GridView.ItemTemplate>
-            <DataTemplate>
-                <Grid Padding="10 0" Background="#FFFFFF">
+            <GridView.Header>
+                <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
 
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
-
-                        <TextBlock Grid.Row="1" Margin="0 10 0 0" Text="{Binding ShortContent}" Foreground="#666666" Height="40" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}"/>
-                        
+                    <Grid Width="120" Height="120" Margin="0 0 10 0">
+                        <Image Source="{Binding Group.Avatar}" />
+                        <Image Source="{Binding Group.LargeAvatar}" />
                     </Grid>
 
-                    <Image Visibility="{Binding Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="60" Height="60" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Avatar.Alt}">
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                    </Image>
-                    
-                    <Grid Grid.Row="1" Grid.ColumnSpan="2">
-                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                            <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Author.Name}"/>
-                            <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Updated, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0"/>
-                        </StackPanel>
-
-                        <TextBlock HorizontalAlignment="Right" Style="{StaticResource SecondaryTextBlockStyle}">
-                            <Run Text="{Binding CommentsCount}"/>
-                            <Run Text="人回应"/>
-                        </TextBlock>
-                    </Grid>
+                        <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="65" Style="{StaticResource SecondaryTextBlockStyle}"/>
+                    </StackPanel>
                 </Grid>
-            </DataTemplate>
-        </GridView.ItemTemplate>
-    </GridView>
+            </GridView.Header>
+        </GridView>
+
+        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
+    </Grid>
 </Page>

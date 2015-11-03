@@ -32,6 +32,7 @@
               ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" ItemTemplate="{StaticResource UserDataTemplate}">
         <i:Interaction.Behaviors>
             <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+            <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
         </i:Interaction.Behaviors>
         <GridView.ItemsPanel>
             <ItemsPanelTemplate>
@@ -49,6 +50,7 @@
                 <GridView Margin="0 10 0 0" ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" SelectionMode="None" IsItemClickEnabled="True">
                     <i:Interaction.Behaviors>
                         <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
                     </i:Interaction.Behaviors>
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -64,6 +66,7 @@
                           ItemTemplate="{StaticResource UserDataTemplate}" SelectionMode="None" IsItemClickEnabled="True">
                     <i:Interaction.Behaviors>
                         <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
                     </i:Interaction.Behaviors>
                     <GridView.ItemsPanel>
                         <ItemsPanelTemplate>

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DoubanGroup.Client</RootNamespace>
     <AssemblyName>DoubanGroup.Client</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
+    <DefaultLanguage>zh-CN</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
     <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
@@ -17,7 +17,12 @@
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>DoubanGroup.Client_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>DoubanGroup.Client_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>F4FE3D511F80D431D409D0509EABD2583A1990C4</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -93,6 +98,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="DoubanGroup.Client_StoreKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +109,7 @@
     <Compile Include="Behaviors\GridViewItemFitWidthBehavior.cs" />
     <Compile Include="Behaviors\ItemClickBehavior.cs" />
     <Compile Include="Behaviors\TopicContentBehavior.cs" />
+    <Compile Include="CacheItem\TopicCacheInfo.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ViewGroupCommand.cs" />
     <Compile Include="Commands\ViewTopicCommand.cs" />
@@ -113,13 +120,24 @@
     <Compile Include="Controls\CommentListStyleSelector.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
+    <Compile Include="Converters\InverseConverter.cs" />
     <Compile Include="Converters\InverseToVisibilityConverter.cs" />
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="DesignData\ChannelDetailData.cs" />
     <Compile Include="DesignData\GroupDetailData.cs" />
     <Compile Include="DesignData\HomePageData.cs" />
+    <Compile Include="DesignData\MyGroupData.cs" />
     <Compile Include="DesignData\TopicDetailData.cs" />
+    <Compile Include="DesignData\UserDetailData.cs" />
+    <Compile Include="Events\JoinGroupEvent.cs" />
+    <Compile Include="Events\QuitGroupEvent.cs" />
+    <Compile Include="Extensions\ApplicationDataContainerExtensions.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
+    <Compile Include="Extensions\ISessionStateServiceExtensions.cs" />
+    <Compile Include="Service\FileCacheService.cs" />
+    <Compile Include="Service\ICacheService.cs" />
+    <Compile Include="ViewModels\CurrentUserViewModel.cs" />
     <Compile Include="Models\IncrementalLoadingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shell.xaml.cs">
@@ -127,11 +145,18 @@
     </Compile>
     <Compile Include="ViewModels\ChannelDetailViewModel.cs" />
     <Compile Include="ViewModels\CommentListViewModel.cs" />
+    <Compile Include="ViewModels\DialogViewModelBase.cs" />
     <Compile Include="ViewModels\GroupDetailPageViewModel.cs" />
     <Compile Include="DesignData\GroupMembersData.cs" />
     <Compile Include="ViewModels\GroupMembersPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
+    <Compile Include="ViewModels\LoginPageViewModel.cs" />
+    <Compile Include="ViewModels\MyGroupPageViewModel.cs" />
+    <Compile Include="ViewModels\MyLikePageViewModel.cs" />
+    <Compile Include="ViewModels\MyTopicPageViewModel.cs" />
+    <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
+    <Compile Include="ViewModels\UserDetailPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\GroupDetailPage.xaml.cs">
       <DependentUpon>GroupDetailPage.xaml</DependentUpon>
@@ -141,6 +166,21 @@
     </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyGroupPage.xaml.cs">
+      <DependentUpon>MyGroupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyLikePage.xaml.cs">
+      <DependentUpon>MyLikePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyPage.xaml.cs">
+      <DependentUpon>MyPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyTopicPage.xaml.cs">
+      <DependentUpon>MyTopicPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TopicDetailPage.xaml.cs">
       <DependentUpon>TopicDetailPage.xaml</DependentUpon>
@@ -156,14 +196,14 @@
     <None Include="DoubanGroup.Client_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\logo-150.png" />
+    <Content Include="Assets\logo-44.png" />
+    <Content Include="Assets\logo-50.png" />
+    <Content Include="Assets\logo-71.png" />
+    <Content Include="Assets\logo-75.png" />
+    <Content Include="Assets\splash.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
-    <Content Include="Assets\LockScreenLogo.scale-200.png" />
-    <Content Include="Assets\SplashScreen.scale-200.png" />
-    <Content Include="Assets\Square150x150Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.scale-200.png" />
-    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
-    <Content Include="Assets\StoreLogo.png" />
-    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -177,6 +217,11 @@
     <Page Include="Shell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DataTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Themes\Styles.xaml">
       <SubType>Designer</SubType>
@@ -192,6 +237,26 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\HomePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyLikePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyTopicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

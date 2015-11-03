@@ -5,9 +5,13 @@
     xmlns:local="using:DoubanGroup.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:mvvm="using:Prism.Windows.Mvvm"
     mc:Ignorable="d"
     d:DesignHeight="720"
-    d:DesignWidth="1280">
+    d:DesignWidth="1280"
+    mvvm:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource TextBlockButtonStyle}" x:Key="HamburgerButtonStyle">
             <Setter Property="Foreground" Value="#666666"/>
@@ -22,24 +26,127 @@
         </Style>
     </UserControl.Resources>
 
-    <SplitView PaneBackground="#f0f6f3" OpenPaneLength="250" CompactPaneLength="48" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="False">
+    <SplitView Name="sv_container" PaneBackground="#f0f6f3" OpenPaneLength="200" CompactPaneLength="48" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="{Binding IsPaneOpen}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="WideGroups">
+                <VisualState x:Name="LargeScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="800"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="sv_container.DisplayMode" Value="CompactInline"/>
+                    </VisualState.Setters>
+                </VisualState>
+                <VisualState x:Name="SmallScreen">
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="0"/>
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="sv_container.DisplayMode" Value="CompactOverlay"/>
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <SplitView.Pane>
-            <StackPanel>
-                <Button Style="{StaticResource ConfigButtonStyle}" HorizontalAlignment="Left">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Button Command="{Binding TogglePaneCommand}" Name="btnTogglePan" Style="{StaticResource ConfigButtonStyle}" HorizontalAlignment="Left">
                     <FontIcon Glyph="&#xE700;"></FontIcon>
                 </Button>
-                <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <FontIcon Glyph="&#xE700;"></FontIcon>
 
-                        <TextBlock Grid.Column="1" Margin="15 0 0 0">设置</TextBlock>
-                    </Grid>
-                </Button>
-            </StackPanel>
+                <StackPanel Grid.Row="1">
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="Home">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE80F;"></FontIcon>
+
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0">推荐内容</TextBlock>
+                        </Grid>
+                    </Button>
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="My"
+                            Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE77B;"></FontIcon>
+
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0">我的首页</TextBlock>
+                        </Grid>
+                    </Button>
+
+                    <Rectangle Margin="0 10" Fill="#CCCCCC" Height="1"/>
+
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE897;"></FontIcon>
+
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0">关于</TextBlock>
+                        </Grid>
+                    </Button>
+                </StackPanel>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource HamburgerButtonStyle}" 
+                            HorizontalAlignment="Stretch" Command="{Binding LoginCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE8FA;"></FontIcon>
+
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0">登录</TextBlock>
+                        </Grid>
+                    </Button>
+
+                    <Button Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}" Style="{StaticResource HamburgerButtonStyle}" 
+                            HorizontalAlignment="Stretch" Command="{Binding LogOffCommand}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Width="20" Height="20" Source="{Binding CurrentUser.User.Avatar}"/>
+
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0" VerticalAlignment="Center" Text="{Binding CurrentUser.User.Name}"/>
+                        </Grid>
+                    </Button>
+                    
+                    <Button Name="btnConfig" Grid.Column="1" HorizontalAlignment="Left" Width="50" Height="50" Style="{StaticResource HamburgerButtonStyle}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <FontIcon Glyph="&#xE713;"></FontIcon>
+                        </Grid>
+                    </Button>
+                </Grid>
+            </Grid>
         </SplitView.Pane>
 
         <Grid>

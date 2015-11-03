@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="DoubanGroup.Client.Views.MyGroupPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DoubanGroup.Client.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:behavior="using:DoubanGroup.Client.Behaviors"
+    xmlns:mvvm="using:Prism.Windows.Mvvm"
+    mvvm:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
+
+    <GridView Style="{StaticResource GroupGridViewStyle}" Background="{StaticResource DefaultBackground}" Padding="20 10" ItemsSource="{Binding CurrentUser.JoinedGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
+        <i:Interaction.Behaviors>
+            <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
+            <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+        </i:Interaction.Behaviors>
+
+        <GridView.Header>
+            <TextBlock Text="加入的小组" Style="{StaticResource SubtitleTextBlockStyle}"/>
+        </GridView.Header>
+    </GridView>
+</Page>
