@@ -124,7 +124,7 @@
                     </Button>
 
                     <Button Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}" Style="{StaticResource HamburgerButtonStyle}" 
-                            HorizontalAlignment="Stretch">
+                            HorizontalAlignment="Stretch" Command="{Binding LogOffCommand}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>

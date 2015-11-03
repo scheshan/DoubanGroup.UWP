@@ -84,8 +84,6 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        public bool IsJoining { get; set; }
-
         private void ViewMembers()
         {
             this.NavigationService.Navigate("GroupMembers", this.GroupID);
@@ -107,25 +105,17 @@ namespace DoubanGroup.Client.ViewModels
 
         private async void JoinGroup()
         {
-            if (!this.CurrentUser.IsLogin)
+            if (!await this.RequireLogin())
             {
-                var vm = new LoginPageViewModel();
-
-                var result = await vm.Show();
-
-                if (!result)
-                {
-                    return;
-                }
-            }
-
-            if (this.IsJoining)
-            {
-                this.Alert("操作尚未完成，请稍候");
                 return;
             }
 
-            this.IsJoining = true;
+            if (this.IsLoading)
+            {
+                return;
+            }
+
+            this.IsLoading = true;
 
             if (this.Group.JoinType == "A")
             {
@@ -145,7 +135,7 @@ namespace DoubanGroup.Client.ViewModels
 
             }
 
-            this.IsJoining = false;
+            this.IsLoading = false;
         }
 
         private DelegateCommand _quitGroupCommand;
@@ -164,21 +154,13 @@ namespace DoubanGroup.Client.ViewModels
 
         private async void QuitGroup()
         {
-            if (!this.CurrentUser.IsLogin)
+            if (!await this.RequireLogin())
             {
-                var vm = new LoginPageViewModel();
-
-                var result = await vm.Show();
-
-                if (!result)
-                {
-                    return;
-                }
+                return;
             }
 
-            if (this.IsJoining)
+            if (this.IsLoading)
             {
-                this.Alert("操作尚未完成，请稍候");
                 return;
             }
 
@@ -187,7 +169,7 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            this.IsJoining = true;
+            this.IsLoading = true;
 
             try
             {
@@ -200,7 +182,7 @@ namespace DoubanGroup.Client.ViewModels
                 this.Alert(ex.Message);
             }
 
-            this.IsJoining = false;
+            this.IsLoading = false;
         }
     }
 }

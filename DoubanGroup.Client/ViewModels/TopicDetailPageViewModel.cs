@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Prism.Windows.Navigation;
+using Prism.Commands;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -31,6 +32,14 @@ namespace DoubanGroup.Client.ViewModels
         }
 
         private long TopicID { get; set; }
+
+        private bool _liked;
+
+        public bool Liked
+        {
+            get { return _liked; }
+            set { this.SetProperty(ref _liked, value); }
+        }
 
         public ObservableCollection<Comment> PopularCommentList { get; private set; }
 
@@ -137,6 +146,44 @@ namespace DoubanGroup.Client.ViewModels
             var topic = await this.ApiClient.GetTopic(this.TopicID);
 
             this.Topic = topic;
+
+            this.Liked = this.Topic.Liked;
+        }
+
+        private DelegateCommand _likeTopicCommand;
+
+        public DelegateCommand LikeTopicCommand
+        {
+            get
+            {
+                if (_likeTopicCommand == null)
+                {
+                    _likeTopicCommand = new DelegateCommand(LikeTopic);
+                }
+                return _likeTopicCommand;
+            }
+        }
+
+        private void LikeTopic()
+        {
+        }
+
+        private DelegateCommand _dislikeTopicCommand;
+
+        public DelegateCommand DislikeTopicCommand
+        {
+            get
+            {
+                if (_dislikeTopicCommand == null)
+                {
+                    _dislikeTopicCommand = new DelegateCommand(DislikeTopic);
+                }
+                return _dislikeTopicCommand;
+            }
+        }
+
+        private void DislikeTopic()
+        {
         }
     }
 }

@@ -13,13 +13,13 @@
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:UserDetailData, IsDesignTimeCreatable=True}">
     
-    <Page.BottomAppBar>
+    <!--<Page.BottomAppBar>
         <CommandBar>
             <AppBarButton Label="关注" Icon="AddFriend"/>
             <AppBarButton Label="取消关注" Icon="BlockContact"/>
             <AppBarButton Label="固定到首页" Icon="Pin"/>
         </CommandBar>
-    </Page.BottomAppBar>    
+    </Page.BottomAppBar>-->    
 
     <ScrollViewer Background="{StaticResource DefaultBackground}">
         <StackPanel Padding="20 10">

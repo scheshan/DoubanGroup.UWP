@@ -101,5 +101,16 @@ namespace DoubanGroup.Client.ViewModels
 
             return dialog;
         }
+
+        protected async Task<bool> RequireLogin()
+        {
+            if (this.CurrentUser.IsLogin)
+            {
+                return true;
+            }
+
+            var vm = new LoginPageViewModel();
+            return await vm.Show();
+        }
     }
 }

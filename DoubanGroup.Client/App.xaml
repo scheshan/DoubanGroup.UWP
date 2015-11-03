@@ -20,6 +20,7 @@
             <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
             <converters:InverseToVisibilityConverter x:Key="InverseToVisibilityConverter"/>
             <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+            <converters:InverseConverter x:Key="InverseConverter"/>
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml"/>

@@ -51,10 +51,14 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        private void Login()
+        private async void Login()
         {
             var vm = new LoginPageViewModel();
-            vm.Show();
+            if (await vm.Show())
+            {
+                this.NavigationService.ClearHistory();
+                this.NavigationService.Navigate("My", null);
+            }
         }
 
         private DelegateCommand<string> _navigateCommand;
@@ -74,6 +78,30 @@ namespace DoubanGroup.Client.ViewModels
         private void Navigate(string parameter)
         {
             this.NavigationService.Navigate(parameter.ToString(), null);
+        }
+
+        private DelegateCommand _logOffCommand;
+
+        public DelegateCommand LogOffCommand
+        {
+            get
+            {
+                if (_logOffCommand == null)
+                {
+                    _logOffCommand = new DelegateCommand(LogOff);
+                }
+                return _logOffCommand;
+            }
+        }
+
+        private async void LogOff()
+        {
+            if (await this.Confirm("确认退出当前账号?"))
+            {
+                this.CurrentUser.LogOff();
+                this.NavigationService.ClearHistory();
+                this.NavigationService.Navigate("Home", null);
+            }
         }
     }
 }
