@@ -416,5 +416,22 @@ namespace DoubanGroup.Core.Api
 
             await this.Post<object>(url, para);
         }
+
+        /// <summary>
+        /// 得到用户首页主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<UserTopicList> GetUserTopics(int start, int count)
+        {
+            string url = "user_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<UserTopicList>(url, para);
+        }
     }
 }

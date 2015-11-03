@@ -19,8 +19,7 @@
         
     </Page.Resources>
 
-    <Grid>
-        <Pivot ItemsSource="{Binding ChannelList}">
+    <Pivot ItemsSource="{Binding ChannelList}">
             <Pivot.Resources>
                 <Style TargetType="PivotHeaderItem">
                     <Setter Property="FontSize" Value="20" />
@@ -159,5 +158,5 @@
                 </DataTemplate>
             </Pivot.ItemTemplate>
         </Pivot>
-    </Grid>
+    
 </Page>
