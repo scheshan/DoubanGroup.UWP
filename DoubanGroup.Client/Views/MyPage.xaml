@@ -146,6 +146,5 @@
         <PivotItem Header="喜欢">
             <view:MyLikePage/>
         </PivotItem>
-        <PivotItem Header="足迹"></PivotItem>
     </Pivot>
 </Page>

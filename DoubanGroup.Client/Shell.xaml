@@ -72,7 +72,8 @@
                             <TextBlock Grid.Column="1" Margin="15 0 0 0">推荐内容</TextBlock>
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="My">
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="My"
+                            Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
