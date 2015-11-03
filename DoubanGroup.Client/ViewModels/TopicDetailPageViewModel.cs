@@ -80,6 +80,11 @@ namespace DoubanGroup.Client.ViewModels
                 totalPage++;
             }
 
+            if (totalPage == 0)
+            {
+                totalPage = 1;
+            }
+
             this.TotalPage = totalPage;
 
             if (this.TotalPage > this.CommentList.Count)
