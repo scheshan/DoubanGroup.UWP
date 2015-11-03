@@ -433,5 +433,22 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<UserTopicList>(url, para);
         }
+
+        /// <summary>
+        /// 得到用户喜欢的主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetLikedTopis(int start, int count)
+        {
+            string url = "liked_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
     }
 }

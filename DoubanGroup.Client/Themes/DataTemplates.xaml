@@ -39,4 +39,46 @@
             </Grid>
         </Border>
     </DataTemplate>
+
+    <DataTemplate x:Key="DefaultTopicItemTemplate">
+        <Grid Padding="10 0" Background="#FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+
+                <TextBlock Grid.Row="1" Margin="0 10 0 0" Text="{Binding ShortContent}" Foreground="#666666" Height="40" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}"/>
+
+            </Grid>
+
+            <Image Visibility="{Binding Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="60" Height="60" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Avatar.Alt}">
+
+            </Image>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Author.Name}"/>
+                    <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Updated, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0"/>
+                </StackPanel>
+
+                <TextBlock HorizontalAlignment="Right" Style="{StaticResource SecondaryTextBlockStyle}">
+                            <Run Text="{Binding CommentsCount}"/>
+                            <Run Text="人回应"/>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </DataTemplate>
 </ResourceDictionary>

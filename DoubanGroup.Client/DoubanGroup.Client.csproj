@@ -139,6 +139,7 @@
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MyGroupPageViewModel.cs" />
+    <Compile Include="ViewModels\MyLikePageViewModel.cs" />
     <Compile Include="ViewModels\MyTopicPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
@@ -158,6 +159,9 @@
     </Compile>
     <Compile Include="Views\MyGroupPage.xaml.cs">
       <DependentUpon>MyGroupPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyLikePage.xaml.cs">
+      <DependentUpon>MyLikePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
@@ -229,6 +233,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MyGroupPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MyLikePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

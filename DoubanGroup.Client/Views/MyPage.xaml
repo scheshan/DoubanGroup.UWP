@@ -143,7 +143,9 @@
         <PivotItem Header="小组">
             <view:MyGroupPage/>
         </PivotItem>
-        <PivotItem Header="喜欢"></PivotItem>
+        <PivotItem Header="喜欢">
+            <view:MyLikePage/>
+        </PivotItem>
         <PivotItem Header="足迹"></PivotItem>
     </Pivot>
 </Page>
