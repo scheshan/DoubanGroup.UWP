@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:view="using:DoubanGroup.Client.Views"
+    NavigationCacheMode="Required"
     mc:Ignorable="d">
 
     <Pivot ItemsSource="{Binding ChannelList}">
@@ -136,7 +137,9 @@
             </Style>
         </Pivot.ItemContainerStyle>
 
-        <PivotItem Header="主题"></PivotItem>
+        <PivotItem Header="主题">
+            <view:MyTopicPage/>
+        </PivotItem>
         <PivotItem Header="小组">
             <view:MyGroupPage/>
         </PivotItem>
