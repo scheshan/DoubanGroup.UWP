@@ -17,7 +17,12 @@
     <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>DoubanGroup.Client_TemporaryKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>DoubanGroup.Client_StoreKey.pfx</PackageCertificateKeyFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <AppxSymbolPackageEnabled>False</AppxSymbolPackageEnabled>
+    <AppxBundle>Always</AppxBundle>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <PackageCertificateThumbprint>F4FE3D511F80D431D409D0509EABD2583A1990C4</PackageCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -93,6 +98,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="DoubanGroup.Client_StoreKey.pfx" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
@@ -183,12 +189,13 @@
     <None Include="DoubanGroup.Client_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\logo-150.scale-100.png" />
-    <Content Include="Assets\logo-44.scale-100.png" />
-    <Content Include="Assets\logo-50.scale-150.png" />
-    <Content Include="Assets\logo-71.scale-100.png" />
+    <Content Include="Assets\logo-150.png" />
+    <Content Include="Assets\logo-44.png" />
+    <Content Include="Assets\logo-50.png" />
+    <Content Include="Assets\logo-71.png" />
     <Content Include="Assets\logo-75.png" />
     <Content Include="Assets\splash.png" />
+    <None Include="Package.StoreAssociation.xml" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
