@@ -109,6 +109,7 @@
     <Compile Include="Behaviors\GridViewItemFitWidthBehavior.cs" />
     <Compile Include="Behaviors\ItemClickBehavior.cs" />
     <Compile Include="Behaviors\TopicContentBehavior.cs" />
+    <Compile Include="CacheItem\TopicCacheInfo.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\ViewGroupCommand.cs" />
     <Compile Include="Commands\ViewTopicCommand.cs" />
@@ -132,6 +133,7 @@
     <Compile Include="Events\JoinGroupEvent.cs" />
     <Compile Include="Events\QuitGroupEvent.cs" />
     <Compile Include="Extensions\ApplicationDataContainerExtensions.cs" />
+    <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\ISessionStateServiceExtensions.cs" />
     <Compile Include="Service\FileCacheService.cs" />
     <Compile Include="Service\ICacheService.cs" />

@@ -21,14 +21,14 @@ namespace DoubanGroup.Client.Service
         public async Task<T> Get<T>(string key)
         {
             string fileName = this.GetFileName(key);
-            var file = await this.CacheFolder.GetFileAsync(fileName);
+            var file = await this.CacheFolder.TryGetItemAsync(fileName);            
 
-            if (file == null)
+            if (file == null || !file.IsOfType(StorageItemTypes.File))
             {
                 return default(T);
             }
 
-            string json = await FileIO.ReadTextAsync(file);
+            string json = await FileIO.ReadTextAsync((StorageFile)file);
 
             return JsonConvert.DeserializeObject<T>(json);
         }
@@ -37,7 +37,7 @@ namespace DoubanGroup.Client.Service
         {
             string fileName = this.GetFileName(key);
 
-            var file = await this.CacheFolder.GetFileAsync(fileName);
+            var file = await this.CacheFolder.TryGetItemAsync(fileName);
 
             if (file != null)
             {

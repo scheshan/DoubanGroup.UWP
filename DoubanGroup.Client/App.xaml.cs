@@ -23,6 +23,8 @@ using System.Diagnostics;
 using DoubanGroup.Core.Api;
 using Prism.Mvvm;
 using DoubanGroup.Client.Controls;
+using DoubanGroup.Client.CacheItem;
+using AutoMapper;
 
 namespace DoubanGroup.Client
 {
@@ -81,6 +83,18 @@ namespace DoubanGroup.Client
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Debug.Write(e.Exception);
+        }
+
+        protected override async Task OnInitializeAsync(IActivatedEventArgs args)
+        {
+            //注册AutoMapper
+            Mapper.CreateMap<Topic, TopicCacheInfo>().ForMember(t => t.Content, t =>
+            {
+                t.MapFrom(j => j.ShortContent);
+            });
+            Mapper.CreateMap<TopicCacheInfo, Topic>();
+
+            await base.OnInitializeAsync(args);
         }
     }
 }

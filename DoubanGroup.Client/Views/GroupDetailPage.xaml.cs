@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using DoubanGroup.Client.Extensions;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -25,6 +26,24 @@ namespace DoubanGroup.Client.Views
         public GroupDetailPage()
         {
             this.InitializeComponent();
+
+            this.Loaded += GroupDetailPage_Loaded;
+        }
+
+        private void GroupDetailPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var sv = gvList.FindByName<ScrollViewer>("ScrollViewer");
+        }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+            
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
         }
     }
 }

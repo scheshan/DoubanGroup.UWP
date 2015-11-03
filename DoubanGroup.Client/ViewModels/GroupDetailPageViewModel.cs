@@ -9,6 +9,7 @@ using DoubanGroup.Client.Models;
 using DoubanGroup.Core.Api;
 using Prism.Commands;
 using Windows.UI.Xaml.Navigation;
+using DoubanGroup.Client.CacheItem;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -66,7 +67,10 @@ namespace DoubanGroup.Client.ViewModels
             base.OnNavigatingFrom(e, viewModelState, suspending);
 
             this.Cache.Set(this.GetGroupCacheKey(), this.Group);
-            this.Cache.Set(this.GetTopicListCacheKey(), this.TopicList.ToList());
+
+            var topicList = AutoMapper.Mapper.Map<List<TopicCacheInfo>>(this.TopicList.ToList());
+
+            this.Cache.Set(this.GetTopicListCacheKey(), topicList);
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
@@ -92,11 +96,11 @@ namespace DoubanGroup.Client.ViewModels
 
             this.Group = await this.Cache.Get<Group>(this.GetGroupCacheKey());
 
-            var topicList = await this.Cache.Get<List<Topic>>(this.GetTopicListCacheKey());
+            var topicList = await this.Cache.Get<List<TopicCacheInfo>>(this.GetTopicListCacheKey());
 
             foreach (var topic in topicList)
             {
-                this.TopicList.Add(topic);
+                this.TopicList.Add(AutoMapper.Mapper.Map<Topic>(topic));
             }
 
             this.TopicList.HasMore();
