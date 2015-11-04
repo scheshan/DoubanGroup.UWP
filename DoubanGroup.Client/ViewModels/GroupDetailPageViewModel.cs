@@ -56,21 +56,6 @@ namespace DoubanGroup.Client.ViewModels
             {
                 this.LoadGroup();
             }
-            else
-            {
-                //await this.LoadGroupFromCache();
-            }
-        }
-
-        public override void OnNavigatingFrom(NavigatingFromEventArgs e, Dictionary<string, object> viewModelState, bool suspending)
-        {
-            base.OnNavigatingFrom(e, viewModelState, suspending);
-
-            this.Cache.Set(this.GetGroupCacheKey(), this.Group);
-
-            var topicList = AutoMapper.Mapper.Map<List<TopicCacheInfo>>(this.TopicList.ToList());
-
-            this.Cache.Set(this.GetTopicListCacheKey(), topicList);
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
@@ -88,22 +73,6 @@ namespace DoubanGroup.Client.ViewModels
         {
             var group = await this.ApiClient.GetGroup(this.GroupID);
             this.Group = group;            
-        }
-
-        private async Task LoadGroupFromCache()
-        {
-            this.TopicList.NoMore();
-
-            this.Group = await this.Cache.Get<Group>(this.GetGroupCacheKey());
-
-            var topicList = await this.Cache.Get<List<TopicCacheInfo>>(this.GetTopicListCacheKey());
-
-            foreach (var topic in topicList)
-            {
-                this.TopicList.Add(AutoMapper.Mapper.Map<Topic>(topic));
-            }
-
-            this.TopicList.HasMore();
         }
 
         private DelegateCommand _viewMembersCommand;

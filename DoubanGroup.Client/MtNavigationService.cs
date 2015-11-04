@@ -72,7 +72,7 @@ namespace DoubanGroup.Client
                 Parameter = e.Parameter
             };
 
-            vm.OnNavigatingFrom(args, null, false);
+            vm.OnNavigatingFrom(args, null, false);            
         }
 
         private void RootFrame_Navigated(object sender, MtNavigationEventArgs e)
@@ -95,16 +95,30 @@ namespace DoubanGroup.Client
             };
 
             vm.OnNavigatedTo(args, null);
+
+            if (ui is MtPage)
+            {
+                var page = (MtPage)ui;
+
+                if (page.BottomAppBar != null)
+                {
+                    page.BottomAppBar.DataContext = vm;
+                }
+                if (page.TopAppBar != null)
+                {
+                    page.TopAppBar.DataContext = vm;
+                }
+            }
         }
 
         public bool CanGoBack()
         {
-            throw new NotImplementedException();
+            return this.RootFrame.CanGoBack;
         }
 
         public bool CanGoForward()
         {
-            throw new NotImplementedException();
+            return this.RootFrame.CanGoForward;
         }
 
         public void ClearHistory()
@@ -112,14 +126,14 @@ namespace DoubanGroup.Client
             throw new NotImplementedException();
         }
 
-        public void GoBack()
+        public async void GoBack()
         {
-            throw new NotImplementedException();
+            await this.RootFrame.GoBackAsync();
         }
 
-        public void GoForward()
+        public async void GoForward()
         {
-            throw new NotImplementedException();
+            await this.RootFrame.GoForwardAsync();
         }
 
         public bool Navigate(string pageToken, object parameter)

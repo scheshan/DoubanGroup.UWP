@@ -1,4 +1,4 @@
-﻿<mt:MtPage
+﻿<UserControl
     x:Class="DoubanGroup.Client.Views.MyLikePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,5 +18,5 @@
             <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
         </i:Interaction.Behaviors>
     </GridView>
-</mt:MtPage>
+</UserControl>
 
