@@ -8,6 +8,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:mvvm="using:Prism.Windows.Mvvm"
+    xmlns:mt="using:MyToolkit.Paging"
     mc:Ignorable="d"
     d:DesignHeight="720"
     d:DesignWidth="1280"
@@ -150,7 +151,9 @@
         </SplitView.Pane>
 
         <Grid>
-            <ContentPresenter HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Name="main_content"></ContentPresenter>
+            <ContentPresenter HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Name="main_content">
+                
+            </ContentPresenter>
         </Grid>
     </SplitView>
 </UserControl>

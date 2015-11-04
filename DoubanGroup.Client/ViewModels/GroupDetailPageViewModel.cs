@@ -58,7 +58,7 @@ namespace DoubanGroup.Client.ViewModels
             }
             else
             {
-                await this.LoadGroupFromCache();
+                //await this.LoadGroupFromCache();
             }
         }
 

@@ -1,6 +1,7 @@
-﻿<Page
+﻿<mt:MtPage
     x:Class="DoubanGroup.Client.Views.HomePage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:mt="using:MyToolkit.Paging"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DoubanGroup.Client.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -15,9 +16,6 @@
     Name="page"
     xmlns:controls="using:DoubanGroup.Client.Controls"
     mc:Ignorable="d" mvvm:ViewModelLocator.AutoWireViewModel="True">
-    <Page.Resources>
-        
-    </Page.Resources>
 
     <Pivot ItemsSource="{Binding ChannelList}">
             <Pivot.Resources>
@@ -159,4 +157,4 @@
             </Pivot.ItemTemplate>
         </Pivot>
     
-</Page>
+</mt:MtPage>

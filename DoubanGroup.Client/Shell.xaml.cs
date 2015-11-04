@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyToolkit.Paging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,11 +20,11 @@ namespace DoubanGroup.Client
 {
     public sealed partial class Shell : UserControl
     {
-        private Frame RootFrame { get; set; }
-
         private ViewModels.ShellViewModel ViewModel { get; set; }
 
-        public Shell(Frame rootFrame)
+        public MtFrame RootFrame { get; private set; }
+
+        public Shell(MtFrame rootFrame)
         {
             this.RootFrame = rootFrame;
 
@@ -35,6 +36,7 @@ namespace DoubanGroup.Client
         private void Shell_Loaded(object sender, RoutedEventArgs e)
         {
             this.main_content.Content = this.RootFrame;
+
             this.ViewModel = (ViewModels.ShellViewModel)this.DataContext;
 
             this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;

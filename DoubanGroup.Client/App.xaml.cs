@@ -26,35 +26,55 @@ using DoubanGroup.Client.Controls;
 using DoubanGroup.Client.CacheItem;
 using AutoMapper;
 using MyToolkit.Paging;
+using Prism.Windows.Navigation;
+using Prism.Events;
+using Windows.UI.Core;
 
 namespace DoubanGroup.Client
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : PrismUnityApplication
+    sealed partial class App : MtApplication
     {
-        protected override Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
-        {
-            this.NavigationService.Navigate("Home", null);
+        public static new App Current { get; } = (App)Application.Current;
 
-            return Task.FromResult<object>(null);
+        private Shell Shell { get; set; }
+
+        public IUnityContainer Container { get; private set; }
+
+        private INavigationService NavigationService { get; set; }
+
+        private MtFrame RootFrame { get; set; }
+
+        public override Type StartPageType
+        {
+            get
+            {
+                return typeof(Views.HomePage);
+            }
         }
 
-        protected override UIElement CreateShell(Frame rootFrame)
+        public override UIElement CreateWindowContentElement()
         {
-            var shell = new Shell(rootFrame);
-            return shell;
+            this.InitializeFrame();
+
+            this.Shell = new Shell(this.RootFrame);
+
+            return this.Shell;
         }
 
-        protected override Frame OnCreateRootFrame()
+        public override MtFrame GetFrame(UIElement windowContentElement)
         {
-            return base.OnCreateRootFrame();
+            return this.RootFrame;
         }
 
-        protected override void ConfigureViewModelLocator()
+        private void ConfigureViewModelLocator()
         {
-            base.ConfigureViewModelLocator();
+            ViewModelLocationProvider.SetDefaultViewModelFactory( type => 
+            {
+                return Container.Resolve(type);
+            });
 
             ViewModelLocationProvider.Register(typeof(ChannelDetail).FullName, () =>
             {
@@ -66,19 +86,17 @@ namespace DoubanGroup.Client
             });
         }
 
-        protected override void ConfigureContainer()
+        private void ConfigureContainer()
         {
-            base.ConfigureContainer();
+            this.Container = new UnityContainer();
+            this.Container.RegisterInstance(this.Container);
+            this.Container.RegisterInstance(this.NavigationService);
+            this.Container.RegisterInstance<IEventAggregator>(new EventAggregator());
 
             var currentUserViewModel = this.Container.Resolve<ViewModels.CurrentUserViewModel>();
 
             this.Container.RegisterInstance<IAccessTokenProvider>(currentUserViewModel);
             this.Container.RegisterInstance(currentUserViewModel);
-        }
-
-        protected override void OnRegisterKnownTypesForSerialization()
-        {
-            base.OnRegisterKnownTypesForSerialization();
         }
 
         public App()
@@ -91,31 +109,22 @@ namespace DoubanGroup.Client
             Debug.Write(e.Exception);
         }
 
-        protected override async Task OnInitializeAsync(IActivatedEventArgs args)
+        private void InitializeFrame()
         {
-            //注册AutoMapper
-            Mapper.CreateMap<Topic, TopicCacheInfo>().ForMember(t => t.Content, t =>
-            {
-                t.MapFrom(j => j.ShortContent);
-            });
-            Mapper.CreateMap<TopicCacheInfo, Topic>();
+            var frame = new MtFrame();
+            frame.Navigated += Frame_Navigated;
+            this.RootFrame = frame;
+            this.NavigationService = new MtNavigationService(frame);
 
-            await base.OnInitializeAsync(args);
+            this.ConfigureContainer();
+            this.ConfigureViewModelLocator();
+        }
+
+        private void Frame_Navigated(object sender, MtNavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = this.RootFrame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
+
+            
         }
     }
-
-    public class ExtendedPrismUnityApplication : MtApplication
-    {
-        public override Type StartPageType
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            base.OnLaunched(args);
-        }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyToolkit.Paging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace DoubanGroup.Client.Views
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class GroupMembersPage : Page
+    public sealed partial class GroupMembersPage : MtPage
     {
         public GroupMembersPage()
         {

@@ -1,5 +1,6 @@
-﻿<Page
+﻿<mt:MtPage
     x:Class="DoubanGroup.Client.Views.GroupDetailPage"
+    xmlns:mt="using:MyToolkit.Paging"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DoubanGroup.Client.Views"
@@ -13,13 +14,13 @@
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
     
-    <Page.BottomAppBar>
+    <mt:MtPage.BottomAppBar>
         <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
             <AppBarButton Icon="People" Label="查看成员" Command="{Binding ViewMembersCommand}"></AppBarButton>
             <AppBarButton Command="{Binding JoinGroupCommand}" Icon="AddFriend" Label="加入小组" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}"></AppBarButton>
             <AppBarButton Command="{Binding QuitGroupCommand}" Icon="BlockContact" Label="退出小组" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}"></AppBarButton>
         </CommandBar>
-    </Page.BottomAppBar>
+    </mt:MtPage.BottomAppBar>
 
     <Grid>
         <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
@@ -52,4 +53,4 @@
 
         <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>
-</Page>
+</mt:MtPage>

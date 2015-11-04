@@ -1,7 +1,8 @@
-﻿<Page
+﻿<mt:MtPage
     x:Class="DoubanGroup.Client.Views.TopicDetailPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mt="using:MyToolkit.Paging"
     xmlns:local="using:DoubanGroup.Client.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -16,7 +17,7 @@
     Name="page"
     d:DataContext="{d:DesignInstance Type=designData:TopicDetailData, IsDesignTimeCreatable=True}">
 
-    <Page.Resources>
+    <mt:MtPage.Resources>
         <DataTemplate x:Key="CommentDataTemplate">
             <Grid Padding="10 0">
                 <Grid.ColumnDefinitions>
@@ -142,14 +143,14 @@
         <controls:CommentListStyleSelector x:Key="CommentListStyleSelector" NoTopicStyle="{StaticResource NoTopicFlipViewItemStyle}" TopicStyle="{StaticResource TopicFlipViewItemStyle}">
 
         </controls:CommentListStyleSelector>
-    </Page.Resources>
+    </mt:MtPage.Resources>
 
-    <Page.BottomAppBar>
+    <mt:MtPage.BottomAppBar>
         <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
             <AppBarButton Command="{Binding LikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource InverseToVisibilityConverter}}" Label="喜欢主题" Icon="Like"/>
             <AppBarButton Command="{Binding DislikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource BooleanToVisibilityConverter}}" Label="取消喜欢" Icon="Dislike"/>
         </CommandBar>
-    </Page.BottomAppBar>
+    </mt:MtPage.BottomAppBar>
 
     <Grid>
         <FlipView Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
@@ -167,4 +168,4 @@
     </Grid>
     
     
-</Page>
+</mt:MtPage>

@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using DoubanGroup.Client.Extensions;
+using MyToolkit.Paging;
 
 // “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
@@ -21,7 +22,7 @@ namespace DoubanGroup.Client.Views
     /// <summary>
     /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class GroupDetailPage : Page
+    public sealed partial class GroupDetailPage : MtPage
     {
         public GroupDetailPage()
         {
@@ -33,17 +34,6 @@ namespace DoubanGroup.Client.Views
         private void GroupDetailPage_Loaded(object sender, RoutedEventArgs e)
         {
             var sv = gvList.FindByName<ScrollViewer>("ScrollViewer");
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            base.OnNavigatedFrom(e);
-            
-        }
-
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
         }
     }
 }
