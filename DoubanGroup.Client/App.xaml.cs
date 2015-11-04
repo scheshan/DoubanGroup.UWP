@@ -104,23 +104,18 @@ namespace DoubanGroup.Client
         }
     }
 
-    public class App2 : MtApplication
+    public class ExtendedPrismUnityApplication : MtApplication
     {
-        public new static App2 Current { get { return (App2)Application.Current; } }
-
-        public IUnityContainer Container { get; private set; }
-
         public override Type StartPageType
         {
             get
             {
-                return typeof(Views.HomePage);
+                throw new NotImplementedException();
             }
         }
 
-        public App2()
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
-            this.Container = new UnityContainer();
+            base.OnLaunched(args);
         }
-    }
 }
