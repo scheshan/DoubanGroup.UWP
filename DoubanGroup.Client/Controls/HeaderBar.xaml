@@ -1,0 +1,33 @@
+﻿<UserControl
+    x:Class="DoubanGroup.Client.Controls.HeaderBar"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DoubanGroup.Client.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="50"
+    Name="control"
+    d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style TargetType="CommandBar">
+            <Setter Property="Background" Value="{StaticResource TitleBackground}"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid Background="{StaticResource TitleBackground}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+        
+        <Button Name="btnBack" Click="btnBack_Click" Style="{StaticResource NavigationBackButtonSmallStyle}" Height="50" Width="50"/>
+        
+        <TextBlock Text="{Binding Title, ElementName=control}" VerticalAlignment="Center" Margin="10 0" FontSize="15" FontWeight="Bold" Grid.Column="1"/>
+
+        <ContentControl Name="commandbar_container" Grid.Column="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Stretch"></ContentControl>
+    </Grid>
+</UserControl>

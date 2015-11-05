@@ -83,7 +83,7 @@
         <DataTemplate x:Key="CommentListDataTemplate">
             <StackPanel>
                 <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource CommentDataTemplate}"></ListView>
-            </StackPanel>            
+            </StackPanel>
         </DataTemplate>
 
         <Style x:Key="NoTopicFlipViewItemStyle" TargetType="FlipViewItem">
@@ -95,7 +95,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="FlipViewItem">
                         <ScrollViewer Padding="20 10">
-                            <StackPanel> 
+                            <StackPanel>
                                 <ContentPresenter Content="{TemplateBinding Content}"                                            
                                               Background="{TemplateBinding Background}"                          
                                               BorderBrush="{TemplateBinding BorderBrush}"                          
@@ -105,7 +105,7 @@
                                               Padding="{TemplateBinding Padding}"                          
                                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"                          
                                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </StackPanel>                            
+                            </StackPanel>
                         </ScrollViewer>
                     </ControlTemplate>
                 </Setter.Value>
@@ -122,7 +122,7 @@
                     <ControlTemplate TargetType="FlipViewItem">
                         <ScrollViewer Padding="20 10">
                             <StackPanel>
-                                <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ContentTemplate="{StaticResource TopicDataTemplate}" Content="{Binding Topic}"/>                                
+                                <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ContentTemplate="{StaticResource TopicDataTemplate}" Content="{Binding Topic}"/>
 
                                 <ContentPresenter Content="{TemplateBinding Content}"                                            
                                               Background="{TemplateBinding Background}"                          
@@ -145,17 +145,24 @@
         </controls:CommentListStyleSelector>
     </mt:MtPage.Resources>
 
-    <mt:MtPage.BottomAppBar>
-        <CommandBar>            
-            <AppBarButton Name="cmd_Like" Click="cmd_Like_Click" Label="喜欢主题" Icon="Like"/>
-            <AppBarButton Name="cmd_Dislike" Click="cmd_Dislike_Click" Label="取消喜欢" Icon="Dislike"/>
-            <AppBarToggleButton Checked="cmd_ViewAuthor_Checked" Unchecked="cmd_ViewAuthor_Unchecked" Name="cmd_ViewAuthor" Label="只看楼主" Icon="View"/>
-            <AppBarButton Name="cmd_Comment" Click="cmd_Comment_Click" Label="回复" Icon="Comment"/>
-        </CommandBar>
-    </mt:MtPage.BottomAppBar>
-
     <Grid>
-        <FlipView Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <controls:HeaderBar Title="查看主题">
+            <controls:HeaderBar.CommandBar>
+                <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
+                    <AppBarButton Command="{Binding LikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource InverseToVisibilityConverter}}" Label="喜欢主题" Icon="Like"/>
+                    <AppBarButton Command="{Binding DislikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource BooleanToVisibilityConverter}}" Label="取消喜欢" Icon="Dislike"/>
+                    <AppBarToggleButton IsChecked="{Binding ViewAuthor, Mode=TwoWay}" Label="只看楼主" Icon="View"/>
+                    <AppBarButton Command="{Binding AddCommentCommand}" Label="回复" Icon="Comment"/>
+                </CommandBar>
+            </controls:HeaderBar.CommandBar>
+        </controls:HeaderBar>
+        
+        <FlipView Grid.Row="1" Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
               ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyleSelector="{StaticResource CommentListStyleSelector}">
             <FlipView.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -164,7 +171,7 @@
             </FlipView.ItemsPanel>
         </FlipView>
 
-        <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 40 40" Background="#7F000000" Padding="10">
+        <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 40 40" Background="#7F000000" Padding="10">
             <TextBlock Foreground="#FFFFFF">
                 <Run Text="{Binding SelectedItem.Page, ElementName=fvMain}"></Run>
                 <Run Text="/"/>
@@ -172,7 +179,7 @@
             </TextBlock>
         </Border>
         
-        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
+        <ProgressRing Grid.Row="1" Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>
     
     

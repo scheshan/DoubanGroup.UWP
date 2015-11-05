@@ -118,6 +118,9 @@
       <DependentUpon>ChannelDetail.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CommentListStyleSelector.cs" />
+    <Compile Include="Controls\HeaderBar.xaml.cs">
+      <DependentUpon>HeaderBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\InverseConverter.cs" />
@@ -216,6 +219,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Controls\ChannelDetail.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\HeaderBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

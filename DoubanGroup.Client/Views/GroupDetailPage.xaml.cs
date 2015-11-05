@@ -45,13 +45,13 @@ namespace DoubanGroup.Client.Views
             {
                 if (this.ViewModel.IsGroupMember)
                 {
-                    cmd_QuitGroup.Visibility = Visibility.Visible;
-                    cmd_JoinGroup.Visibility = Visibility.Collapsed;
+                    //cmd_QuitGroup.Visibility = Visibility.Visible;
+                    //cmd_JoinGroup.Visibility = Visibility.Collapsed;
                 }
                 else
                 {
-                    cmd_QuitGroup.Visibility = Visibility.Collapsed;
-                    cmd_JoinGroup.Visibility = Visibility.Visible;
+                    //cmd_QuitGroup.Visibility = Visibility.Collapsed;
+                    //cmd_JoinGroup.Visibility = Visibility.Visible;
                 }
             }
         }

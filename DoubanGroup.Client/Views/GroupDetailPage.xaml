@@ -10,6 +10,7 @@
     xmlns:mvvm="using:Prism.Windows.Mvvm"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:behaviors="using:DoubanGroup.Client.Behaviors"
+    xmlns:controls="using:DoubanGroup.Client.Controls"
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     Name="page"
@@ -17,11 +18,21 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
+        <controls:HeaderBar Title="小组">
+            <controls:HeaderBar.CommandBar>
+                <CommandBar Grid.Row="1" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
+                    <AppBarButton Command="{Binding ViewMemberCommand}" Icon="People" Label="查看成员"></AppBarButton>
+                    <AppBarButton Command="{Binding JoinGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}" Icon="AddFriend" Label="加入小组"></AppBarButton>
+                    <AppBarButton Command="{Binding QuitGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}" Icon="BlockContact" Label="退出小组"></AppBarButton>
+                </CommandBar>
+            </controls:HeaderBar.CommandBar>
+        </controls:HeaderBar>
         
-        <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
+        <GridView Grid.Row="1" Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
             <i:Interaction.Behaviors>
                 <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                 <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
@@ -49,12 +60,8 @@
             </GridView.Header>
         </GridView>
 
-        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
+        <ProgressRing Grid.Row="1" Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
 
-        <CommandBar Grid.Row="1" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
-            <AppBarButton Name="cmd_ViewMember" Click="cmd_ViewMember_Click" Icon="People" Label="查看成员"></AppBarButton>
-            <AppBarButton Name="cmd_JoinGroup" Click="cmd_JoinGroup_Click" Icon="AddFriend" Label="加入小组"></AppBarButton>
-            <AppBarButton Name="cmd_QuitGroup" Click="cmd_QuitGroup_Click" Icon="BlockContact" Label="退出小组"></AppBarButton>
-        </CommandBar>
+        
     </Grid>
 </mt:MtPage>

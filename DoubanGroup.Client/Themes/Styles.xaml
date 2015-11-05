@@ -4,8 +4,9 @@
     xmlns:entity="using:DoubanGroup.Core.Api.Entity">
     
     <SolidColorBrush x:Key="SecondaryForegroundBrush" Color="#999999"/>
-    <SolidColorBrush x:Key="DefaultBackground" Color="#F9F9F9"/>
+    <SolidColorBrush x:Key="DefaultBackground" Color="#E6E6E6"/>
     <SolidColorBrush x:Key="HighlightForeground" Color="#037b82"/>
+    <SolidColorBrush x:Key="TitleBackground" Color="#F0F0F0"/>
 
     <Style TargetType="GridView" x:Key="GroupGridViewStyle">
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
