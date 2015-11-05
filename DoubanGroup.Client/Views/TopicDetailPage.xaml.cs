@@ -71,5 +71,20 @@ namespace DoubanGroup.Client.Views
         {
             this.ViewModel.DislikeTopicCommand.Execute();
         }
+
+        private void cmd_Comment_Click(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.AddCommentCommand.Execute();
+        }
+
+        private void cmd_ViewAuthor_Checked(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.ViewAuthor = true;
+        }
+
+        private void cmd_ViewAuthor_Unchecked(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.ViewAuthor = false;
+        }
     }
 }

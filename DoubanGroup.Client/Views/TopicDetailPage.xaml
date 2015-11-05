@@ -146,9 +146,11 @@
     </mt:MtPage.Resources>
 
     <mt:MtPage.BottomAppBar>
-        <CommandBar>
+        <CommandBar>            
             <AppBarButton Name="cmd_Like" Click="cmd_Like_Click" Label="喜欢主题" Icon="Like"/>
             <AppBarButton Name="cmd_Dislike" Click="cmd_Dislike_Click" Label="取消喜欢" Icon="Dislike"/>
+            <AppBarToggleButton Checked="cmd_ViewAuthor_Checked" Unchecked="cmd_ViewAuthor_Unchecked" Name="cmd_ViewAuthor" Label="只看楼主" Icon="View"/>
+            <AppBarButton Name="cmd_Comment" Click="cmd_Comment_Click" Label="回复" Icon="Comment"/>
         </CommandBar>
     </mt:MtPage.BottomAppBar>
 

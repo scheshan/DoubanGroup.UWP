@@ -39,7 +39,7 @@ namespace DoubanGroup.Client.Views
         {
             if (e.PropertyName == nameof(this.ViewModel.IsLoading))
             {
-                this.BottomAppBar.IsEnabled = !this.ViewModel.IsLoading;
+                //this.BottomAppBar.IsEnabled = !this.ViewModel.IsLoading;
             }
             else if (e.PropertyName == nameof(this.ViewModel.IsGroupMember))
             {

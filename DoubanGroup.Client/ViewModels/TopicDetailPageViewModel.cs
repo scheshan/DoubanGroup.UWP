@@ -41,6 +41,21 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
+        private bool _viewAuthor;
+
+        public bool ViewAuthor
+        {
+            get { return _viewAuthor; }
+            set
+            {
+                if (this.SetProperty(ref _viewAuthor, value))
+                {
+                    this.CommentList.Clear();
+                    this.LoadComments();
+                }
+            }
+        }
+
         public ObservableCollection<Comment> PopularCommentList { get; private set; }
 
         public ObservableCollection<CommentListViewModel> CommentList { get; private set; }
@@ -78,7 +93,16 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.IsLoading = true;
 
-            var commentList = await this.ApiClient.GetCommentList(this.TopicID, 0, PageSize);
+            CommentList commentList;
+
+            if (this.ViewAuthor)
+            {
+                commentList = await this.ApiClient.GetOpCommentList(this.TopicID, 0, PageSize);
+            }
+            else
+            {
+                commentList = await this.ApiClient.GetCommentList(this.TopicID, 0, PageSize);
+            }
 
             this.IsLoading = false;
 
@@ -99,7 +123,7 @@ namespace DoubanGroup.Client.ViewModels
             {
                 for (var i = this.CommentList.Count; i < this.TotalPage; i++)
                 {
-                    var item = new CommentListViewModel(this.TopicID, i + 1, this.PageSize);
+                    var item = new CommentListViewModel(this.TopicID, i + 1, this.PageSize, this.ViewAuthor);
 
                     if (i == 0)
                     {
@@ -206,6 +230,32 @@ namespace DoubanGroup.Client.ViewModels
             this.OnPropertyChanged(() => this.Liked);
 
             this.IsLoading = false;
+        }
+
+        private DelegateCommand _addCommentCommand;
+
+        public DelegateCommand AddCommentCommand
+        {
+            get
+            {
+                if (_addCommentCommand == null)
+                {
+                    _addCommentCommand = new DelegateCommand(this.AddComment);
+                }
+                return _addCommentCommand;
+            }
+        }
+
+        private async void AddComment()
+        {
+            if (this.Topic == null || !this.CurrentUser.IsGroupMember(this.Topic.Group.ID))
+            {
+                await this.Alert("只有小组成员才能发表评论");
+                return;
+            }
+
+            var vm = new AddCommentPageViewModel(this.Topic, null);
+            await vm.Show();
         }
     }
 }

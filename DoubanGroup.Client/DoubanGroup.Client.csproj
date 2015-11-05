@@ -138,6 +138,7 @@
     <Compile Include="MtNavigationService.cs" />
     <Compile Include="Service\FileCacheService.cs" />
     <Compile Include="Service\ICacheService.cs" />
+    <Compile Include="ViewModels\AddCommentPageViewModel.cs" />
     <Compile Include="ViewModels\CurrentUserViewModel.cs" />
     <Compile Include="Models\IncrementalLoadingList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -159,6 +160,9 @@
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
     <Compile Include="ViewModels\UserDetailPageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
+    <Compile Include="Views\AddCommentPage.xaml.cs">
+      <DependentUpon>AddCommentPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\GroupDetailPage.xaml.cs">
       <DependentUpon>GroupDetailPage.xaml</DependentUpon>
     </Compile>
@@ -228,6 +232,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\AddCommentPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\GroupDetailPage.xaml">
       <SubType>Designer</SubType>

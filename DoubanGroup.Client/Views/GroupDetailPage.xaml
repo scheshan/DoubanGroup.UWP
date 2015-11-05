@@ -13,17 +13,14 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     Name="page"
-    d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
-    
-    <mt:MtPage.BottomAppBar>
-        <CommandBar>
-            <AppBarButton Name="cmd_ViewMember" Click="cmd_ViewMember_Click" Icon="People" Label="查看成员"></AppBarButton>
-            <AppBarButton Name="cmd_JoinGroup" Click="cmd_JoinGroup_Click" Icon="AddFriend" Label="加入小组"></AppBarButton>
-            <AppBarButton Name="cmd_QuitGroup" Click="cmd_QuitGroup_Click" Icon="BlockContact" Label="退出小组"></AppBarButton>
-        </CommandBar>
-    </mt:MtPage.BottomAppBar>
+    d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">   
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
         <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
             <i:Interaction.Behaviors>
                 <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
@@ -53,5 +50,11 @@
         </GridView>
 
         <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
+
+        <CommandBar Grid.Row="1" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
+            <AppBarButton Name="cmd_ViewMember" Click="cmd_ViewMember_Click" Icon="People" Label="查看成员"></AppBarButton>
+            <AppBarButton Name="cmd_JoinGroup" Click="cmd_JoinGroup_Click" Icon="AddFriend" Label="加入小组"></AppBarButton>
+            <AppBarButton Name="cmd_QuitGroup" Click="cmd_QuitGroup_Click" Icon="BlockContact" Label="退出小组"></AppBarButton>
+        </CommandBar>
     </Grid>
 </mt:MtPage>

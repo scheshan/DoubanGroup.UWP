@@ -47,11 +47,14 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        public CommentListViewModel(long topicID, int page, int pageSize)
+        public bool ViewAuthor { get; private set; }
+
+        public CommentListViewModel(long topicID, int page, int pageSize, bool viewAuthor)
         {
             this.Page = page;
             this.TopicID = topicID;
             this.PageSize = pageSize;
+            this.ViewAuthor = viewAuthor;
 
             this.CommentList = new ObservableCollection<Comment>();
         }
@@ -75,7 +78,16 @@ namespace DoubanGroup.Client.ViewModels
 
             int start = (this.Page - 1) * this.PageSize;
 
-            var commentList = await this.ApiClient.GetCommentList(this.TopicID, start, this.PageSize);
+            CommentList commentList;
+
+            if (this.ViewAuthor)
+            {
+                commentList = await this.ApiClient.GetOpCommentList(this.TopicID, start, this.PageSize);
+            }
+            else
+            {
+                commentList = await this.ApiClient.GetCommentList(this.TopicID, start, this.PageSize);
+            }
 
             foreach (var comment in commentList.Comments)
             {

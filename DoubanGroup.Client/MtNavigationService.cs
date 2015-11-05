@@ -95,20 +95,6 @@ namespace DoubanGroup.Client
             };
 
             vm.OnNavigatedTo(args, null);
-
-            if (ui is MtPage)
-            {
-                var page = (MtPage)ui;
-
-                if (page.BottomAppBar != null)
-                {
-                    page.BottomAppBar.DataContext = vm;
-                }
-                if (page.TopAppBar != null)
-                {
-                    page.TopAppBar.DataContext = vm;
-                }
-            }
         }
 
         public bool CanGoBack()

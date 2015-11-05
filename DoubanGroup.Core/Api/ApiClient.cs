@@ -330,6 +330,24 @@ namespace DoubanGroup.Core.Api
         }
 
         /// <summary>
+        /// 得到作者发表的评论
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<CommentList> GetOpCommentList(long topicID, int start, int count)
+        {
+            string url = $"group/topic/{topicID}/op_comments";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<CommentList>(url, para);
+        }
+
+        /// <summary>
         /// 得到主题信息
         /// </summary>
         /// <param name="topicID"></param>
