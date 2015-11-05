@@ -11,6 +11,7 @@
     xmlns:mt="using:MyToolkit.Paging"
     mc:Ignorable="d"
     d:DesignHeight="720"
+    xmlns:controls="using:MyToolkit.Controls"
     d:DesignWidth="1280"
     mvvm:ViewModelLocator.AutoWireViewModel="True">
     <UserControl.Resources>
@@ -62,7 +63,7 @@
                 </Button>
 
                 <StackPanel Grid.Row="1">
-                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="Home">
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Click="Navigate" Tag="Home">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -73,7 +74,7 @@
                             <TextBlock Grid.Column="1" Margin="15 0 0 0">推荐内容</TextBlock>
                         </Grid>
                     </Button>
-                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Command="{Binding NavigateCommand}" CommandParameter="My"
+                    <Button Style="{StaticResource HamburgerButtonStyle}" HorizontalAlignment="Stretch" Click="Navigate" Tag="My"
                             Visibility="{Binding CurrentUser.IsLogin, Converter={StaticResource BooleanToVisibilityConverter}}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -136,7 +137,7 @@
                             <TextBlock Grid.Column="1" Margin="15 0 0 0" VerticalAlignment="Center" Text="{Binding CurrentUser.User.Name}"/>
                         </Grid>
                     </Button>
-                    
+
                     <Button Name="btnConfig" Grid.Column="1" HorizontalAlignment="Left" Width="50" Height="50" Style="{StaticResource HamburgerButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -152,7 +153,7 @@
 
         <Grid>
             <ContentPresenter HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Name="main_content">
-                
+
             </ContentPresenter>
         </Grid>
     </SplitView>

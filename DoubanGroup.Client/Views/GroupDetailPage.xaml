@@ -16,10 +16,10 @@
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
     
     <mt:MtPage.BottomAppBar>
-        <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
-            <AppBarButton Command="{Binding ViewMembersCommand}" Icon="People" Label="查看成员"></AppBarButton>
-            <AppBarButton Command="{Binding JoinGroupCommand}" Icon="AddFriend" Label="加入小组" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}"></AppBarButton>
-            <AppBarButton Command="{Binding QuitGroupCommand}" Icon="BlockContact" Label="退出小组" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}"></AppBarButton>
+        <CommandBar>
+            <AppBarButton Name="cmd_ViewMember" Click="cmd_ViewMember_Click" Icon="People" Label="查看成员"></AppBarButton>
+            <AppBarButton Name="cmd_JoinGroup" Click="cmd_JoinGroup_Click" Icon="AddFriend" Label="加入小组"></AppBarButton>
+            <AppBarButton Name="cmd_QuitGroup" Click="cmd_QuitGroup_Click" Icon="BlockContact" Label="退出小组"></AppBarButton>
         </CommandBar>
     </mt:MtPage.BottomAppBar>
 

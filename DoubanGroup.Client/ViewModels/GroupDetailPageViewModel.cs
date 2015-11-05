@@ -72,7 +72,8 @@ namespace DoubanGroup.Client.ViewModels
         private async Task LoadGroup()
         {
             var group = await this.ApiClient.GetGroup(this.GroupID);
-            this.Group = group;            
+            this.Group = group;
+            this.OnPropertyChanged(() => this.IsGroupMember);  
         }
 
         private DelegateCommand _viewMembersCommand;

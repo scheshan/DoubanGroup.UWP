@@ -146,15 +146,21 @@
     </mt:MtPage.Resources>
 
     <mt:MtPage.BottomAppBar>
-        <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
-            <AppBarButton Command="{Binding LikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource InverseToVisibilityConverter}}" Label="喜欢主题" Icon="Like"/>
-            <AppBarButton Command="{Binding DislikeTopicCommand}" Visibility="{Binding Liked, Converter={StaticResource BooleanToVisibilityConverter}}" Label="取消喜欢" Icon="Dislike"/>
+        <CommandBar>
+            <AppBarButton Name="cmd_Like" Click="cmd_Like_Click" Label="喜欢主题" Icon="Like"/>
+            <AppBarButton Name="cmd_Dislike" Click="cmd_Dislike_Click" Label="取消喜欢" Icon="Dislike"/>
         </CommandBar>
     </mt:MtPage.BottomAppBar>
 
     <Grid>
         <FlipView Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
-              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyleSelector="{StaticResource CommentListStyleSelector}"></FlipView>
+              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyleSelector="{StaticResource CommentListStyleSelector}">
+            <FlipView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel AreScrollSnapPointsRegular="True" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </FlipView.ItemsPanel>
+        </FlipView>
 
         <Border HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 40 40" Background="#7F000000" Padding="10">
             <TextBlock Foreground="#FFFFFF">

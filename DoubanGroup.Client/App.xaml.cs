@@ -29,6 +29,7 @@ using MyToolkit.Paging;
 using Prism.Windows.Navigation;
 using Prism.Events;
 using Windows.UI.Core;
+using MyToolkit.Controls;
 
 namespace DoubanGroup.Client
 {
@@ -60,13 +61,12 @@ namespace DoubanGroup.Client
             this.InitializeFrame();
 
             this.Shell = new Shell(this.RootFrame);
-
             return this.Shell;
         }
 
         public override MtFrame GetFrame(UIElement windowContentElement)
         {
-            return this.RootFrame;
+            return this.Shell.RootFrame;
         }
 
         private void ConfigureViewModelLocator()
@@ -112,6 +112,7 @@ namespace DoubanGroup.Client
         private void InitializeFrame()
         {
             var frame = new MtFrame();
+            frame.DisableForwardStack = false;
             frame.Navigated += Frame_Navigated;
             this.RootFrame = frame;
             this.NavigationService = new MtNavigationService(frame);
@@ -123,8 +124,6 @@ namespace DoubanGroup.Client
         private void Frame_Navigated(object sender, MtNavigationEventArgs e)
         {
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = this.RootFrame.CanGoBack ? AppViewBackButtonVisibility.Visible : AppViewBackButtonVisibility.Collapsed;
-
-            
         }
     }
 }

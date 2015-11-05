@@ -33,12 +33,12 @@ namespace DoubanGroup.Client.ViewModels
 
         private long TopicID { get; set; }
 
-        private bool _liked;
-
         public bool Liked
         {
-            get { return _liked; }
-            set { this.SetProperty(ref _liked, value); }
+            get
+            {
+                return this.Topic != null ? this.Topic.Liked : false;
+            }
         }
 
         public ObservableCollection<Comment> PopularCommentList { get; private set; }
@@ -76,11 +76,6 @@ namespace DoubanGroup.Client.ViewModels
         /// <returns></returns>
         private async Task LoadComments()
         {
-            if (this.IsLoading)
-            {
-                return;
-            }
-
             this.IsLoading = true;
 
             var commentList = await this.ApiClient.GetCommentList(this.TopicID, 0, PageSize);
@@ -132,11 +127,15 @@ namespace DoubanGroup.Client.ViewModels
         /// <returns></returns>
         private async Task LoadTopic()
         {
+            this.IsLoading = true;
+
             var topic = await this.ApiClient.GetTopic(this.TopicID);
 
             this.Topic = topic;
 
-            this.Liked = this.Topic.Liked;
+            this.OnPropertyChanged(() => this.Liked);
+
+            this.IsLoading = false;
         }
 
         private DelegateCommand _likeTopicCommand;
@@ -168,8 +167,8 @@ namespace DoubanGroup.Client.ViewModels
             this.IsLoading = true;
 
             await this.ApiClient.LikeTopic(this.TopicID);
-            this.Liked = true;
             this.Topic.Liked = true;
+            this.OnPropertyChanged(() => this.Liked);
 
             this.IsLoading = false;
         }
@@ -203,8 +202,8 @@ namespace DoubanGroup.Client.ViewModels
             this.IsLoading = true;
 
             await this.ApiClient.DislikeTopic(this.TopicID);
-            this.Liked = false;
             this.Topic.Liked = false;
+            this.OnPropertyChanged(() => this.Liked);
 
             this.IsLoading = false;
         }

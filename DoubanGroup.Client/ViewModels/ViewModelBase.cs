@@ -15,15 +15,30 @@ namespace DoubanGroup.Client.ViewModels
     {
         #region 属性
 
-        private bool _isLoading;
+        private int _loadingCounters = 0;
 
         /// <summary>
         /// 标记是否处于忙碌状态
         /// </summary>
         public bool IsLoading
         {
-            get { return _isLoading; }
-            set { this.SetProperty(ref _isLoading, value); }
+            get
+            {
+                return _loadingCounters > 0;
+            }
+            set
+            {
+                if(value)
+                {
+                    _loadingCounters++;
+                }
+                else
+                {
+                    _loadingCounters--;
+                }
+
+                this.OnPropertyChanged();
+            }
         }
 
         /// <summary>
