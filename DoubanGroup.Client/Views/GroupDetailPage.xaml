@@ -32,7 +32,7 @@
             </controls:HeaderBar.CommandBar>
         </controls:HeaderBar>
 
-        <Pivot Style="{StaticResource TabStyle}" Grid.Row="1">
+        <Pivot Style="{StaticResource TabStyle}" Grid.Row="1" SelectedIndex="1">
             <PivotItem Header="详情">
                 <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="10">
                     <Grid.ColumnDefinitions>
