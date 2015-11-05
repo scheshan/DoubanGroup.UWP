@@ -202,4 +202,21 @@
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{StaticResource HighlightForeground}"/>
     </Style>
+
+    <Style TargetType="PivotHeaderItem">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="35"/>
+    </Style>
+    <Style TargetType="Pivot" x:Key="TabStyle">
+        <Setter Property="Background" Value="{StaticResource TitleBackground}"/>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="PivotItem">
+                    <Setter Property="Background" Value="{StaticResource DefaultBackground}"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

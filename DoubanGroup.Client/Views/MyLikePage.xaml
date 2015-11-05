@@ -12,7 +12,7 @@
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
 
-    <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
+    <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
         <i:Interaction.Behaviors>
             <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
             <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>

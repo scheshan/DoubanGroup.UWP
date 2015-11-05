@@ -22,31 +22,26 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <controls:HeaderBar Title="小组">
+        <controls:HeaderBar Title="查看小组">
             <controls:HeaderBar.CommandBar>
                 <CommandBar Grid.Row="1" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
-                    <AppBarButton Command="{Binding ViewMemberCommand}" Icon="People" Label="查看成员"></AppBarButton>
+                    <AppBarButton Command="{Binding ViewMembersCommand}" Icon="People" Label="查看成员"></AppBarButton>
                     <AppBarButton Command="{Binding JoinGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}" Icon="AddFriend" Label="加入小组"></AppBarButton>
                     <AppBarButton Command="{Binding QuitGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}" Icon="BlockContact" Label="退出小组"></AppBarButton>
                 </CommandBar>
             </controls:HeaderBar.CommandBar>
         </controls:HeaderBar>
-        
-        <GridView Grid.Row="1" Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
-            <i:Interaction.Behaviors>
-                <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
-                <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
-            </i:Interaction.Behaviors>
 
-            <GridView.Header>
-                <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
+        <Pivot Style="{StaticResource TabStyle}" Grid.Row="1">
+            <PivotItem Header="详情">
+                <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid Width="120" Height="120" Margin="0 0 10 0">
+                    <Grid Width="120" Height="120" Margin="0 0 10 0" VerticalAlignment="Top">
                         <Image Source="{Binding Group.Avatar}" />
                         <Image Source="{Binding Group.LargeAvatar}" />
                     </Grid>
@@ -54,14 +49,22 @@
                     <StackPanel Grid.Column="1">
                         <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
 
-                        <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="65" Style="{StaticResource SecondaryTextBlockStyle}"/>
+                        <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" Style="{StaticResource SecondaryTextBlockStyle}"/>
                     </StackPanel>
                 </Grid>
-            </GridView.Header>
-        </GridView>
-
-        <ProgressRing Grid.Row="1" Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
-
+            </PivotItem>
+            <PivotItem Header="主题">
+                <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                        <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
+                    </i:Interaction.Behaviors>
+                </GridView>
+            </PivotItem>
+            <PivotItem Header="成员">
+                
+            </PivotItem>
+        </Pivot>
         
     </Grid>
 </mt:MtPage>

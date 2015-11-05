@@ -12,14 +12,14 @@
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
 
-    <GridView Style="{StaticResource GroupGridViewStyle}" Background="{StaticResource DefaultBackground}" Padding="20 10" ItemsSource="{Binding CurrentUser.JoinedGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
+    <GridView Style="{StaticResource GroupGridViewStyle}" Background="{StaticResource DefaultBackground}" Padding="10" ItemsSource="{Binding CurrentUser.JoinedGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
         <i:Interaction.Behaviors>
             <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
             <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
         </i:Interaction.Behaviors>
 
         <GridView.Header>
-            <TextBlock Text="加入的小组" Style="{StaticResource SubtitleTextBlockStyle}"/>
+            <TextBlock Text="加入的小组" Margin="0 0 0 10" Style="{StaticResource SubtitleTextBlockStyle}"/>
         </GridView.Header>
     </GridView>
 </UserControl>

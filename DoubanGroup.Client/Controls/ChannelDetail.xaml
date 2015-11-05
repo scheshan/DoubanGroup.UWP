@@ -16,15 +16,15 @@
         
     </UserControl.Resources>    
     
-    <ScrollViewer Grid.Row="1" Padding="0">
-        <StackPanel Padding="20 10 20 0">
+    <ScrollViewer Grid.Row="1">
+        <StackPanel Padding="10">
             <Grid>
                 <TextBlock Text="值得加入的小组" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
 
                 <Button HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}" Content="查看更多..."></Button>
             </Grid>
 
-            <GridView Margin="0 10 -5 0" Height="205" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
+            <GridView Margin="0 10 5 0" Height="205" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
                 <i:Interaction.Behaviors>
                     <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
                     <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
@@ -35,7 +35,7 @@
                 <TextBlock Text="推荐主题" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
             </Grid>
 
-            <GridView Margin="0 10 -20 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
+            <GridView Margin="0 10 0 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
                 <i:Interaction.Behaviors>
                     <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                     <behavior:ItemClickBehavior Command="{Binding ViewTopicCommand}"/>
@@ -45,7 +45,7 @@
                     <Style TargetType="GridViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                         <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0 0 20 10"/>
+                        <Setter Property="Margin" Value="0 0 10 10"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="GridViewItem">

@@ -48,6 +48,16 @@ namespace DoubanGroup.Client.Controls
             control.commandbar_container.Content = e.NewValue;
         }
 
+        public bool EnableSearch
+        {
+            get { return (bool)GetValue(EnableSearchProperty); }
+            set { SetValue(EnableSearchProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for EnableSearch.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty EnableSearchProperty =
+            DependencyProperty.Register("EnableSearch", typeof(bool), typeof(HeaderBar), new PropertyMetadata(false));
+
         public HeaderBar()
         {
             this.InitializeComponent();
