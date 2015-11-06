@@ -13,10 +13,11 @@
     <UserControl.Resources>
         <Style TargetType="CommandBar">
             <Setter Property="Background" Value="{StaticResource TitleBackground}"/>
+            <Setter Property="Height" Value="60"/>
         </Style>
     </UserControl.Resources>
 
-    <Grid Background="{StaticResource TitleBackground}" Height="50">
+    <Grid Background="{StaticResource TitleBackground}" Height="48">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
@@ -24,7 +25,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Button Name="btnBack" Click="btnBack_Click" Style="{StaticResource NavigationBackButtonSmallStyle}" Height="50" Width="50"/>
+        <Button Name="btnBack" Click="btnBack_Click" Style="{StaticResource NavigationBackButtonSmallStyle}" Height="48" Width="48"/>
 
         <TextBlock Text="{Binding Title, ElementName=control}" VerticalAlignment="Center" Margin="10 0" FontSize="15" FontWeight="Bold" Grid.Column="1"/>
 
