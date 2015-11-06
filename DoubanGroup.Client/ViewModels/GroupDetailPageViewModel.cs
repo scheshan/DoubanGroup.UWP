@@ -41,9 +41,12 @@ namespace DoubanGroup.Client.ViewModels
 
         public IncrementalLoadingList<Topic> TopicList { get; private set; }
 
+        public IncrementalLoadingList<User> UserList { get; private set; }
+
         public GroupDetailPageViewModel()
         {
             this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
+            this.UserList = new IncrementalLoadingList<User>(this.LoadUsers);
         }
 
         public override async void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
@@ -67,6 +70,17 @@ namespace DoubanGroup.Client.ViewModels
             this.IsLoading = false;
 
             return topicList.Items;
+        }
+
+        private async Task<IEnumerable<User>> LoadUsers(uint count)
+        {
+            this.IsLoading = true;
+
+            var userList = await this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, 30);
+
+            this.IsLoading = false;
+
+            return userList.Items;
         }
 
         private async Task LoadGroup()
