@@ -9,6 +9,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:behavior="using:DoubanGroup.Client.Behaviors"
     xmlns:mvvm="using:Prism.Windows.Mvvm"
+    xmlns:designData="using:DoubanGroup.Client.DesignData"
+    d:DataContext="{d:DesignInstance Type=designData:MyGroupData, IsDesignTimeCreatable=True}"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     mc:Ignorable="d">
 

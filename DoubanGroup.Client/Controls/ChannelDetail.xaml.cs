@@ -47,7 +47,7 @@ namespace DoubanGroup.Client.Controls
                 _isFirstLoaded = false;
 
                 var channel = this.Channel;
-                var vm = App.Current.Container.Resolve<ViewModels.ChannelDetailViewModel>();
+                var vm = App.Container.Resolve<ViewModels.ChannelDetailViewModel>();
                 this.DataContext = vm;
                 vm.Init(channel);
             }

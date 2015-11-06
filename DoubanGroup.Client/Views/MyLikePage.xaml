@@ -10,6 +10,8 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:behaviors="using:DoubanGroup.Client.Behaviors"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
+    xmlns:designData="using:DoubanGroup.Client.DesignData"
+    d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">

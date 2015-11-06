@@ -38,11 +38,17 @@ namespace DoubanGroup.Client
     /// </summary>
     sealed partial class App : MtApplication
     {
-        public static new App Current { get; } = (App)Application.Current;
+        private static IUnityContainer _container = new UnityContainer();
+
+        public static IUnityContainer Container
+        {
+            get
+            {
+                return _container;
+            }
+        }
 
         private Shell Shell { get; set; }
-
-        public IUnityContainer Container { get; private set; }
 
         private INavigationService NavigationService { get; set; }
 
@@ -71,32 +77,31 @@ namespace DoubanGroup.Client
 
         private void ConfigureViewModelLocator()
         {
-            ViewModelLocationProvider.SetDefaultViewModelFactory( type => 
-            {
-                return Container.Resolve(type);
-            });
+            ViewModelLocationProvider.SetDefaultViewModelFactory(type =>
+           {
+               return Container.Resolve(type);
+           });
 
             ViewModelLocationProvider.Register(typeof(ChannelDetail).FullName, () =>
             {
-                return this.Container.Resolve<ViewModels.ChannelDetailViewModel>();
+                return Container.Resolve<ViewModels.ChannelDetailViewModel>();
             });
             ViewModelLocationProvider.Register(typeof(Shell).FullName, () =>
             {
-                return this.Container.Resolve<ViewModels.ShellViewModel>();
+                return Container.Resolve<ViewModels.ShellViewModel>();
             });
         }
 
         private void ConfigureContainer()
         {
-            this.Container = new UnityContainer();
-            this.Container.RegisterInstance(this.Container);
-            this.Container.RegisterInstance(this.NavigationService);
-            this.Container.RegisterInstance<IEventAggregator>(new EventAggregator());
+            Container.RegisterInstance(Container);
+            Container.RegisterInstance(this.NavigationService);
+            Container.RegisterInstance<IEventAggregator>(new EventAggregator());
 
-            var currentUserViewModel = this.Container.Resolve<ViewModels.CurrentUserViewModel>();
+            var currentUserViewModel = Container.Resolve<ViewModels.CurrentUserViewModel>();
 
-            this.Container.RegisterInstance<IAccessTokenProvider>(currentUserViewModel);
-            this.Container.RegisterInstance(currentUserViewModel);
+            Container.RegisterInstance<IAccessTokenProvider>(currentUserViewModel);
+            Container.RegisterInstance(currentUserViewModel);
         }
 
         public App()

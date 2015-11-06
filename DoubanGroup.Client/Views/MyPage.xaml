@@ -9,6 +9,8 @@
     xmlns:view="using:DoubanGroup.Client.Views"
     xmlns:controls="using:DoubanGroup.Client.Controls"
     NavigationCacheMode="Required"
+    xmlns:designData="using:DoubanGroup.Client.DesignData"
+    d:DataContext="{d:DesignInstance Type=designData:MyGroupData, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <Grid>
@@ -19,7 +21,7 @@
         
         <controls:HeaderBar Title="我的首页" EnableSearch="True"/>
 
-        <Pivot Grid.Row="1" ItemsSource="{Binding ChannelList}" Style="{StaticResource TabStyle}">
+        <Pivot Grid.Row="1" Style="{StaticResource TabStyle}">
             <PivotItem Header="主题">
                 <view:MyTopicPage/>
             </PivotItem>

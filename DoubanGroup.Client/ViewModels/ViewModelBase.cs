@@ -48,13 +48,13 @@ namespace DoubanGroup.Client.ViewModels
         {
             get
             {
-                return App.Current.Container.Resolve<INavigationService>();
+                return App.Container.Resolve<INavigationService>();
             }
         }
 
         private Lazy<ApiClient> _apiClient = new Lazy<ApiClient>(() =>
         {
-            return App.Current.Container.Resolve<ApiClient>();
+            return App.Container.Resolve<ApiClient>();
         });
 
         /// <summary>
@@ -75,7 +75,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             get
             {
-                return App.Current.Container.Resolve<CurrentUserViewModel>();
+                return App.Container.Resolve<CurrentUserViewModel>();
             }
         }
 
@@ -86,7 +86,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             get
             {
-                return App.Current.Container.Resolve<IEventAggregator>();
+                return App.Container.Resolve<IEventAggregator>();
             }
         }
 

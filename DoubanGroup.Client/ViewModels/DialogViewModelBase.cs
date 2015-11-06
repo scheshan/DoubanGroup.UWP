@@ -23,7 +23,7 @@ namespace DoubanGroup.Client.ViewModels
 
         public DialogViewModelBase(Type dialogType)
         {
-            this.DialogInstance = (ContentDialog)App.Current.Container.Resolve(dialogType);
+            this.DialogInstance = (ContentDialog)App.Container.Resolve(dialogType);
             this.DialogInstance.DataContext = this;
         }
 
