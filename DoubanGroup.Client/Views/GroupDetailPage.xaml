@@ -75,12 +75,14 @@
                                 
                                 <TextBlock Text="{Binding Group.Name}" Style="{StaticResource HeaderTextBlockStyle}"/>
 
-                                <TextBlock Grid.Row="1" Margin="0 5 0 0">
-                                    <Run Text="{Binding Group.Owner.Name}"/>
-                                    <Run Text="于"/>
-                                    <Run Text="{Binding Group.Created, Converter={StaticResource DateTimeToStringConverter}}"/>
-                                    <Run Text="创建"/>
-                                </TextBlock>
+                                <StackPanel Grid.Row="1" Margin="0 5 0 0" Orientation="Horizontal">
+                                    <Button Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Group.Owner}" Padding="0" Content="{Binding Group.Owner.Name}" Style="{StaticResource TextBlockButtonStyle}" Foreground="{StaticResource HighlightForeground}">
+                                        
+                                    </Button>
+                                    <TextBlock Margin="5 0" Text="于" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Group.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center"/>
+                                    <TextBlock Margin="5 0" Text="创建" VerticalAlignment="Center"/>
+                                </StackPanel>
 
                                 <TextBlock Grid.Row="2" Margin="0 5 0 0">
                                     <Run Text="{Binding Group.MemberCount}"/>
