@@ -79,12 +79,12 @@
                                     <Button Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Group.Owner}" Padding="0" Content="{Binding Group.Owner.Name}" Style="{StaticResource TextBlockButtonStyle}" Foreground="{StaticResource HighlightForeground}">
                                         
                                     </Button>
-                                    <TextBlock Margin="5 0" Text="于" VerticalAlignment="Center"/>
-                                    <TextBlock Text="{Binding Group.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center"/>
-                                    <TextBlock Margin="5 0" Text="创建" VerticalAlignment="Center"/>
+                                    <TextBlock Foreground="{StaticResource SecondaryForegroundBrush}" Margin="5 0" Text="于" VerticalAlignment="Center"/>
+                                    <TextBlock Foreground="{StaticResource SecondaryForegroundBrush}" Text="{Binding Group.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center"/>
+                                    <TextBlock Foreground="{StaticResource SecondaryForegroundBrush}" Margin="5 0" Text="创建" VerticalAlignment="Center"/>
                                 </StackPanel>
 
-                                <TextBlock Grid.Row="2" Margin="0 5 0 0">
+                                <TextBlock Grid.Row="2" Margin="0 5 0 0" Foreground="{StaticResource SecondaryForegroundBrush}">
                                     <Run Text="{Binding Group.MemberCount}"/>
                                     <Run Text="位成员"/>
                                 </TextBlock>
@@ -96,7 +96,7 @@
                 </ScrollViewer>                
             </PivotItem>
             <PivotItem Header="主题">
-                <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
+                <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
                     <i:Interaction.Behaviors>
                         <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                         <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
@@ -104,57 +104,59 @@
                 </GridView>
             </PivotItem>
             <PivotItem Header="成员">
-                <GridView Grid.Row="1" Padding="10" ItemsSource="{Binding UserList}" SelectionMode="None" IsItemClickEnabled="True"
+                <Grid>
+                    <GridView Padding="20 10 10 10" Grid.Row="1" ItemsSource="{Binding UserList}" SelectionMode="None" IsItemClickEnabled="True"
                           ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" ItemTemplate="{StaticResource UserDataTemplate}">
-                    <i:Interaction.Behaviors>
-                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
-                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
-                    </i:Interaction.Behaviors>
-                    <GridView.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
-                        </ItemsPanelTemplate>
-                    </GridView.ItemsPanel>
-                    <GridView.Header>
-                        <StackPanel>
-                            <GridView ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" SelectionMode="None" IsItemClickEnabled="True">
-                                <GridView.Header>
-                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="创建者" Margin="0 0 0 10"></TextBlock>
-                                </GridView.Header>
-                                <i:Interaction.Behaviors>
-                                    <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
-                                    <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
-                                </i:Interaction.Behaviors>
-                                <GridView.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
-                                    </ItemsPanelTemplate>
-                                </GridView.ItemsPanel>
-                                <GridViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource UserDataTemplate}"/>
-                            </GridView>
+                        <i:Interaction.Behaviors>
+                            <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                            <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                        </i:Interaction.Behaviors>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.Header>
+                            <StackPanel>
+                                <GridView ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" SelectionMode="None" IsItemClickEnabled="True">
+                                    <GridView.Header>
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="创建者" Margin="0 0 0 10"></TextBlock>
+                                    </GridView.Header>
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                                    </i:Interaction.Behaviors>
+                                    <GridView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                                        </ItemsPanelTemplate>
+                                    </GridView.ItemsPanel>
+                                    <GridViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource UserDataTemplate}"/>
+                                </GridView>
 
-                            
-                            <GridView Margin="0 10 0 0" ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" ItemsSource="{Binding Group.AdminList}"                          
+
+                                <GridView ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" ItemsSource="{Binding Group.AdminList}"                          
                                       ItemTemplate="{StaticResource UserDataTemplate}" SelectionMode="None" IsItemClickEnabled="True">
-                                <GridView.Header>
-                                    <TextBlock Text="{Binding Group.AdminRoleName}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"/>
-                                </GridView.Header>
-                                
-                                <i:Interaction.Behaviors>
-                                    <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
-                                    <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
-                                </i:Interaction.Behaviors>
-                                <GridView.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
-                                    </ItemsPanelTemplate>
-                                </GridView.ItemsPanel>
-                            </GridView>
+                                    <GridView.Header>
+                                        <TextBlock Text="{Binding Group.AdminRoleName}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"/>
+                                    </GridView.Header>
 
-                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding Group.MemberRoleName}" Margin="0 10 0 0"></TextBlock>
-                        </StackPanel>
-                    </GridView.Header>
-                </GridView>
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                                    </i:Interaction.Behaviors>
+                                    <GridView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                                        </ItemsPanelTemplate>
+                                    </GridView.ItemsPanel>
+                                </GridView>
+
+                                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding Group.MemberRoleName}" Margin="0 0 0 10"></TextBlock>
+                            </StackPanel>
+                        </GridView.Header>
+                    </GridView>
+                </Grid>
             </PivotItem>
         </Pivot>
         

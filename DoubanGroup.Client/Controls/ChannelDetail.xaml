@@ -17,66 +17,38 @@
     </UserControl.Resources>    
     
     <ScrollViewer Grid.Row="1">
-        <StackPanel Padding="10">
-            <Grid>
-                <TextBlock Text="值得加入的小组" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
+        <StackPanel Padding="20 10">
+            <GridView Margin="0 0 -5 0" Height="245" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
+                <GridView.Header>
+                    <Grid Margin="0 0 0 10">
+                        <TextBlock Text="值得加入的小组" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
 
-                <Button HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}" Content="查看更多..."></Button>
-            </Grid>
-
-            <GridView Margin="0 10 5 0" Height="205" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
+                        <Button HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}" Content="查看更多"></Button>
+                    </Grid>
+                </GridView.Header>
+                
                 <i:Interaction.Behaviors>
                     <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
                     <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
                 </i:Interaction.Behaviors>
             </GridView>
 
-            <Grid Margin="0 10 0 0">
-                <TextBlock Text="推荐主题" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
-            </Grid>
-
-            <GridView Margin="0 10 0 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
+            <GridView Padding="0 0 -10 0" Style="{StaticResource DefaultGridViewStyle}" Margin="0 10 0 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
+                <GridView.Header>
+                    <Grid Margin="0 0 0 10">
+                        <TextBlock Text="推荐主题" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
+                    </Grid>
+                </GridView.Header>
+                <GridView.Footer>
+                    <Grid Height="28">
+                        <Button Visibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource TextBlockButtonStyle}" HorizontalAlignment="Right" Content="加载更多" Command="{Binding LoadMoreCommand}"/>
+                    </Grid>
+                </GridView.Footer>
+                
                 <i:Interaction.Behaviors>
                     <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                     <behavior:ItemClickBehavior Command="{Binding ViewTopicCommand}"/>
                 </i:Interaction.Behaviors>
-                
-                <GridView.ItemContainerStyle>
-                    <Style TargetType="GridViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Padding" Value="0"/>
-                        <Setter Property="Margin" Value="0 0 10 10"/>
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="GridViewItem">
-                                    <Border Background="#FFFFFF">
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="PointerOver">
-                                                    <Storyboard>
-                                                        <PointerUpThemeAnimation Storyboard.TargetName="content" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Pressed">
-                                                    <Storyboard>
-                                                        <PointerDownThemeAnimation TargetName="content"/>
-                                                    </Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="PressedSelected">
-                                                    <Storyboard>
-                                                        <PointerDownThemeAnimation TargetName="content" />
-                                                    </Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <ContentPresenter x:Name="content"/>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </GridView.ItemContainerStyle>
 
                 <GridView.ItemTemplate>
                     <DataTemplate>
@@ -124,9 +96,7 @@
                 </GridView.ItemTemplate>
             </GridView>
 
-            <Grid Margin="0 -10 0 10" Height="28">
-                <Button Visibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource TextBlockButtonStyle}" HorizontalAlignment="Right" Content="加载更多..." Command="{Binding LoadMoreCommand}"/>
-            </Grid>
+            
             
         </StackPanel>
     </ScrollViewer>

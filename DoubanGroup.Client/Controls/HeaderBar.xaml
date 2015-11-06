@@ -25,9 +25,9 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <Button Name="btnBack" Click="btnBack_Click" Style="{StaticResource NavigationBackButtonSmallStyle}" Height="48" Width="48"/>
+        <Button Name="btnBack" Click="btnBack_Click" Style="{StaticResource NavigationBackButtonSmallStyle}" Height="48" Width="48" Margin="0 0 -10 0"/>
 
-        <TextBlock Text="{Binding Title, ElementName=control}" VerticalAlignment="Center" Margin="10 0" FontSize="15" FontWeight="Bold" Grid.Column="1"/>
+        <TextBlock Text="{Binding Title, ElementName=control}" VerticalAlignment="Center" Margin="20 0" FontSize="15" FontWeight="Bold" Grid.Column="1"/>
 
         <ContentControl Name="commandbar_container" Grid.Column="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Stretch"></ContentControl>
 

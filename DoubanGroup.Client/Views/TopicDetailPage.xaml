@@ -51,23 +51,8 @@
 
         <DataTemplate x:Key="TopicDataTemplate">
             <StackPanel>
-                <StackPanel Background="#FFFFFF" Padding="10 0">
-                    <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource TitleTextBlockStyle}"/>
-
-                    <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
-                        <Image Source="{Binding Topic.Author.Avatar}" Width="40" Height="40"/>
-                        <TextBlock Text="{Binding Topic.Author.Name}" Margin="10 0 0 0" VerticalAlignment="Center"/>
-                    </StackPanel>
-
-                    <RichTextBlock Margin="50 20 50 10" TextWrapping="Wrap">
-                        <i:Interaction.Behaviors>
-                            <behaviors:TopicContentBehavior Topic="{Binding Topic}"/>
-                        </i:Interaction.Behaviors>
-                    </RichTextBlock>
-                </StackPanel>
-
                 <StackPanel Visibility="{Binding HasPopularComments, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock Margin="0 10 0 0" Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+                    <TextBlock Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
 
                     <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
                         <i:Interaction.Behaviors>
@@ -94,7 +79,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="FlipViewItem">
-                        <ScrollViewer Padding="20 10">
+                        <ScrollViewer Padding="10">
                             <StackPanel>
                                 <ContentPresenter Content="{TemplateBinding Content}"                                            
                                               Background="{TemplateBinding Background}"                          
@@ -120,7 +105,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="FlipViewItem">
-                        <ScrollViewer Padding="20 10">
+                        <ScrollViewer Padding="10">
                             <StackPanel>
                                 <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ContentTemplate="{StaticResource TopicDataTemplate}" Content="{Binding Topic}"/>
 
@@ -161,26 +146,66 @@
                 </CommandBar>
             </controls:HeaderBar.CommandBar>
         </controls:HeaderBar>
-        
-        <FlipView Grid.Row="1" Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
-              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyleSelector="{StaticResource CommentListStyleSelector}">
-            <FlipView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel AreScrollSnapPointsRegular="True" Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </FlipView.ItemsPanel>
-        </FlipView>
 
-        <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 40 40" Background="#7F000000" Padding="10">
-            <TextBlock Foreground="#FFFFFF">
-                <Run Text="{Binding SelectedItem.Page, ElementName=fvMain}"></Run>
-                <Run Text="/"/>
-                <Run Text="{Binding TotalPage}"/>
-            </TextBlock>
-        </Border>
-        
+        <Pivot Grid.Row="1" Style="{StaticResource TabStyle}">
+            <PivotItem Header="内容">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <StackPanel Background="#FFFFFF" Padding="10 0">
+                            <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource TitleTextBlockStyle}"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                                <Image Source="{Binding Topic.Author.Avatar}" Width="40" Height="40"/>
+                                <TextBlock Text="{Binding Topic.Author.Name}" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                            </StackPanel>
+
+                            <RichTextBlock Margin="50 20 50 10" TextWrapping="Wrap">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:TopicContentBehavior Topic="{Binding Topic}"/>
+                                </i:Interaction.Behaviors>
+                            </RichTextBlock>
+                        </StackPanel>
+
+                        <StackPanel Visibility="{Binding HasPopularComments, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <TextBlock Margin="0 10 0 0" Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+
+                            <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
+                                </i:Interaction.Behaviors>
+                            </ListView>
+                        </StackPanel>
+
+                        <TextBlock Margin="0 10" Text="全部回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+                    </StackPanel>
+                </ScrollViewer>
+            </PivotItem>
+            <PivotItem Header="评论">
+                <Grid>
+                    <FlipView Grid.Row="1" Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
+                              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyleSelector="{StaticResource CommentListStyleSelector}">
+                        <FlipView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <VirtualizingStackPanel AreScrollSnapPointsRegular="True" Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </FlipView.ItemsPanel>
+                    </FlipView>
+
+                    <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 40 40" Background="#7F000000" Padding="10">
+                        <TextBlock Foreground="#FFFFFF">
+                            <Run Text="{Binding SelectedItem.Page, ElementName=fvMain}"></Run>
+                            <Run Text="/"/>
+                            <Run Text="{Binding TotalPage}"/>
+                        </TextBlock>
+                    </Border>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+
+
+
         <ProgressRing Grid.Row="1" Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>
-    
-    
+
+
 </mt:MtPage>

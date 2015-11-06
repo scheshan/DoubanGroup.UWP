@@ -176,6 +176,7 @@
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultGridViewItemStyle}"/>
         <Setter Property="SelectionMode" Value="None"/>
         <Setter Property="IsItemClickEnabled" Value="True"/>
+        <Setter Property="Padding" Value="20 10 10 10"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -206,6 +207,8 @@
     <Style TargetType="PivotHeaderItem">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Height" Value="35"/>
+        <Setter Property="Padding" Value="10 0"/>
+        <Setter Property="Margin" Value="10 0 0 0"/>
     </Style>
     <Style TargetType="Pivot" x:Key="TabStyle">
         <Setter Property="Background" Value="{StaticResource TitleBackground}"/>

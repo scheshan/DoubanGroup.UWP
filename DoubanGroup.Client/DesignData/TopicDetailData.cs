@@ -13,7 +13,7 @@ namespace DoubanGroup.Client.DesignData
 
         public List<Comment> PopularCommentList { get; set; }
 
-        public List<Comment> CommentList { get; set; }
+        public List<CommentListData> CommentList { get; set; }
 
         public TopicDetailData()
         {
@@ -37,6 +37,21 @@ namespace DoubanGroup.Client.DesignData
             };
 
             this.PopularCommentList = new List<Comment>();
+            this.CommentList = new List<CommentListData>();
+
+            for (var i = 0; i < 10; i++)
+            {                
+                this.CommentList.Add(new CommentListData());
+            }
+        }
+    }
+
+    public class CommentListData
+    {
+        public List<Comment> CommentList { get; set; }
+
+        public CommentListData()
+        {
             this.CommentList = new List<Comment>();
 
             for (var i = 0; i < 10; i++)
@@ -60,11 +75,7 @@ namespace DoubanGroup.Client.DesignData
                         }
                     }
                 };
-
-                if (i < 3)
-                {
-                    this.PopularCommentList.Add(comment);
-                }
+                
                 this.CommentList.Add(comment);
             }
         }
