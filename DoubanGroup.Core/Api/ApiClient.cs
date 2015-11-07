@@ -518,5 +518,20 @@ namespace DoubanGroup.Core.Api
 
             return await this.Post<object>(url, null);
         }
+
+        /// <summary>
+        /// 给评论点赞
+        /// </summary>
+        /// <param name="commentID"></param>
+        /// <returns></returns>
+        public async Task<VoteCommentResult> VoteComment(long topicID, long commentID)
+        {
+            string url = $"group/topic/{topicID}/vote_comment";
+
+            var para = new Parameters();
+            para.Add("comment_id", commentID.ToString());
+
+            return await this.Post<VoteCommentResult>(url, para);
+        }
     }
 }

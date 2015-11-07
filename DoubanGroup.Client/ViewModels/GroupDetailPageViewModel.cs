@@ -10,6 +10,9 @@ using DoubanGroup.Core.Api;
 using Prism.Commands;
 using Windows.UI.Xaml.Navigation;
 using DoubanGroup.Client.CacheItem;
+using NotificationsExtensions.Tiles;
+using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -87,7 +90,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             var group = await this.ApiClient.GetGroup(this.GroupID);
             this.Group = group;
-            this.OnPropertyChanged(() => this.IsGroupMember);  
+            this.OnPropertyChanged(() => this.IsGroupMember);
         }
 
         private DelegateCommand _viewMembersCommand;
@@ -205,14 +208,59 @@ namespace DoubanGroup.Client.ViewModels
             this.IsLoading = false;
         }
 
-        private string GetGroupCacheKey()
+        private DelegateCommand _pinCommand;
+
+        public DelegateCommand PinCommand
         {
-            return $"group_{this.GroupID}";
+            get
+            {
+                if (_pinCommand == null)
+                {
+                    _pinCommand = new DelegateCommand(this.Pin);
+                }
+                return _pinCommand;
+            }
         }
 
-        private string GetTopicListCacheKey()
+        private async void Pin()
         {
-            return $"group_{this.GroupID}_topics";
+            string tileID = $"Tile_Group_{this.GroupID}";
+            string argument = $"GroupDetail-{this.GroupID}";
+
+            SecondaryTile tile = new SecondaryTile(tileID, this.Group.Name, argument, new Uri("ms-appx:///Assets/logo-50.png"), TileSize.Square150x150);
+            await tile.RequestCreateAsync();
+
+            TileBindingContentAdaptive bindingContent = new TileBindingContentAdaptive()
+            {
+                PeekImage = new TilePeekImage()
+                {
+                    Source = new TileImageSource(this.Group.LargeAvatar)
+                }
+            };
+
+            TileBinding binding = new TileBinding()
+            {
+                Branding = TileBranding.NameAndLogo,
+
+                DisplayName = this.Group.Name,
+
+                Content = bindingContent
+            };
+
+            TileContent content = new TileContent()
+            {
+                Visual = new TileVisual()
+                {
+                    TileMedium = binding,
+                    TileWide = binding,
+                    TileLarge = binding
+                }
+            };
+
+            var notification = new TileNotification(content.GetXml());
+
+            var updater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID);
+            updater.Update(notification);
         }
     }
 }

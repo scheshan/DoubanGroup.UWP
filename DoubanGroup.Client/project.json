@@ -6,6 +6,7 @@
     "Microsoft.ApplicationInsights.WindowsApps": "1.0.0",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "MyToolkit.Extended": "2.4.2",
+    "NotificationsExtensions.Win10": "10586.0.0",
     "Prism.Core": "6.1.0",
     "Prism.Unity": "6.1.1",
     "Prism.Windows": "6.0.1"

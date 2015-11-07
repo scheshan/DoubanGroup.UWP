@@ -232,21 +232,21 @@ namespace DoubanGroup.Client.ViewModels
             this.IsLoading = false;
         }
 
-        private DelegateCommand _addCommentCommand;
+        private DelegateCommand<Comment> _addCommentCommand;
 
-        public DelegateCommand AddCommentCommand
+        public DelegateCommand<Comment> AddCommentCommand
         {
             get
             {
                 if (_addCommentCommand == null)
                 {
-                    _addCommentCommand = new DelegateCommand(this.AddComment);
+                    _addCommentCommand = new DelegateCommand<Comment>(this.AddComment);
                 }
                 return _addCommentCommand;
             }
         }
 
-        private async void AddComment()
+        private async void AddComment(Comment parameter)
         {
             if (this.Topic == null || !this.CurrentUser.IsGroupMember(this.Topic.Group.ID))
             {
@@ -254,8 +254,48 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            var vm = new AddCommentPageViewModel(this.Topic, null);
+            var vm = new AddCommentPageViewModel(this.Topic, parameter);
             await vm.Show();
+        }
+
+        private DelegateCommand<Comment> _voteCommentCommand;
+
+        public DelegateCommand<Comment> VoteCommentCommand
+        {
+            get
+            {
+                if (_voteCommentCommand == null)
+                {
+                    _voteCommentCommand = new DelegateCommand<Comment>(this.VoteComment);
+                }
+                return _voteCommentCommand;
+            }
+        }
+
+        private async void VoteComment(Comment parameter)
+        {
+            if (!parameter.CanVote)
+            {
+                return;
+            }
+
+            if (!await this.RequireLogin())
+            {
+                return;
+            }
+
+            var result = await this.ApiClient.VoteComment(this.TopicID, parameter.ID);
+
+            parameter.CanVote = false;
+
+            if (result.Result)
+            {
+                parameter.VoteCount = result.VoteCount;
+            }
+            else
+            {
+                this.Alert("您已经投过票了");
+            }
         }
     }
 }

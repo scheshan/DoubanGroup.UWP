@@ -126,6 +126,21 @@ namespace DoubanGroup.Client
             this.ConfigureViewModelLocator();
         }
 
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        {
+            base.OnLaunched(args);
+
+            if (!string.IsNullOrWhiteSpace(args.Arguments))
+            {
+                var arguments = args.Arguments;
+                var arr = arguments.Split('-');
+                var pageToken = arr[0];
+                var parameter = arr[1];
+
+                this.NavigationService.Navigate(pageToken, Convert.ToInt64(parameter));
+            }
+        }
+
         private void Frame_Navigated(object sender, MtNavigationEventArgs e)
         {
             SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
