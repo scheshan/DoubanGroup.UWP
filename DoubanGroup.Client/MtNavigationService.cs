@@ -109,7 +109,7 @@ namespace DoubanGroup.Client
 
         public void ClearHistory()
         {
-            throw new NotImplementedException();
+            this.RootFrame.ClearBackStack();
         }
 
         public async void GoBack()

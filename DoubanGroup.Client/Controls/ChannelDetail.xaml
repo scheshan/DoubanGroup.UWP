@@ -23,7 +23,7 @@
                     <Grid Margin="0 0 0 10">
                         <TextBlock Text="值得加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
 
-                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource HyperlinkButtonStyle}" Content="查看更多"></Button>
+                        <Button Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource HyperlinkButtonStyle}" Content="查看更多"></Button>
                     </Grid>
                 </GridView.Header>
                 
@@ -41,7 +41,7 @@
                 </GridView.Header>
                 <GridView.Footer>
                     <Grid Height="28">
-                        <Button Visibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource HyperlinkButtonStyle}" VerticalAlignment="Center" HorizontalAlignment="Right" Content="加载更多" Command="{Binding LoadMoreCommand}"/>
+                        <Button Margin="0 0 10 0" Visibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource HyperlinkButtonStyle}" VerticalAlignment="Center" HorizontalAlignment="Right" Content="加载更多" Command="{Binding LoadMoreCommand}"/>
                     </Grid>
                 </GridView.Footer>
                 
