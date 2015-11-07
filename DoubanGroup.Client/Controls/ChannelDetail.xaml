@@ -18,12 +18,12 @@
     
     <ScrollViewer Grid.Row="1">
         <StackPanel Padding="20 10">
-            <GridView Margin="0 0 -5 0" Height="245" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
+            <GridView Margin="0 0 -5 0" Height="265" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
                 <GridView.Header>
                     <Grid Margin="0 0 0 10">
-                        <TextBlock Text="值得加入的小组" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
+                        <TextBlock Text="值得加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
 
-                        <Button HorizontalAlignment="Right" Style="{StaticResource TextBlockButtonStyle}" Content="查看更多"></Button>
+                        <Button HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource HyperlinkButtonStyle}" Content="查看更多"></Button>
                     </Grid>
                 </GridView.Header>
                 
@@ -36,12 +36,12 @@
             <GridView Padding="0 0 -10 0" Style="{StaticResource DefaultGridViewStyle}" Margin="0 10 0 0" ItemsSource="{Binding TopicList}" IsItemClickEnabled="True" SelectionMode="None">
                 <GridView.Header>
                     <Grid Margin="0 0 0 10">
-                        <TextBlock Text="推荐主题" Style="{StaticResource SubtitleTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
+                        <TextBlock Text="推荐主题" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
                     </Grid>
                 </GridView.Header>
                 <GridView.Footer>
                     <Grid Height="28">
-                        <Button Visibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource TextBlockButtonStyle}" HorizontalAlignment="Right" Content="加载更多" Command="{Binding LoadMoreCommand}"/>
+                        <Button Visibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" Style="{StaticResource HyperlinkButtonStyle}" VerticalAlignment="Center" HorizontalAlignment="Right" Content="加载更多" Command="{Binding LoadMoreCommand}"/>
                     </Grid>
                 </GridView.Footer>
                 
@@ -52,7 +52,7 @@
 
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Padding="10" Background="Transparent">
+                        <Grid Padding="10 0" Background="Transparent">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -68,24 +68,24 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Text="{Binding Topic.Title}" TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource ListTitleTextBlockStyle}" TextTrimming="CharacterEllipsis"/>
                                 
-                                <TextBlock Grid.Row="1" Margin="0 10 0 0" Text="{Binding Topic.ShortContent}" Height="40" TextTrimming="CharacterEllipsis" Style="{StaticResource SecondaryTextBlockStyle}"/>                                
+                                <TextBlock Grid.Row="1" Margin="0 5 0 0" Text="{Binding Topic.ShortContent}" Height="45" TextTrimming="CharacterEllipsis" Style="{StaticResource ListDescriptionTextBlockStyle}"/>                                
                             </Grid>
 
-                            <Image Visibility="{Binding Topic.Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="60" Height="60" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Topic.Avatar.Alt}">
+                            <Image Visibility="{Binding Topic.Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="65" Height="65" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Topic.Avatar.Alt}">
                                 
                             </Image>
 
                             <Grid Grid.Row="1" Grid.ColumnSpan="2">
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                                    <TextBlock Style="{StaticResource SecondaryTextBlockStyle}">
+                                    <TextBlock Style="{StaticResource ListTipsTextBlockStyle}">
                                         <Run Text="{Binding Topic.LikeCount}"/>
                                         <Run Text="人喜欢"/>
                                     </TextBlock>
                                 </StackPanel>
 
-                                <TextBlock HorizontalAlignment="Right" Style="{StaticResource SecondaryTextBlockStyle}">
+                                <TextBlock HorizontalAlignment="Right" Style="{StaticResource ListTipsTextBlockStyle}">
                                     <Run Text="来自"/>
                                     <Run Text="{Binding Topic.Group.Name}"/>
                                     <Run Text="小组"/>
@@ -94,10 +94,7 @@
                         </Grid>
                     </DataTemplate>
                 </GridView.ItemTemplate>
-            </GridView>
-
-            
-            
+            </GridView>            
         </StackPanel>
     </ScrollViewer>
 </UserControl>

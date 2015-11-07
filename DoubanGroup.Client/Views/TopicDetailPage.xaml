@@ -17,6 +17,19 @@
     Name="page"
     d:DataContext="{d:DesignInstance Type=designData:TopicDetailData, IsDesignTimeCreatable=True}">
 
+    <VisualStateManager.VisualStateGroups>
+        <VisualStateGroup x:Name="WideStates">
+            <VisualState x:Name="WideState">
+                <VisualState.StateTriggers>
+                    <AdaptiveTrigger MinWindowWidth="1100"/>
+                </VisualState.StateTriggers>
+                <VisualState.Setters>
+                    <Setter Target="title.FontSize" Value="46"/>
+                </VisualState.Setters>
+            </VisualState>
+        </VisualStateGroup>
+    </VisualStateManager.VisualStateGroups>
+
     <mt:MtPage.Resources>
         <DataTemplate x:Key="CommentDataTemplate">
             <Grid Padding="10 0">
@@ -29,22 +42,22 @@
 
                 <StackPanel Grid.Column="1">
                     <StackPanel Orientation="Horizontal" Grid.Column="1">
-                        <TextBlock Text="{Binding Author.Name}" Foreground="#3377aa"/>
+                        <Button Content="{Binding Author.Name}" Style="{StaticResource HyperlinkButtonStyle}"/>
 
-                        <TextBlock Text="{Binding Time, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0" Style="{StaticResource SecondaryTextBlockStyle}" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Time, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0" Style="{StaticResource ListTipsTextBlockStyle}" VerticalAlignment="Center"/>
                     </StackPanel>
 
-                    <Grid Padding="10" Margin="0 10 0 0" Visibility="{Binding QuoteComment, Converter={StaticResource NotNullToVisibilityConverter}}">
-                        <Rectangle HorizontalAlignment="Left" Width="2" Fill="#EEEEEE" Margin="-10"/>
+                    <Grid Margin="0 10 0 0" Background="#F9F9F9" Visibility="{Binding QuoteComment, Converter={StaticResource NotNullToVisibilityConverter}}">
+                        <Rectangle HorizontalAlignment="Left" Width="2" Fill="#EEEEEE"/>
 
-                        <StackPanel>
-                            <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding QuoteComment.Text}" TextWrapping="Wrap"/>
+                        <StackPanel Margin="2 0 0 0" Padding="10 5">
+                            <TextBlock Style="{StaticResource ListDescriptionTextBlockStyle}" Text="{Binding QuoteComment.Text}" TextWrapping="Wrap"/>
 
-                            <TextBlock Foreground="#3377aa" Margin="0 2 0 0" Text="{Binding QuoteComment.Author.Name}" Style="{StaticResource SecondaryTextBlockStyle}"/>
+                            <Button Content="{Binding QuoteComment.Author.Name}" Style="{StaticResource HyperlinkButtonStyle}" Margin="0 2 0 0"/>
                         </StackPanel>
                     </Grid>
 
-                    <TextBlock Text="{Binding Text}" TextWrapping="Wrap" Margin="0 10 0 0"/>
+                    <TextBlock Text="{Binding Text}" Style="{StaticResource ListDescriptionTextBlockStyle}" Margin="0 10 0 0"/>
                 </StackPanel>
             </Grid>
         </DataTemplate>
@@ -67,7 +80,7 @@
 
         <DataTemplate x:Key="CommentListDataTemplate">
             <StackPanel>
-                <ListView ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource CommentDataTemplate}"></ListView>
+                <ListView Padding="20 10" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource CommentDataTemplate}"></ListView>
             </StackPanel>
         </DataTemplate>
 
@@ -79,7 +92,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="FlipViewItem">
-                        <ScrollViewer Padding="10">
+                        <ScrollViewer>
                             <StackPanel>
                                 <ContentPresenter Content="{TemplateBinding Content}"                                            
                                               Background="{TemplateBinding Background}"                          
@@ -105,7 +118,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="FlipViewItem">
-                        <ScrollViewer Padding="10">
+                        <ScrollViewer>
                             <StackPanel>
                                 <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ContentTemplate="{StaticResource TopicDataTemplate}" Content="{Binding Topic}"/>
 
@@ -150,40 +163,48 @@
         <Pivot Grid.Row="1" Style="{StaticResource TabStyle}">
             <PivotItem Header="内容">
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <StackPanel Background="#FFFFFF" Padding="10 0">
-                            <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource TitleTextBlockStyle}"/>
+                    <StackPanel Name="topic_container" Grid.Column="1">
+                        <Grid Margin="20 0" Padding="50 20" Background="#FFFFFF">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                            <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                            <TextBlock Name="title" FontSize="30" Text="{Binding Topic.Title}" Style="{StaticResource HeaderTextBlockStyle}"/>
+
+                            <StackPanel Orientation="Horizontal" Margin="0 20 0 0" Grid.Row="1">
                                 <Image Source="{Binding Topic.Author.Avatar}" Width="40" Height="40"/>
-                                <TextBlock Text="{Binding Topic.Author.Name}" Margin="10 0 0 0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Topic.Author.Name}" Margin="10 0 0 0" FontSize="18" VerticalAlignment="Center"/>
+                                
+                                <TextBlock Text="{Binding Topic.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center" Margin="10 0 0 0"/>
                             </StackPanel>
 
-                            <RichTextBlock Margin="50 20 50 10" TextWrapping="Wrap">
+                            <RichTextBlock Grid.Row="2" Margin="0 20 0 0" TextWrapping="Wrap" FontSize="18">
                                 <i:Interaction.Behaviors>
                                     <behaviors:TopicContentBehavior Topic="{Binding Topic}"/>
                                 </i:Interaction.Behaviors>
                             </RichTextBlock>
-                        </StackPanel>
 
-                        <StackPanel Visibility="{Binding HasPopularComments, Converter={StaticResource BooleanToVisibilityConverter}}">
-                            <TextBlock Margin="0 10 0 0" Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
+                        </Grid>
 
-                            <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
-                                <i:Interaction.Behaviors>
-                                    <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
-                                </i:Interaction.Behaviors>
-                            </ListView>
-                        </StackPanel>
+                        <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
+                            <ListView.Header>
+                                <TextBlock Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"></TextBlock>
+                            </ListView.Header>
+                            
+                            <i:Interaction.Behaviors>
+                                <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
+                            </i:Interaction.Behaviors>
+                        </ListView>
 
-                        <TextBlock Margin="0 10" Text="全部回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
-                    </StackPanel>
+                    </StackPanel>                    
                 </ScrollViewer>
             </PivotItem>
             <PivotItem Header="评论">
                 <Grid>
                     <FlipView Grid.Row="1" Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
-                              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyleSelector="{StaticResource CommentListStyleSelector}">
+                              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyle="{StaticResource NoTopicFlipViewItemStyle}">
                         <FlipView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel AreScrollSnapPointsRegular="True" Orientation="Horizontal"/>
@@ -201,8 +222,6 @@
                 </Grid>
             </PivotItem>
         </Pivot>
-
-
 
         <ProgressRing Grid.Row="1" Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>

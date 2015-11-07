@@ -22,8 +22,6 @@ namespace DoubanGroup.Client
 {
     public sealed partial class Shell : UserControl
     {
-        private ViewModels.ShellViewModel ViewModel { get; set; }
-
         public MtFrame RootFrame
         {
             get; private set;
@@ -35,46 +33,7 @@ namespace DoubanGroup.Client
 
             this.InitializeComponent();
 
-            this.Loaded += Shell_Loaded;
-        }
-
-        private void Shell_Loaded(object sender, RoutedEventArgs e)
-        {
             this.main_content.Content = this.RootFrame;
-
-            this.ViewModel = (ViewModels.ShellViewModel)this.DataContext;
-
-            this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-
-            this.SetConfigButtonPosition();
-        }
-
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == nameof(this.ViewModel.IsPaneOpen))
-            {
-                this.SetConfigButtonPosition();
-            }
-        }
-
-        private void SetConfigButtonPosition()
-        {
-            if (sv_container.IsPaneOpen)
-            {
-                Grid.SetRow(btnConfig, 0);
-                Grid.SetColumn(btnConfig, 1);
-            }
-            else
-            {
-                Grid.SetRow(btnConfig, 1);
-                Grid.SetColumn(btnConfig, 0);
-            }
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = new ViewModels.LoginPageViewModel();
-            vm.Show();
         }
 
         private void Navigate(object sender, RoutedEventArgs e)

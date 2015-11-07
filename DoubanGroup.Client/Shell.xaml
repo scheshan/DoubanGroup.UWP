@@ -28,27 +28,7 @@
         </Style>
     </UserControl.Resources>
 
-    <SplitView Name="sv_container" PaneBackground="#f0f6f3" OpenPaneLength="200" CompactPaneLength="48" Background="#F7F7F7" DisplayMode="CompactInline" IsPaneOpen="{Binding IsPaneOpen}">
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="WideGroups">
-                <VisualState x:Name="LargeScreen">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="800"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="sv_container.DisplayMode" Value="CompactInline"/>
-                    </VisualState.Setters>
-                </VisualState>
-                <VisualState x:Name="SmallScreen">
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="0"/>
-                    </VisualState.StateTriggers>
-                    <VisualState.Setters>
-                        <Setter Target="sv_container.DisplayMode" Value="CompactOverlay"/>
-                    </VisualState.Setters>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
+    <SplitView Name="sv_container" PaneBackground="#f0f6f3" OpenPaneLength="200" CompactPaneLength="48" Background="#F7F7F7" DisplayMode="CompactOverlay" IsPaneOpen="{Binding IsPaneOpen}">
 
         <SplitView.Pane>
             <Grid>
@@ -103,10 +83,6 @@
                 </StackPanel>
 
                 <Grid Grid.Row="2">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -138,13 +114,14 @@
                         </Grid>
                     </Button>
 
-                    <Button Name="btnConfig" Grid.Column="1" HorizontalAlignment="Left" Width="50" Height="50" Style="{StaticResource HamburgerButtonStyle}">
+                    <Button Name="btnConfig" Grid.Row="1"  Height="50" Style="{StaticResource HamburgerButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <FontIcon Glyph="&#xE713;"></FontIcon>
+                            <TextBlock Grid.Column="1" Margin="15 0 0 0" VerticalAlignment="Center" Text="设置"/>
                         </Grid>
                     </Button>
                 </Grid>

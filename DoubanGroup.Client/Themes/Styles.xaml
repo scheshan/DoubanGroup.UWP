@@ -8,6 +8,44 @@
     <SolidColorBrush x:Key="HighlightForeground" Color="#037b82"/>
     <SolidColorBrush x:Key="TitleBackground" Color="#F0F0F0"/>
 
+    <Style TargetType="TextBlock" x:Key="ListTitleTextBlockStyle">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="#000000"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ListDescriptionTextBlockStyle">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="#999999"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ListTipsTextBlockStyle" BasedOn="{StaticResource ListDescriptionTextBlockStyle}">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="GroupHeaderTextBlockStyle">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="#000000"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TitleTextBlockStyle">
+        <Setter Property="FontSize" Value="46"/>
+        <Setter Property="Foreground" Value="#000000"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ContentTextBlockStyle">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="#0A0A0A"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DescriptionTextBlockStyle">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="#999999"/>
+    </Style>
+
     <Style TargetType="GridView" x:Key="GroupGridViewStyle">
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
         <Setter Property="ScrollViewer.VerticalScrollMode" Value="Disabled"/>
@@ -62,24 +100,24 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Border Padding="10" Height="100" Background="#FFFFFF">
+                    <Border Padding="10" Height="110" Background="#FFFFFF">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
+                            <Image Source="{Binding Avatar}" Height="50" Width="50" Margin="0 0 10 0"></Image>
 
-                            <TextBlock Text="{Binding Name}" MaxHeight="40" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource ListTitleTextBlockStyle}" MaxHeight="50" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
 
-                            <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="40" 
-                                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 10 0 0"
-                                           Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
+                            <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="45" 
+                                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 5 0 0"
+                                           Style="{StaticResource ListDescriptionTextBlockStyle}"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
@@ -104,17 +142,17 @@
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
-                                        <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                        <PointerUpThemeAnimation Storyboard.TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content"/>
+                                        <PointerDownThemeAnimation TargetName="container"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="PressedSelected">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content" />
+                                        <PointerDownThemeAnimation TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -131,6 +169,7 @@
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListViewItemStyle}"/>
         <Setter Property="IsItemClickEnabled" Value="True"/>
         <Setter Property="SelectionMode" Value="None"/>
+        <Setter Property="Padding" Value="20 10"/>
     </Style>
 
     <Style x:Key="DefaultGridViewItemStyle" TargetType="GridViewItem">
@@ -144,23 +183,23 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewItem">
-                    <Border Background="{TemplateBinding Background}">
+                    <Border Name="container" Background="{TemplateBinding Background}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
-                                        <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                        <PointerUpThemeAnimation Storyboard.TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content"/>
+                                        <PointerDownThemeAnimation TargetName="container"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="PressedSelected">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content" />
+                                        <PointerDownThemeAnimation TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -184,10 +223,6 @@
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <Style x:Key="SecondaryTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
-        <Setter Property="Foreground" Value="{StaticResource SecondaryForegroundBrush}"/>
     </Style>
 
     <Style x:Key="SmallUserAvatarImageStyle" TargetType="Image">
@@ -221,5 +256,12 @@
                 </Style>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="HyperlinkButtonStyle" BasedOn="{StaticResource TextBlockButtonStyle}">
+        <Setter Property="Foreground" Value="#037b82"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
     </Style>
 </ResourceDictionary>
