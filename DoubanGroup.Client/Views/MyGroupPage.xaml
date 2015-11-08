@@ -16,7 +16,7 @@
 
     <GridView Style="{StaticResource GroupGridViewStyle}" Background="{StaticResource DefaultBackground}" Padding="10" ItemsSource="{Binding CurrentUser.JoinedGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
         <i:Interaction.Behaviors>
-            <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
+            <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
             <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
         </i:Interaction.Behaviors>
 

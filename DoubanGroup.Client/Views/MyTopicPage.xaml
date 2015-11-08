@@ -14,7 +14,7 @@
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
-    <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
+    <GridView ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="10" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
         <i:Interaction.Behaviors>
             <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
             <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>

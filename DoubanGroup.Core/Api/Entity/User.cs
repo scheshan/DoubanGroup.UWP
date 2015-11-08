@@ -64,5 +64,14 @@ namespace DoubanGroup.Core.Api.Entity
 
         [JsonProperty("loc_name")]
         public string LocationName { get; set; }
+
+        [JsonProperty("blocking")]
+        public bool Blocking { get; set; }
+
+        [JsonProperty("following")]
+        public bool Following { get; set; }
+
+        [JsonProperty("following_count")]
+        public long FollowingCount { get; set; }
     }
 }

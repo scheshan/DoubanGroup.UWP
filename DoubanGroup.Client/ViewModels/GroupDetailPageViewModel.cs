@@ -70,6 +70,11 @@ namespace DoubanGroup.Client.ViewModels
 
             var topicList = await this.ApiClient.GetTopicByGroup(this.GroupID, this.TopicList.Count, 30);
 
+            if (topicList.Items.Count < 30)
+            {
+                this.TopicList.NoMore();
+            }
+
             this.IsLoading = false;
 
             return topicList.Items;
@@ -79,7 +84,12 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.IsLoading = true;
 
-            var userList = await this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, 30);
+            var userList = await this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, 100);
+
+            if (userList.Items.Count < 100)
+            {
+                this.UserList.NoMore();
+            }
 
             this.IsLoading = false;
 

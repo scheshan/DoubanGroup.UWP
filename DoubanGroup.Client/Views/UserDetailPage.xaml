@@ -14,22 +14,16 @@
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:UserDetailData, IsDesignTimeCreatable=True}">
-    
-    <!--<Page.BottomAppBar>
-        <CommandBar>
-            <AppBarButton Label="关注" Icon="AddFriend"/>
-            <AppBarButton Label="取消关注" Icon="BlockContact"/>
-            <AppBarButton Label="固定到首页" Icon="Pin"/>
-        </CommandBar>
-    </Page.BottomAppBar>-->
 
     <Grid Background="{StaticResource DefaultBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <controls:HeaderBar Title="用户详情"/>
+
+        <controls:HeaderBar Title="用户详情">
+            
+        </controls:HeaderBar>
 
         <Pivot Grid.Row="1" Style="{StaticResource TabStyle}">
             <PivotItem Header="用户信息">
@@ -41,6 +35,10 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
                             <Image Source="{Binding User.LargeAvatar}" Width="130" Height="130" Margin="0 0 20 0"/>
 
@@ -52,8 +50,13 @@
                                     <Run Text="{Binding User.LocationName}"/>
                                 </TextBlock>
 
-                                <TextBlock Text="{Binding User.Description}" Margin="0 10 0 0" MaxHeight="65" Style="{StaticResource DescriptionTextBlockStyle}"/>
+                                <TextBlock Margin="0 10 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
+                                    <Run Text="注册时间:"/>
+                                    <Run Text="{Binding User.Created, Converter={StaticResource DateTimeToStringConverter}}"/>
+                                </TextBlock>
                             </StackPanel>
+
+                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="0 20 0 0" Text="{Binding User.Description}" Style="{StaticResource DescriptionTextBlockStyle}"></TextBlock>
                         </Grid>
 
                         <StackPanel>
@@ -62,7 +65,7 @@
                                 <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看所有</Button>
                             </Grid>
 
-                            <GridView MaxHeight="130" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding JoinedGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
+                            <GridView MaxHeight="70" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding TopGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
                                 <i:Interaction.Behaviors>
                                     <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
                                     <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
@@ -79,8 +82,31 @@
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>
-            <PivotItem Header="小组"></PivotItem>
-            <PivotItem Header="主题"></PivotItem>
+            <PivotItem Header="小组">
+                <GridView ItemsSource="{Binding JoinedGroupList}" Style="{StaticResource GroupGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource MinimumGroupItemTemplate}"
+                          ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled">
+                    <i:Interaction.Behaviors>
+                        <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                        <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                    </i:Interaction.Behaviors>
+                </GridView>
+            </PivotItem>
+            <PivotItem Header="推荐">
+                <GridView ItemsSource="{Binding RecommandTopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
+                    <i:Interaction.Behaviors>
+                        <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                        <behavior:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
+                    </i:Interaction.Behaviors>
+                </GridView>
+            </PivotItem>
+            <PivotItem Header="喜欢">
+                <GridView ItemsSource="{Binding LikeTopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
+                    <i:Interaction.Behaviors>
+                        <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                        <behavior:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
+                    </i:Interaction.Behaviors>
+                </GridView>
+            </PivotItem>
             <PivotItem Header="相册"></PivotItem>
         </Pivot>
 

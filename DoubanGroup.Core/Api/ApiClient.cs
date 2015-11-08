@@ -386,6 +386,21 @@ namespace DoubanGroup.Core.Api
         }
 
         /// <summary>
+        /// 得到用户信息
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public async Task<User> GetUser(long userID)
+        {
+            string url = $"lifestream/user/{userID}";
+
+            var para = new Parameters();
+            para.Add("version", "2");
+
+            return await this.Get<User>(url, para);
+        }
+
+        /// <summary>
         /// 得到用户加入的小组列表
         /// </summary>
         /// <param name="userID"></param>
@@ -553,6 +568,42 @@ namespace DoubanGroup.Core.Api
             }
 
             return await this.Post<Comment>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户推荐的主题列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetTopicByUserRecommand(long userID, int start, int count)
+        {
+            string url = $"group/user/{userID}/rec_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户喜欢的主题列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetTopicByUserLike(long userID, int start, int count)
+        {
+            string url = $"group/user/{userID}/like_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
         }
     }
 }

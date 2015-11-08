@@ -31,29 +31,15 @@
     </VisualStateManager.VisualStateGroups>
 
     <mt:MtPage.Resources>
-        <DataTemplate x:Key="TopicDataTemplate">
-            <StackPanel>
-                <StackPanel Visibility="{Binding HasPopularComments, Converter={StaticResource BooleanToVisibilityConverter}}">
-                    <TextBlock Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
-
-                    <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource CommentDataTemplate}">
-                        <i:Interaction.Behaviors>
-                            <behaviors:GridViewItemFitWidthBehavior MaxWidth="3000"/>
-                        </i:Interaction.Behaviors>
-                    </ListView>
-                </StackPanel>
-
-                <TextBlock Margin="0 10" Text="全部回应" Style="{StaticResource SubtitleTextBlockStyle}"></TextBlock>
-            </StackPanel>
-        </DataTemplate>
-
         <DataTemplate x:Key="CommentListDataTemplate">
             <StackPanel>
-                <ListView Padding="20 10" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" ItemTemplate="{StaticResource DefaultCommentItemDataTemplate}"></ListView>
+                <ListView Padding="20 10" ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" 
+                          Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding CommentList}" 
+                          ItemContainerStyle="{StaticResource NonPressedListViewItemStyle}" ItemTemplate="{StaticResource DefaultCommentItemDataTemplate}"></ListView>
             </StackPanel>
         </DataTemplate>
 
-        <Style x:Key="NoTopicFlipViewItemStyle" TargetType="FlipViewItem">
+        <Style x:Key="CommentListFlipViewItemStyle" TargetType="FlipViewItem">
             <Setter Property="Background" Value="Transparent" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
@@ -78,38 +64,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <Style x:Key="TopicFlipViewItemStyle" TargetType="FlipViewItem">
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="TabNavigation" Value="Local" />
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="FlipViewItem">
-                        <ScrollViewer>
-                            <StackPanel>
-                                <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" ContentTemplate="{StaticResource TopicDataTemplate}" Content="{Binding Topic}"/>
-
-                                <ContentPresenter Content="{TemplateBinding Content}"                                            
-                                              Background="{TemplateBinding Background}"                          
-                                              BorderBrush="{TemplateBinding BorderBrush}"                          
-                                              BorderThickness="{TemplateBinding BorderThickness}"                          
-                                              ContentTransitions="{TemplateBinding ContentTransitions}"                          
-                                              ContentTemplate="{TemplateBinding ContentTemplate}"                          
-                                              Padding="{TemplateBinding Padding}"                          
-                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"                          
-                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </StackPanel>
-                        </ScrollViewer>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <controls:CommentListStyleSelector x:Key="CommentListStyleSelector" NoTopicStyle="{StaticResource NoTopicFlipViewItemStyle}" TopicStyle="{StaticResource TopicFlipViewItemStyle}">
-
-        </controls:CommentListStyleSelector>
     </mt:MtPage.Resources>
 
     <Grid>
@@ -143,10 +97,16 @@
                             <TextBlock Name="title" FontSize="30" Text="{Binding Topic.Title}" Style="{StaticResource HeaderTextBlockStyle}"/>
 
                             <StackPanel Orientation="Horizontal" Margin="0 20 0 0" Grid.Row="1">
-                                <Image Source="{Binding Topic.Author.Avatar}" Width="40" Height="40"/>
-                                <TextBlock Text="{Binding Topic.Author.Name}" Margin="10 0 0 0" FontSize="18" VerticalAlignment="Center"/>
+                                <Button Style="{StaticResource HyperlinkButtonStyle}" Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Topic.Author}">
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="{Binding Topic.Author.Avatar}" Width="16" Height="16"/>
+                                        <TextBlock Text="{Binding Topic.Author.Name}" Margin="5 0 0 0" VerticalAlignment="Center"/>
+                                    </StackPanel>
+                                </Button>
                                 
-                                <TextBlock Text="{Binding Topic.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center" Margin="10 0 0 0"/>
+                                <TextBlock Text="{Binding Topic.Group.Name}" Style="{StaticResource DescriptionTextBlockStyle}" VerticalAlignment="Center" Margin="10 0 0 0"/>
+
+                                <TextBlock Text="{Binding Topic.Created, Converter={StaticResource DateTimeToStringConverter}}" Style="{StaticResource DescriptionTextBlockStyle}" VerticalAlignment="Center" Margin="10 0 0 0"/>
                             </StackPanel>
 
                             <RichTextBlock Grid.Row="2" Margin="0 20 0 0" TextWrapping="Wrap" FontSize="18">
@@ -157,7 +117,8 @@
 
                         </Grid>
 
-                        <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" ItemTemplate="{StaticResource DefaultCommentItemDataTemplate}">
+                        <ListView Margin="0 10 0 0" Style="{StaticResource DefaultListViewStyle}" ItemsSource="{Binding PopularCommentList}" 
+                                  ItemContainerStyle="{StaticResource NonPressedListViewItemStyle}" ItemTemplate="{StaticResource DefaultCommentItemDataTemplate}">
                             <ListView.Header>
                                 <TextBlock Text="最赞回应" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"></TextBlock>
                             </ListView.Header>
@@ -173,7 +134,7 @@
             <PivotItem Header="评论">
                 <Grid>
                     <FlipView Grid.Row="1" Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
-                              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyle="{StaticResource NoTopicFlipViewItemStyle}">
+                              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyle="{StaticResource CommentListFlipViewItemStyle}">
                         <FlipView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel AreScrollSnapPointsRegular="True" Orientation="Horizontal"/>

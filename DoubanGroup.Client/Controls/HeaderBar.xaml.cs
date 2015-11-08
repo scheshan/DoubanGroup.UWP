@@ -69,6 +69,11 @@ namespace DoubanGroup.Client.Controls
 
         private void HeaderBar_Loaded(object sender, RoutedEventArgs e)
         {
+            if (this.RootFrame == null)
+            {
+                return;
+            }
+
             btnBack.Visibility = this.RootFrame.CanGoBack ? Visibility.Visible : Visibility.Collapsed;
         }
 

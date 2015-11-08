@@ -81,8 +81,11 @@ namespace DoubanGroup.Client.ViewModels
 
             base.OnNavigatedTo(e, viewModelState);
 
-            this.LoadTopic();
-            this.LoadComments();
+            if (e.NavigationMode == Windows.UI.Xaml.Navigation.NavigationMode.New)
+            {
+                this.LoadTopic();
+                this.LoadComments();
+            }
         }
 
         /// <summary>
