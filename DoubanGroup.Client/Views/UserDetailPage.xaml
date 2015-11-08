@@ -61,7 +61,7 @@
                         
                         <GridView MaxHeight="110" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding TopGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
                             <i:Interaction.Behaviors>
-                                <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
+                                <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
                                 <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
                             </i:Interaction.Behaviors>
 

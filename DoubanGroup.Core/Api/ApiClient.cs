@@ -238,7 +238,7 @@ namespace DoubanGroup.Core.Api
         /// </summary>
         /// <param name="channel"></param>
         /// <returns></returns>
-        public async Task<GroupList> GetGroupByChannel(string channel)
+        public async Task<GroupList> GetChannelGroups(string channel)
         {
             string url = $"group/channels/{channel}/groups";
 
@@ -252,7 +252,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<ChannelTopicList> GetTopicByChannel(string channel, int start, int count)
+        public async Task<ChannelTopicList> GetChannelTopics(string channel, int start, int count)
         {
             string url = $"group/channels/{channel}/topics";
 
@@ -270,7 +270,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<TopicList> GetTopicByGroup(long groupID, int start, int count)
+        public async Task<TopicList> GetGroupTopics(long groupID, int start, int count)
         {
             string url = $"group/{groupID}/topics";
 
@@ -470,7 +470,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<UserTopicList> GetUserTopics(int start, int count)
+        public async Task<UserTopicList> GetMySuggestTopics(int start, int count)
         {
             string url = "group/user_topics";
 
@@ -482,14 +482,48 @@ namespace DoubanGroup.Core.Api
         }
 
         /// <summary>
-        /// 得到用户喜欢的主题
+        /// 得到我喜欢的主题
         /// </summary>
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<TopicList> GetLikedTopis(int start, int count)
+        public async Task<TopicList> GetMyLikedTopics(int start, int count)
         {
             string url = "group/liked_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到我评论的主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetMyRepliedTopics(int start, int count)
+        {
+            string url = "group/my_replied_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到我发表的主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetMyCreatedTopics(int start, int count)
+        {
+            string url = "group/my_topics";
 
             var para = new Parameters();
             para.Add("start", start.ToString());
@@ -577,7 +611,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<TopicList> GetTopicByUserRecommand(long userID, int start, int count)
+        public async Task<TopicList> GetUserRecommandTopics(long userID, int start, int count)
         {
             string url = $"group/user/{userID}/rec_topics";
 
@@ -595,7 +629,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<TopicList> GetTopicByUserLike(long userID, int start, int count)
+        public async Task<TopicList> GetUserLikeTopics(long userID, int start, int count)
         {
             string url = $"group/user/{userID}/like_topics";
 

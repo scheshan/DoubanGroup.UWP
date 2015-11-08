@@ -131,6 +131,7 @@
     <Compile Include="DesignData\ChannelDetailData.cs" />
     <Compile Include="DesignData\GroupDetailData.cs" />
     <Compile Include="DesignData\HomePageData.cs" />
+    <Compile Include="DesignData\MyData.cs" />
     <Compile Include="DesignData\MyGroupData.cs" />
     <Compile Include="DesignData\SearchData.cs" />
     <Compile Include="DesignData\TopicDetailData.cs" />
@@ -155,12 +156,9 @@
     <Compile Include="ViewModels\DialogViewModelBase.cs" />
     <Compile Include="ViewModels\GroupDetailPageViewModel.cs" />
     <Compile Include="DesignData\GroupMembersData.cs" />
-    <Compile Include="ViewModels\GroupMembersPageViewModel.cs" />
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
-    <Compile Include="ViewModels\MyGroupPageViewModel.cs" />
-    <Compile Include="ViewModels\MyLikePageViewModel.cs" />
-    <Compile Include="ViewModels\MyTopicPageViewModel.cs" />
+    <Compile Include="ViewModels\MyPageViewModel.cs" />
     <Compile Include="ViewModels\SearchPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
@@ -172,26 +170,14 @@
     <Compile Include="Views\GroupDetailPage.xaml.cs">
       <DependentUpon>GroupDetailPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\GroupMembersPage.xaml.cs">
-      <DependentUpon>GroupMembersPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\HomePage.xaml.cs">
       <DependentUpon>HomePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MyGroupPage.xaml.cs">
-      <DependentUpon>MyGroupPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MyLikePage.xaml.cs">
-      <DependentUpon>MyLikePage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MyPage.xaml.cs">
       <DependentUpon>MyPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MyTopicPage.xaml.cs">
-      <DependentUpon>MyTopicPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
@@ -261,10 +247,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\GroupMembersPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\HomePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -273,19 +255,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MyGroupPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MyLikePage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\MyPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\MyTopicPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

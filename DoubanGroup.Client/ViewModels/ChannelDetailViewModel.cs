@@ -62,7 +62,7 @@ namespace DoubanGroup.Client.ViewModels
 
         private async Task LoadGroups()
         {
-            var groupList = await this.ApiClient.GetGroupByChannel(this.Channel.Name);
+            var groupList = await this.ApiClient.GetChannelGroups(this.Channel.Name);
 
             foreach (var group in groupList.Items)
             {
@@ -103,7 +103,7 @@ namespace DoubanGroup.Client.ViewModels
 
                 var start = this.TopicList.Count;
 
-                var topicList = await this.ApiClient.GetTopicByChannel(this.Channel.Name, start, QUERY_COUNT);
+                var topicList = await this.ApiClient.GetChannelTopics(this.Channel.Name, start, QUERY_COUNT);
 
                 foreach (var topic in topicList.Topics)
                 {

@@ -68,7 +68,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.IsLoading = true;
 
-            var topicList = await this.ApiClient.GetTopicByGroup(this.GroupID, this.TopicList.Count, 30);
+            var topicList = await this.ApiClient.GetGroupTopics(this.GroupID, this.TopicList.Count, 30);
 
             if (topicList.Items.Count < 30)
             {

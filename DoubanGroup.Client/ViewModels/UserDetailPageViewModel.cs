@@ -105,7 +105,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.IsLoading = true;
 
-            var topicList = await this.ApiClient.GetTopicByUserRecommand(this.UserID, this.RecommandTopicList.Count, 30);
+            var topicList = await this.ApiClient.GetUserRecommandTopics(this.UserID, this.RecommandTopicList.Count, 30);
 
             this.IsLoading = false;
 
@@ -121,7 +121,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.IsLoading = true;
 
-            var topicList = await this.ApiClient.GetTopicByUserLike(this.UserID, this.LikeTopicList.Count, 30);
+            var topicList = await this.ApiClient.GetUserLikeTopics(this.UserID, this.LikeTopicList.Count, 30);
 
             this.IsLoading = false;
 
