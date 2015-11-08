@@ -234,6 +234,11 @@ namespace DoubanGroup.Client.ViewModels
 
         private async void Pin()
         {
+            if (this.Group == null)
+            {
+                return;
+            }
+
             string tileID = $"Tile_Group_{this.GroupID}";
             string argument = $"GroupDetail-{this.GroupID}";
 
