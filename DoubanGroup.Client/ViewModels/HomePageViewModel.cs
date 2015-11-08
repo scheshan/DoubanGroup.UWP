@@ -14,24 +14,67 @@ namespace DoubanGroup.Client.ViewModels
 {
     public class HomePageViewModel : ViewModelBase
     {
-        public ObservableCollection<Channel> ChannelList { get; private set; }
+        public ObservableCollection<ChannelDetailViewModel> ChannelList { get; private set; }
+
+        private ChannelDetailViewModel _currentChannel;
+
+        public ChannelDetailViewModel CurrentChannel
+        {
+            get { return _currentChannel; }
+            set
+            {
+                if (this.SetProperty(ref _currentChannel, value))
+                {
+                    value?.Init();
+                }
+            }
+        }
 
         public HomePageViewModel()
         {
-            this.ChannelList = new ObservableCollection<Channel>();
+            this.ChannelList = new ObservableCollection<ChannelDetailViewModel>();
 
             this.InitChannels();
         }
 
-        private void InitChannels()
+        private async Task InitChannels()
         {
-            this.ChannelList.Add(new Channel { NameCN = "精选", Name = "all" });
-            this.ChannelList.Add(new Channel { NameCN = "文化", Name = "culture" });
-            this.ChannelList.Add(new Channel { NameCN = "行摄", Name = "travel" });
-            this.ChannelList.Add(new Channel { NameCN = "娱乐", Name = "ent" });
-            this.ChannelList.Add(new Channel { NameCN = "时尚", Name = "fashion" });
-            this.ChannelList.Add(new Channel { NameCN = "生活", Name = "life" });
-            this.ChannelList.Add(new Channel { NameCN = "科技", Name = "tech" });
+#if DEBUG
+            var channels = new List<Channel>();
+            channels.Add(new Channel { NameCN = "精选", Name = "all" });
+            channels.Add(new Channel { NameCN = "文化", Name = "culture" });
+            channels.Add(new Channel { NameCN = "行摄", Name = "travel" });
+            channels.Add(new Channel { NameCN = "娱乐", Name = "ent" });
+            channels.Add(new Channel { NameCN = "时尚", Name = "fashion" });
+            channels.Add(new Channel { NameCN = "生活", Name = "life" });
+            channels.Add(new Channel { NameCN = "科技", Name = "tech" });
+#else
+            var channels = await this.ApiClient.GetChannelList();
+#endif
+            foreach (var channel in channels)
+            {
+                var vm = new ChannelDetailViewModel(channel);
+                this.ChannelList.Add(vm);
+            }
+        }
+
+        private DelegateCommand _refreshCommand;
+
+        public DelegateCommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new DelegateCommand(this.Refresh);
+                }
+                return _refreshCommand;
+            }
+        }
+
+        private void Refresh()
+        {
+            this.CurrentChannel?.Refresh();
         }
     }
 }

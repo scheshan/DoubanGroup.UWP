@@ -21,36 +21,9 @@ namespace DoubanGroup.Client.Controls
 {
     public sealed partial class ChannelDetail : UserControl
     {
-        private bool _isFirstLoaded = true;
-
-        public Channel Channel
-        {
-            get { return (Channel)GetValue(ChannelProperty); }
-            set { SetValue(ChannelProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for Channel.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ChannelProperty =
-            DependencyProperty.Register("Channel", typeof(Channel), typeof(ChannelDetail), new PropertyMetadata(null));
-
         public ChannelDetail()
         {
             this.InitializeComponent();
-
-            this.Loaded += ChannelDetail_Loaded;
-        }
-
-        private void ChannelDetail_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (_isFirstLoaded)
-            {
-                _isFirstLoaded = false;
-
-                var channel = this.Channel;
-                var vm = App.Container.Resolve<ViewModels.ChannelDetailViewModel>();
-                this.DataContext = vm;
-                vm.Init(channel);
-            }
         }
     }
 }

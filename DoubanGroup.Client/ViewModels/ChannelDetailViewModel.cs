@@ -27,15 +27,23 @@ namespace DoubanGroup.Client.ViewModels
 
         public ObservableCollection<ChannelTopic> TopicList { get; private set; }
 
-        public ChannelDetailViewModel()
+        private bool _initialized = false;
+
+        public ChannelDetailViewModel(Channel channel)
         {
+            this.Channel = channel;
             this.GroupList = new ObservableCollection<Group>();
             this.TopicList = new ObservableCollection<ChannelTopic>();
         }
 
-        public void Init(Channel channel)
+        public void Init()
         {
-            this.Channel = channel;
+            if(_initialized)
+            {
+                return;
+            }
+
+            _initialized = true;
 
             this.LoadGroupsFromCache();
 
@@ -183,6 +191,18 @@ namespace DoubanGroup.Client.ViewModels
         private string GetTopicsCacheKey()
         {
             return $"Channel_{this.Channel.Name}_Topics";
+        }
+
+        public void Refresh()
+        {
+            this.GroupList.Clear();
+            this.TopicList.Clear();
+
+            this.CacheService.Remove(this.GetGroupsCacheKey());
+            this.CacheService.Remove(this.GetTopicsCacheKey());
+
+            this.LoadGroups();
+            this.LoadTopics();
         }
     }
 }

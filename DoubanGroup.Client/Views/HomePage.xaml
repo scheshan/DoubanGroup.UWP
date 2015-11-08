@@ -26,20 +26,20 @@
         <controls:HeaderBar Title="推荐内容" EnableSearch="True">
             <controls:HeaderBar.CommandBar>
                 <CommandBar>
-                    <AppBarButton Label="刷新" Icon="Refresh"/>
+                    <AppBarButton Command="{Binding RefreshCommand}" Label="刷新" Icon="Refresh"/>
                 </CommandBar>
             </controls:HeaderBar.CommandBar>
         </controls:HeaderBar>
 
-        <Pivot ItemsSource="{Binding ChannelList}" Grid.Row="1" Style="{StaticResource TabStyle}">
+        <Pivot Name="container" ItemsSource="{Binding ChannelList}" SelectedItem="{Binding CurrentChannel, Mode=TwoWay}" Grid.Row="1" Style="{StaticResource TabStyle}">
             <Pivot.HeaderTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding NameCN}"/>
+                    <TextBlock Text="{Binding Channel.NameCN}"/>
                 </DataTemplate>
             </Pivot.HeaderTemplate>
             <Pivot.ItemTemplate>
                 <DataTemplate>
-                    <controls:ChannelDetail Channel="{Binding}"/>
+                    <controls:ChannelDetail/>
                 </DataTemplate>
             </Pivot.ItemTemplate>
         </Pivot>
