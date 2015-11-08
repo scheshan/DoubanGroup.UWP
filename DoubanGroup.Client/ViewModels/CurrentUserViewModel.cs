@@ -70,7 +70,7 @@ namespace DoubanGroup.Client.ViewModels
         public CurrentUserViewModel()
         {
             this.ApiClient = new ApiClient(this);
-            this.EventAggregator = App.Current.Container.Resolve<IEventAggregator>();
+            this.EventAggregator = App.Container.Resolve<IEventAggregator>();
 
             this.JoinedGroupList = new ObservableCollection<Group>();
             this.ManagedGroupList = new ObservableCollection<Group>();

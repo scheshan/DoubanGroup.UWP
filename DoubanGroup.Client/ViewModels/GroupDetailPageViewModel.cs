@@ -10,6 +10,9 @@ using DoubanGroup.Core.Api;
 using Prism.Commands;
 using Windows.UI.Xaml.Navigation;
 using DoubanGroup.Client.CacheItem;
+using NotificationsExtensions.Tiles;
+using Windows.UI.Notifications;
+using Windows.UI.StartScreen;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -41,9 +44,12 @@ namespace DoubanGroup.Client.ViewModels
 
         public IncrementalLoadingList<Topic> TopicList { get; private set; }
 
+        public IncrementalLoadingList<User> UserList { get; private set; }
+
         public GroupDetailPageViewModel()
         {
             this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
+            this.UserList = new IncrementalLoadingList<User>(this.LoadUsers);
         }
 
         public override async void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
@@ -56,54 +62,45 @@ namespace DoubanGroup.Client.ViewModels
             {
                 this.LoadGroup();
             }
-            else
-            {
-                await this.LoadGroupFromCache();
-            }
-        }
-
-        public override void OnNavigatingFrom(NavigatingFromEventArgs e, Dictionary<string, object> viewModelState, bool suspending)
-        {
-            base.OnNavigatingFrom(e, viewModelState, suspending);
-
-            this.Cache.Set(this.GetGroupCacheKey(), this.Group);
-
-            var topicList = AutoMapper.Mapper.Map<List<TopicCacheInfo>>(this.TopicList.ToList());
-
-            this.Cache.Set(this.GetTopicListCacheKey(), topicList);
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
         {
             this.IsLoading = true;
 
-            var topicList = await this.ApiClient.GetTopicByGroup(this.GroupID, this.TopicList.Count, 30);
+            var topicList = await this.ApiClient.GetGroupTopics(this.GroupID, this.TopicList.Count, 30);
+
+            if (topicList.Items.Count < 30)
+            {
+                this.TopicList.NoMore();
+            }
 
             this.IsLoading = false;
 
             return topicList.Items;
         }
 
+        private async Task<IEnumerable<User>> LoadUsers(uint count)
+        {
+            this.IsLoading = true;
+
+            var userList = await this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, 100);
+
+            if (userList.Items.Count < 100)
+            {
+                this.UserList.NoMore();
+            }
+
+            this.IsLoading = false;
+
+            return userList.Items;
+        }
+
         private async Task LoadGroup()
         {
             var group = await this.ApiClient.GetGroup(this.GroupID);
-            this.Group = group;            
-        }
-
-        private async Task LoadGroupFromCache()
-        {
-            this.TopicList.NoMore();
-
-            this.Group = await this.Cache.Get<Group>(this.GetGroupCacheKey());
-
-            var topicList = await this.Cache.Get<List<TopicCacheInfo>>(this.GetTopicListCacheKey());
-
-            foreach (var topic in topicList)
-            {
-                this.TopicList.Add(AutoMapper.Mapper.Map<Topic>(topic));
-            }
-
-            this.TopicList.HasMore();
+            this.Group = group;
+            this.OnPropertyChanged(() => this.IsGroupMember);
         }
 
         private DelegateCommand _viewMembersCommand;
@@ -221,14 +218,59 @@ namespace DoubanGroup.Client.ViewModels
             this.IsLoading = false;
         }
 
-        private string GetGroupCacheKey()
+        private DelegateCommand _pinCommand;
+
+        public DelegateCommand PinCommand
         {
-            return $"group_{this.GroupID}";
+            get
+            {
+                if (_pinCommand == null)
+                {
+                    _pinCommand = new DelegateCommand(this.Pin);
+                }
+                return _pinCommand;
+            }
         }
 
-        private string GetTopicListCacheKey()
+        private async void Pin()
         {
-            return $"group_{this.GroupID}_topics";
+            string tileID = $"Tile_Group_{this.GroupID}";
+            string argument = $"GroupDetail-{this.GroupID}";
+
+            SecondaryTile tile = new SecondaryTile(tileID, this.Group.Name, argument, new Uri("ms-appx:///Assets/logo-50.png"), TileSize.Square150x150);
+            await tile.RequestCreateAsync();
+
+            TileBindingContentAdaptive bindingContent = new TileBindingContentAdaptive()
+            {
+                PeekImage = new TilePeekImage()
+                {
+                    Source = new TileImageSource(this.Group.LargeAvatar)
+                }
+            };
+
+            TileBinding binding = new TileBinding()
+            {
+                Branding = TileBranding.NameAndLogo,
+
+                DisplayName = this.Group.Name,
+
+                Content = bindingContent
+            };
+
+            TileContent content = new TileContent()
+            {
+                Visual = new TileVisual()
+                {
+                    TileMedium = binding,
+                    TileWide = binding,
+                    TileLarge = binding
+                }
+            };
+
+            var notification = new TileNotification(content.GetXml());
+
+            var updater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID);
+            updater.Update(notification);
         }
     }
 }

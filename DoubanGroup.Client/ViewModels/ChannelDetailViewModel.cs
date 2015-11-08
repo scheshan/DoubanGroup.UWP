@@ -27,28 +27,74 @@ namespace DoubanGroup.Client.ViewModels
 
         public ObservableCollection<ChannelTopic> TopicList { get; private set; }
 
-        public ChannelDetailViewModel()
+        private bool _initialized = false;
+
+        public ChannelDetailViewModel(Channel channel)
         {
+            this.Channel = channel;
             this.GroupList = new ObservableCollection<Group>();
             this.TopicList = new ObservableCollection<ChannelTopic>();
         }
 
-        public void Init(Channel channel)
+        public void Init()
         {
-            this.Channel = channel;
+            if(_initialized)
+            {
+                return;
+            }
 
-            this.InitGroups();
+            _initialized = true;
 
-            this.LoadTopics();
+            this.LoadGroupsFromCache();
+
+            this.LoadTopicsFromCache();
         }
 
-        private async Task InitGroups()
+        private async Task LoadGroupsFromCache()
         {
-            var groupList = await this.ApiClient.GetGroupByChannel(this.Channel.Name);
+            string cacheKey = this.GetGroupsCacheKey();
+            var groupList = await this.CacheService.Get<List<Group>>(cacheKey);
+
+            if (groupList != null)
+            {
+                foreach (var group in groupList)
+                {
+                    this.GroupList.Add(group);
+                }
+            }
+            else
+            {
+                await this.LoadGroups();
+            }
+        }
+
+        private async Task LoadGroups()
+        {
+            var groupList = await this.ApiClient.GetChannelGroups(this.Channel.Name);
 
             foreach (var group in groupList.Items)
             {
                 this.GroupList.Add(group);
+            }
+
+            await this.CacheService.Set(this.GetGroupsCacheKey(), this.GroupList.ToList());
+        }
+
+        private async Task LoadTopicsFromCache()
+        {
+            string cacheKey = this.GetTopicsCacheKey();
+            var topicList = await this.CacheService.Get<List<ChannelTopic>>(cacheKey);
+
+            if (topicList != null)
+            {
+                foreach (var topic in topicList)
+                {
+                    this.TopicList.Add(topic);
+                }
+            }
+            else
+            {
+                await this.LoadTopics();
             }
         }
 
@@ -65,12 +111,14 @@ namespace DoubanGroup.Client.ViewModels
 
                 var start = this.TopicList.Count;
 
-                var topicList = await this.ApiClient.GetTopicByChannel(this.Channel.Name, start, QUERY_COUNT);
+                var topicList = await this.ApiClient.GetChannelTopics(this.Channel.Name, start, QUERY_COUNT);
 
                 foreach (var topic in topicList.Topics)
                 {
                     this.TopicList.Add(topic);
                 }
+
+                await this.CacheService.Set(this.GetTopicsCacheKey(), this.TopicList.ToList());
             }
             finally
             {
@@ -132,6 +180,28 @@ namespace DoubanGroup.Client.ViewModels
 
         private void LoadMore()
         {
+            this.LoadTopics();
+        }
+
+        private string GetGroupsCacheKey()
+        {
+            return $"Channel_{this.Channel.Name}_Groups";
+        }
+
+        private string GetTopicsCacheKey()
+        {
+            return $"Channel_{this.Channel.Name}_Topics";
+        }
+
+        public void Refresh()
+        {
+            this.GroupList.Clear();
+            this.TopicList.Clear();
+
+            this.CacheService.Remove(this.GetGroupsCacheKey());
+            this.CacheService.Remove(this.GetTopicsCacheKey());
+
+            this.LoadGroups();
             this.LoadTopics();
         }
     }

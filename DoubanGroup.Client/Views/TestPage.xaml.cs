@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyToolkit.Paging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,18 +14,25 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+// “空白页”项模板在 http://go.microsoft.com/fwlink/?LinkId=234238 上提供
 
 namespace DoubanGroup.Client.Views
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// 可用于自身或导航至 Frame 内部的空白页。
     /// </summary>
-    public sealed partial class MyGroupPage : Page
+    public sealed partial class TestPage : MtPage
     {
-        public MyGroupPage()
+        public TestPage()
         {
             this.InitializeComponent();
+
+            this.Loaded += TestPage_Loaded;
+        }
+
+        private void TestPage_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

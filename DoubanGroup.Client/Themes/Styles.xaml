@@ -4,8 +4,47 @@
     xmlns:entity="using:DoubanGroup.Core.Api.Entity">
     
     <SolidColorBrush x:Key="SecondaryForegroundBrush" Color="#999999"/>
-    <SolidColorBrush x:Key="DefaultBackground" Color="#F9F9F9"/>
+    <SolidColorBrush x:Key="DefaultBackground" Color="#E6E6E6"/>
     <SolidColorBrush x:Key="HighlightForeground" Color="#037b82"/>
+    <SolidColorBrush x:Key="TitleBackground" Color="#F0F0F0"/>
+
+    <Style TargetType="TextBlock" x:Key="ListTitleTextBlockStyle">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="#000000"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ListDescriptionTextBlockStyle">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="#999999"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ListTipsTextBlockStyle" BasedOn="{StaticResource ListDescriptionTextBlockStyle}">
+        <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="GroupHeaderTextBlockStyle">
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Foreground" Value="#000000"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="TitleTextBlockStyle">
+        <Setter Property="FontSize" Value="46"/>
+        <Setter Property="Foreground" Value="#000000"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="ContentTextBlockStyle">
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="Foreground" Value="#0A0A0A"/>
+        <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style TargetType="TextBlock" x:Key="DescriptionTextBlockStyle">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Foreground" Value="#999999"/>
+    </Style>
 
     <Style TargetType="GridView" x:Key="GroupGridViewStyle">
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
@@ -61,24 +100,24 @@
         <Setter Property="ItemTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Border Padding="10" Height="100" Background="#FFFFFF">
+                    <Border Padding="10" Height="110" Background="#FFFFFF">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition Height="*"/>
                             </Grid.RowDefinitions>
 
-                            <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
+                            <Image Source="{Binding Avatar}" Height="50" Width="50" Margin="0 0 10 0"></Image>
 
-                            <TextBlock Text="{Binding Name}" MaxHeight="40" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding Name}" Style="{StaticResource ListTitleTextBlockStyle}" MaxHeight="50" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
 
-                            <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="40" 
-                                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 10 0 0"
-                                           Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
+                            <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="45" 
+                                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 5 0 0"
+                                           Style="{StaticResource ListDescriptionTextBlockStyle}"/>
                         </Grid>
                     </Border>
                 </DataTemplate>
@@ -103,17 +142,17 @@
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
-                                        <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                        <PointerUpThemeAnimation Storyboard.TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content"/>
+                                        <PointerDownThemeAnimation TargetName="container"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="PressedSelected">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content" />
+                                        <PointerDownThemeAnimation TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -126,10 +165,30 @@
         </Setter>
     </Style>
 
+    <Style x:Key="NonPressedListViewItemStyle" TargetType="ListViewItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0 10"/>
+        <Setter Property="Margin" Value="0 0 0 10"/>
+        <Setter Property="BorderBrush" Value="#cccccc"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="#FFFFFF"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border Name="container" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                        <ContentPresenter x:Name="content" Margin="{TemplateBinding Padding}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="DefaultListViewStyle" TargetType="ListView">
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultListViewItemStyle}"/>
         <Setter Property="IsItemClickEnabled" Value="True"/>
         <Setter Property="SelectionMode" Value="None"/>
+        <Setter Property="Padding" Value="20 10"/>
     </Style>
 
     <Style x:Key="DefaultGridViewItemStyle" TargetType="GridViewItem">
@@ -143,23 +202,23 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="GridViewItem">
-                    <Border Background="{TemplateBinding Background}">
+                    <Border Name="container" Background="{TemplateBinding Background}">
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup x:Name="CommonStates">
                                 <VisualState x:Name="Normal"/>
                                 <VisualState x:Name="PointerOver">
                                     <Storyboard>
-                                        <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                        <PointerUpThemeAnimation Storyboard.TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Pressed">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content"/>
+                                        <PointerDownThemeAnimation TargetName="container"/>
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="PressedSelected">
                                     <Storyboard>
-                                        <PointerDownThemeAnimation TargetName="content" />
+                                        <PointerDownThemeAnimation TargetName="container" />
                                     </Storyboard>
                                 </VisualState>
                             </VisualStateGroup>
@@ -175,6 +234,7 @@
         <Setter Property="ItemContainerStyle" Value="{StaticResource DefaultGridViewItemStyle}"/>
         <Setter Property="SelectionMode" Value="None"/>
         <Setter Property="IsItemClickEnabled" Value="True"/>
+        <Setter Property="Padding" Value="20 10 10 10"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -182,10 +242,6 @@
                 </ItemsPanelTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
-
-    <Style x:Key="SecondaryTextBlockStyle" TargetType="TextBlock" BasedOn="{StaticResource CaptionTextBlockStyle}">
-        <Setter Property="Foreground" Value="{StaticResource SecondaryForegroundBrush}"/>
     </Style>
 
     <Style x:Key="SmallUserAvatarImageStyle" TargetType="Image">
@@ -200,5 +256,74 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{StaticResource HighlightForeground}"/>
+    </Style>
+
+    <Style x:Key="LoadingProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="Foreground" Value="{StaticResource HighlightForeground}"/>
+        <Setter Property="IsIndeterminate" Value="True"/>
+    </Style>
+
+    <Style TargetType="PivotHeaderItem">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Padding" Value="10 0"/>
+        <Setter Property="Margin" Value="10 0 0 0"/>
+    </Style>
+    <Style TargetType="Pivot" x:Key="TabStyle">
+        <Setter Property="Background" Value="{StaticResource TitleBackground}"/>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="PivotItem">
+                    <Setter Property="Background" Value="{StaticResource DefaultBackground}"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Button" x:Key="HyperlinkButtonStyle" BasedOn="{StaticResource TextBlockButtonStyle}">
+        <Setter Property="Foreground" Value="#037b82"/>
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="DefaultButtonStyle">
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="container" Background="{TemplateBinding Background}" Opacity="0.9" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <PointerDownThemeAnimation Storyboard.TargetName="container"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="container" Storyboard.TargetProperty="Opacity" To="1" Duration="0"/>
+                                        <PointerUpThemeAnimation Storyboard.TargetName="container"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="container" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0"/>
+                                        <DoubleAnimation Storyboard.TargetName="content" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        
+                        <ContentPresenter x:Name="content" Margin="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

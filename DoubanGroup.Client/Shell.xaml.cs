@@ -1,8 +1,11 @@
-﻿using System;
+﻿using MyToolkit.Controls;
+using MyToolkit.Paging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -19,55 +22,55 @@ namespace DoubanGroup.Client
 {
     public sealed partial class Shell : UserControl
     {
-        private Frame RootFrame { get; set; }
+        public MtFrame RootFrame
+        {
+            get; private set;
+        }
 
-        private ViewModels.ShellViewModel ViewModel { get; set; }
-
-        public Shell(Frame rootFrame)
+        public Shell(MtFrame rootFrame)
         {
             this.RootFrame = rootFrame;
 
             this.InitializeComponent();
 
-            this.Loaded += Shell_Loaded;
-        }
-
-        private void Shell_Loaded(object sender, RoutedEventArgs e)
-        {
             this.main_content.Content = this.RootFrame;
-            this.ViewModel = (ViewModels.ShellViewModel)this.DataContext;
-
-            this.ViewModel.PropertyChanged += ViewModel_PropertyChanged;
-
-            this.SetConfigButtonPosition();
         }
 
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void Navigate(object sender, RoutedEventArgs e)
         {
-            if (e.PropertyName == nameof(this.ViewModel.IsPaneOpen))
+            var btn = (Button)sender;
+            var pageToken = (string)btn.Tag;
+
+            Type pageType = null;
+
+            switch (pageToken)
             {
-                this.SetConfigButtonPosition();
+                case "Home":
+                    pageType = typeof(Views.HomePage);
+                    break;
+                case "My":
+                    pageType = typeof(Views.MyPage);
+                    break;
+            }
+
+            if (pageType != null)
+            {
+                this.ViewPage(pageType);
             }
         }
 
-        private void SetConfigButtonPosition()
+        private void ViewPage(Type pageType)
         {
-            if (sv_container.IsPaneOpen)
+            var page = this.RootFrame.GetNearestPageOfTypeInBackStack(pageType);
+
+            if (page != null)
             {
-                Grid.SetRow(btnConfig, 0);
-                Grid.SetColumn(btnConfig, 1);
+                this.RootFrame.MoveToTopAndNavigateAsync(page);
             }
             else
             {
-                Grid.SetRow(btnConfig, 1);
-                Grid.SetColumn(btnConfig, 0);
+                this.RootFrame.Navigate(pageType);
             }
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            var vm = new ViewModels.LoginPageViewModel();
-            vm.Show();
         }
     }
 }

@@ -1,6 +1,12 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
 
     <DataTemplate x:Key="DefaultGroupItemTemplate">
         <Border Padding="10" Height="100" Background="#FFFFFF">
@@ -16,26 +22,28 @@
 
                 <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
 
-                <TextBlock Text="{Binding Name}" MaxHeight="40" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{Binding Name}" MaxHeight="40" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" 
+                           Style="{StaticResource ListTitleTextBlockStyle}"/>
 
                 <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="40" 
-                                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 10 0 0"
-                                           Style="{StaticResource CaptionTextBlockStyle}" Foreground="#666666"/>
+                           TextWrapping="Wrap" Grid.ColumnSpan="2" Grid.Row="1" VerticalAlignment="Top"  Margin="0 10 0 0"                                           
+                           Style="{StaticResource ListDescriptionTextBlockStyle}" Foreground="#666666"/>
             </Grid>
         </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="MinimumGroupItemTemplate">
-        <Border Padding="10" Background="#FFFFFF">
+        <Border Padding="10" Height="70" Background="#FFFFFF">
             <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
-                <Image Source="{Binding Avatar}" Height="80" Width="80" Margin="0 0 0 5" HorizontalAlignment="Center"></Image>
+                <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
 
-                <TextBlock Text="{Binding Name}" MaxHeight="20" TextWrapping="Wrap" Grid.Row="1" HorizontalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Name}" MaxHeight="50" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" 
+                           Style="{StaticResource ListTitleTextBlockStyle}"/>
             </Grid>
         </Border>
     </DataTemplate>
@@ -58,23 +66,167 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
-                <TextBlock Text="{Binding Title}" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Text="{Binding Title}" Style="{StaticResource ListTitleTextBlockStyle}" TextTrimming="CharacterEllipsis"/>
 
-                <TextBlock Grid.Row="1" Margin="0 10 0 0" Text="{Binding ShortContent}" Foreground="#666666" Height="40" TextTrimming="CharacterEllipsis" Style="{StaticResource CaptionTextBlockStyle}"/>
+                <TextBlock Grid.Row="1" Margin="0 5 0 0" Text="{Binding ShortContent}" Height="45" Style="{StaticResource ListDescriptionTextBlockStyle}"/>
 
             </Grid>
 
-            <Image Visibility="{Binding Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="60" Height="60" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Avatar.Alt}">
+            <Image Visibility="{Binding Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="65" Height="65" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Avatar.Alt}">
 
             </Image>
 
             <Grid Grid.Row="1" Grid.ColumnSpan="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Author.Name}"/>
-                    <TextBlock Style="{StaticResource SecondaryTextBlockStyle}" Text="{Binding Updated, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0"/>
+                    <TextBlock Style="{StaticResource ListTipsTextBlockStyle}" Text="{Binding Author.Name}"/>
+                    <TextBlock Style="{StaticResource ListTipsTextBlockStyle}" Text="{Binding Updated, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0"/>
                 </StackPanel>
 
-                <TextBlock HorizontalAlignment="Right" Style="{StaticResource SecondaryTextBlockStyle}">
+                <TextBlock HorizontalAlignment="Right" Style="{StaticResource ListTipsTextBlockStyle}">
+                            <Run Text="{Binding CommentsCount}"/>
+                            <Run Text="人回应"/>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultCommentItemDataTemplate">
+        <Grid Padding="10 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="{Binding Author.Avatar}" Style="{StaticResource SmallUserAvatarImageStyle}" VerticalAlignment="Top" Margin="0 0 10 0">
+                <i:Interaction.Behaviors>
+                    <ic:EventTriggerBehavior EventName="PointerPressed">
+                        <ic:InvokeCommandAction Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Author}"/>
+                    </ic:EventTriggerBehavior>
+                </i:Interaction.Behaviors>
+            </Image>
+
+            <StackPanel Grid.Column="1">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
+                        <Button Content="{Binding Author.Name}" Style="{StaticResource HyperlinkButtonStyle}" Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Author}"/>
+
+                        <TextBlock Text="{Binding Time, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0" Style="{StaticResource ListTipsTextBlockStyle}" VerticalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="1">
+                        <Button Command="{Binding DataContext.VoteCommentCommand, ElementName=page}" CommandParameter="{Binding}" Style="{StaticResource HyperlinkButtonStyle}" Foreground="#999999" 
+                                IsEnabled="{Binding CanVote}">
+                            <StackPanel Orientation="Horizontal">
+                                <FontIcon FontSize="14" Glyph="&#xE19F;"/>
+                                <TextBlock Margin="2 0 0 0" Text="{Binding VoteCount}"/>
+                            </StackPanel>
+                            
+                        </Button>
+                        <Button Command="{Binding DataContext.AddCommentCommand, ElementName=page}" CommandParameter="{Binding}" Style="{StaticResource HyperlinkButtonStyle}" Foreground="#999999" Margin="10 0 0 0">
+                            <FontIcon FontSize="14" Glyph="&#xE134;"/>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Margin="0 5 0 0" Background="#F9F9F9" Visibility="{Binding QuoteComment, Converter={StaticResource NotNullToVisibilityConverter}}">
+                    <Rectangle HorizontalAlignment="Left" Width="2" Fill="#EEEEEE"/>
+
+                    <StackPanel Margin="2 0 0 0" Padding="10 5">
+                        <TextBlock Style="{StaticResource ListDescriptionTextBlockStyle}" Text="{Binding QuoteComment.Text}" TextWrapping="Wrap"/>
+
+                        <Button Content="{Binding QuoteComment.Author.Name}" Style="{StaticResource HyperlinkButtonStyle}" Margin="0 2 0 0"
+                                Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding QuoteComment.Author}"/>
+                    </StackPanel>
+                </Grid>
+
+                <TextBlock Text="{Binding Text}" Style="{StaticResource ListDescriptionTextBlockStyle}" Margin="0 5 0 0"/>
+            </StackPanel>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ChannelTopicItemTemplate">
+        <Grid Padding="10 0" Background="Transparent">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="{Binding Topic.Title}" Style="{StaticResource ListTitleTextBlockStyle}" TextTrimming="CharacterEllipsis"/>
+
+                <TextBlock Grid.Row="1" Margin="0 5 0 0" Text="{Binding Topic.ShortContent}" Height="45" TextTrimming="CharacterEllipsis" Style="{StaticResource ListDescriptionTextBlockStyle}"/>
+            </Grid>
+
+            <Image Visibility="{Binding Topic.Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="65" Height="65" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Topic.Avatar.Alt}">
+
+            </Image>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Style="{StaticResource ListTipsTextBlockStyle}">                                        
+                        <Run Text="{Binding Topic.LikeCount}"/>                                        
+                        <Run Text="人喜欢"/>
+                    </TextBlock>
+                </StackPanel>
+
+                <TextBlock HorizontalAlignment="Right" Style="{StaticResource ListTipsTextBlockStyle}">                                    
+                    <Run Text="来自"/>                                    
+                    <Run Text="{Binding Topic.Group.Name}"/>                                    
+                    <Run Text="小组"/>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="GroupTopicItemTemplate">
+        <Grid Padding="10 0" Background="#FFFFFF">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="{Binding Title}" Style="{StaticResource ListTitleTextBlockStyle}" TextTrimming="CharacterEllipsis"/>
+
+                <TextBlock Grid.Row="1" Margin="0 5 0 0" Text="{Binding ShortContent}" Height="45" Style="{StaticResource ListDescriptionTextBlockStyle}"/>
+
+            </Grid>
+
+            <Image Visibility="{Binding Avatar, Converter={StaticResource NotNullToVisibilityConverter}}" Width="65" Height="65" Stretch="Fill" Grid.Column="1" Margin="10 0 0 0" VerticalAlignment="Top" Source="{Binding Avatar.Alt}">
+
+            </Image>
+
+            <Grid Grid.Row="1" Grid.ColumnSpan="2">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Style="{StaticResource ListTipsTextBlockStyle}" Text="{Binding Group.Name}"/>
+                    <TextBlock Style="{StaticResource ListTipsTextBlockStyle}" Text="{Binding Updated, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0"/>
+                </StackPanel>
+
+                <TextBlock HorizontalAlignment="Right" Style="{StaticResource ListTipsTextBlockStyle}">
                             <Run Text="{Binding CommentsCount}"/>
                             <Run Text="人回应"/>
                 </TextBlock>

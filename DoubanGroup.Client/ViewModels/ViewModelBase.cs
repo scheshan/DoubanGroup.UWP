@@ -15,15 +15,30 @@ namespace DoubanGroup.Client.ViewModels
     {
         #region 属性
 
-        private bool _isLoading;
+        private int _loadingCounters = 0;
 
         /// <summary>
         /// 标记是否处于忙碌状态
         /// </summary>
         public bool IsLoading
         {
-            get { return _isLoading; }
-            set { this.SetProperty(ref _isLoading, value); }
+            get
+            {
+                return _loadingCounters > 0;
+            }
+            set
+            {
+                if(value)
+                {
+                    _loadingCounters++;
+                }
+                else
+                {
+                    _loadingCounters--;
+                }
+
+                this.OnPropertyChanged();
+            }
         }
 
         /// <summary>
@@ -33,13 +48,13 @@ namespace DoubanGroup.Client.ViewModels
         {
             get
             {
-                return App.Current.Container.Resolve<INavigationService>();
+                return App.Container.Resolve<INavigationService>();
             }
         }
 
         private Lazy<ApiClient> _apiClient = new Lazy<ApiClient>(() =>
         {
-            return App.Current.Container.Resolve<ApiClient>();
+            return App.Container.Resolve<ApiClient>();
         });
 
         /// <summary>
@@ -60,7 +75,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             get
             {
-                return App.Current.Container.Resolve<CurrentUserViewModel>();
+                return App.Container.Resolve<CurrentUserViewModel>();
             }
         }
 
@@ -71,14 +86,20 @@ namespace DoubanGroup.Client.ViewModels
         {
             get
             {
-                return App.Current.Container.Resolve<IEventAggregator>();
+                return App.Container.Resolve<IEventAggregator>();
             }
         }
 
         /// <summary>
         /// 缓存服务
         /// </summary>
-        public Service.ICacheService Cache { get; private set; }
+        public Service.ICacheService CacheService
+        {
+            get
+            {
+                return new Service.FileCacheService();
+            }
+        }
 
         #endregion
 
@@ -86,7 +107,7 @@ namespace DoubanGroup.Client.ViewModels
 
         public ViewModelBase()
         {
-            this.Cache = new Service.FileCacheService();
+
         }
 
         #endregion

@@ -1,0 +1,38 @@
+﻿<ContentDialog
+    x:Class="DoubanGroup.Client.Views.AddCommentPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DoubanGroup.Client.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="#FFFFFF"
+    Title="添加评论">
+    <Grid Width="450" Padding="0 10 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <ProgressBar Style="{StaticResource LoadingProgressBarStyle}" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <Grid Grid.Row="1" Margin="0 0 0 10" Background="#F9F9F9" Visibility="{Binding ReplyTo, Converter={StaticResource NotNullToVisibilityConverter}}">
+            <Rectangle HorizontalAlignment="Left" Width="2" Fill="#EEEEEE"/>
+
+            <StackPanel Margin="2 0 0 0" Padding="10 5">
+                <TextBlock Style="{StaticResource ListDescriptionTextBlockStyle}" Text="{Binding ReplyTo.Text}" TextWrapping="Wrap" MaxHeight="40" TextTrimming="CharacterEllipsis"/>
+
+                <Button Content="{Binding ReplyTo.Author.Name}" Style="{StaticResource HyperlinkButtonStyle}" Margin="0 2 0 0"/>
+            </StackPanel>
+        </Grid>
+
+        <TextBox Grid.Row="2" Height="100" BorderThickness="1" AcceptsReturn="True" Text="{Binding Content, Mode=TwoWay}"></TextBox>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="3" HorizontalAlignment="Right" Margin="0 10 0 0">
+            <Button IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}" Command="{Binding SubmitCommand}" Style="{StaticResource DefaultButtonStyle}" Background="{StaticResource HighlightForeground}" Foreground="#ffffff" Content="提交"/>
+            <Button IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}" Command="{Binding HideCommand}" Style="{StaticResource DefaultButtonStyle}" Content="取消" Margin="10 0 0 0"/>
+        </StackPanel>
+    </Grid>
+</ContentDialog>

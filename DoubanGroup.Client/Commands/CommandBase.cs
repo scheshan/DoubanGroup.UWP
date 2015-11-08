@@ -13,7 +13,7 @@ namespace DoubanGroup.Client.Commands
     {
         private Lazy<INavigationService> _navigationService = new Lazy<INavigationService>(() =>
         {
-            return App.Current.Container.Resolve<INavigationService>();
+            return App.Container.Resolve<INavigationService>();
         });
 
         protected INavigationService NavigationService

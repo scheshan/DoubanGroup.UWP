@@ -238,7 +238,7 @@ namespace DoubanGroup.Core.Api
         /// </summary>
         /// <param name="channel"></param>
         /// <returns></returns>
-        public async Task<GroupList> GetGroupByChannel(string channel)
+        public async Task<GroupList> GetChannelGroups(string channel)
         {
             string url = $"group/channels/{channel}/groups";
 
@@ -252,7 +252,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<ChannelTopicList> GetTopicByChannel(string channel, int start, int count)
+        public async Task<ChannelTopicList> GetChannelTopics(string channel, int start, int count)
         {
             string url = $"group/channels/{channel}/topics";
 
@@ -270,7 +270,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<TopicList> GetTopicByGroup(long groupID, int start, int count)
+        public async Task<TopicList> GetGroupTopics(long groupID, int start, int count)
         {
             string url = $"group/{groupID}/topics";
 
@@ -330,6 +330,24 @@ namespace DoubanGroup.Core.Api
         }
 
         /// <summary>
+        /// 得到作者发表的评论
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<CommentList> GetOpCommentList(long topicID, int start, int count)
+        {
+            string url = $"group/topic/{topicID}/op_comments";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<CommentList>(url, para);
+        }
+
+        /// <summary>
         /// 得到主题信息
         /// </summary>
         /// <param name="topicID"></param>
@@ -365,6 +383,21 @@ namespace DoubanGroup.Core.Api
             para.Add("count", count.ToString());
 
             return await this.Get<UserDetail>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户信息
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public async Task<User> GetUser(long userID)
+        {
+            string url = $"lifestream/user/{userID}";
+
+            var para = new Parameters();
+            para.Add("version", "2");
+
+            return await this.Get<User>(url, para);
         }
 
         /// <summary>
@@ -437,7 +470,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<UserTopicList> GetUserTopics(int start, int count)
+        public async Task<UserTopicList> GetMySuggestTopics(int start, int count)
         {
             string url = "group/user_topics";
 
@@ -449,14 +482,48 @@ namespace DoubanGroup.Core.Api
         }
 
         /// <summary>
-        /// 得到用户喜欢的主题
+        /// 得到我喜欢的主题
         /// </summary>
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<TopicList> GetLikedTopis(int start, int count)
+        public async Task<TopicList> GetMyLikedTopics(int start, int count)
         {
             string url = "group/liked_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到我评论的主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetMyRepliedTopics(int start, int count)
+        {
+            string url = "group/my_replied_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到我发表的主题
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetMyCreatedTopics(int start, int count)
+        {
+            string url = "group/my_topics";
 
             var para = new Parameters();
             para.Add("start", start.ToString());
@@ -499,6 +566,170 @@ namespace DoubanGroup.Core.Api
             string url = $"group/topic/{topicID}/remove_like";
 
             return await this.Post<object>(url, null);
+        }
+
+        /// <summary>
+        /// 给评论点赞
+        /// </summary>
+        /// <param name="commentID"></param>
+        /// <returns></returns>
+        public async Task<VoteCommentResult> VoteComment(long topicID, long commentID)
+        {
+            string url = $"group/topic/{topicID}/vote_comment";
+
+            var para = new Parameters();
+            para.Add("comment_id", commentID.ToString());
+
+            return await this.Post<VoteCommentResult>(url, para);
+        }
+
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <param name="commentID"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task<Comment> AddComment(long topicID, long? commentID, string content)
+        {
+            string url = $"group/topic/{topicID}/add_comment";
+
+            var para = new Parameters();
+            para.Add("content", content);
+            if (commentID.HasValue)
+            {
+                para.Add("comment_id", commentID.Value.ToString());
+            }
+
+            return await this.Post<Comment>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户推荐的主题列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetUserRecommandTopics(long userID, int start, int count)
+        {
+            string url = $"group/user/{userID}/rec_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户喜欢的主题列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> GetUserLikeTopics(long userID, int start, int count)
+        {
+            string url = $"group/user/{userID}/like_topics";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户创建的图片列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<PhotoList> GetUserCreatedPhotos(long userID, int start, int count)
+        {
+            string url = $"photo/user_created/{userID}";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<PhotoList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户创建的相册列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<AlbumList> GetUserCreatedAlbums(long userID, int start, int count)
+        {
+            string url = $"album/user_created/{userID}";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<AlbumList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到相册下的图片列表
+        /// </summary>
+        /// <param name="albumID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<AlbumPhotoList> GetPhotosByAlbum(long albumID, int start, int count)
+        {
+            string url = $"album/{albumID}/photos";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<AlbumPhotoList>(url, para);
+        }
+
+        /// <summary>
+        /// 搜索小组
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<GroupList> SearchGroup(string keywords, int start, int count)
+        {
+            string url = $"group/group_search";
+
+            var para = new Parameters();
+            para.Add("q", keywords);
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<GroupList>(url, para);
+        }
+
+        /// <summary>
+        /// 搜索主题
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> SearchTopic(string keywords, int start, int count)
+        {
+            string url = $"group/topic_search";
+
+            var para = new Parameters();
+            para.Add("q", keywords);
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
         }
     }
 }

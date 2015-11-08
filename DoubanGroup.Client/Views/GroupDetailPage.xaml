@@ -1,5 +1,6 @@
-﻿<Page
+﻿<mt:MtPage
     x:Class="DoubanGroup.Client.Views.GroupDetailPage"
+    xmlns:mt="using:MyToolkit.Paging"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:DoubanGroup.Client.Views"
@@ -9,47 +10,154 @@
     xmlns:mvvm="using:Prism.Windows.Mvvm"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:behaviors="using:DoubanGroup.Client.Behaviors"
+    xmlns:controls="using:DoubanGroup.Client.Controls"
     mc:Ignorable="d"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
+    Name="page"
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
-    
-    <Page.BottomAppBar>
-        <CommandBar IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
-            <AppBarButton Icon="People" Label="查看成员" Command="{Binding ViewMembersCommand}"></AppBarButton>
-            <AppBarButton Command="{Binding JoinGroupCommand}" Icon="AddFriend" Label="加入小组" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}"></AppBarButton>
-            <AppBarButton Command="{Binding QuitGroupCommand}" Icon="BlockContact" Label="退出小组" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}"></AppBarButton>
-        </CommandBar>
-    </Page.BottomAppBar>
 
-    <Grid>
-        <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
-            <i:Interaction.Behaviors>
-                <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
-                <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
-            </i:Interaction.Behaviors>
-
-            <GridView.Header>
-                <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
+    <mt:MtPage.Resources>
+        <DataTemplate x:Key="UserDataTemplate">
+            <Border Padding="10 0">
+                <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Grid Width="120" Height="120" Margin="0 0 10 0">
-                        <Image Source="{Binding Group.Avatar}" />
-                        <Image Source="{Binding Group.LargeAvatar}" />
-                    </Grid>
-
-                    <StackPanel Grid.Column="1">
-                        <TextBlock Grid.Column="1" Text="{Binding Group.Name}" Style="{StaticResource SubtitleTextBlockStyle}"/>
-
-                        <TextBlock Text="{Binding Group.Description}" Margin="0 10 0 0" MaxHeight="65" Style="{StaticResource SecondaryTextBlockStyle}"/>
-                    </StackPanel>
+                    <Image Source="{Binding Avatar}" Width="50" Height="50"/>
+                    <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10 0 0 0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                 </Grid>
-            </GridView.Header>
-        </GridView>
+            </Border>
+        </DataTemplate>
+    </mt:MtPage.Resources>
 
-        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <controls:HeaderBar Title="查看小组">
+            <controls:HeaderBar.CommandBar>
+                <CommandBar Grid.Row="1" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
+                    <AppBarButton Command="{Binding JoinGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}" Icon="AddFriend" Label="加入小组"></AppBarButton>
+                    <AppBarButton Command="{Binding QuitGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}" Icon="BlockContact" Label="退出小组"></AppBarButton>
+                    <AppBarButton Command="{Binding PinCommand}" Icon="Pin" Label="固定到桌面"/>
+                </CommandBar>
+            </controls:HeaderBar.CommandBar>
+        </controls:HeaderBar>
+
+        <Pivot Style="{StaticResource TabStyle}" Grid.Row="1" SelectedIndex="1">
+            <PivotItem Header="详情">
+                <ScrollViewer Background="#FFFFFF" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <Grid Padding="40 20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            
+                            <Image Width="110" Height="110" Source="{Binding Group.LargeAvatar}" VerticalAlignment="Top" Margin="0 0 20 0"/>
+
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                
+                                <TextBlock Text="{Binding Group.Name}" Style="{StaticResource TitleTextBlockStyle}"/>
+
+                                <StackPanel Grid.Row="1" Margin="0 5 0 0" Orientation="Horizontal">
+                                    <Button Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Group.Owner}" Padding="0" Content="{Binding Group.Owner.Name}" Style="{StaticResource HyperlinkButtonStyle}"/>
+                                    <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Margin="5 0" Text="于" VerticalAlignment="Center"/>
+                                    <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Group.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center"/>
+                                    <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Margin="5 0" Text="创建" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <TextBlock Grid.Row="2" Margin="0 5 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
+                                    <Run Text="{Binding Group.MemberCount}"/>
+                                    <Run Text="位成员"/>
+                                </TextBlock>
+                            </Grid>
+                            
+                            <TextBlock Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Group.Description}" Margin="0 10 0 0" Style="{StaticResource ContentTextBlockStyle}"/>
+                        </Grid>
+                    </StackPanel>
+                </ScrollViewer>                
+            </PivotItem>
+            <PivotItem Header="主题">
+                <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                        <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
+                    </i:Interaction.Behaviors>
+                </GridView>
+            </PivotItem>
+            <PivotItem Header="成员">
+                <Grid>
+                    <GridView Padding="20 10 10 10" Grid.Row="1" ItemsSource="{Binding UserList}" SelectionMode="None" IsItemClickEnabled="True"
+                          ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" ItemTemplate="{StaticResource UserDataTemplate}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                            <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                        </i:Interaction.Behaviors>
+                        <GridView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                            </ItemsPanelTemplate>
+                        </GridView.ItemsPanel>
+                        <GridView.Header>
+                            <StackPanel>
+                                <GridView ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" SelectionMode="None" IsItemClickEnabled="True">
+                                    <GridView.Header>
+                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="创建者" Margin="0 0 0 10"></TextBlock>
+                                    </GridView.Header>
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                                    </i:Interaction.Behaviors>
+                                    <GridView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                                        </ItemsPanelTemplate>
+                                    </GridView.ItemsPanel>
+                                    <GridViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource UserDataTemplate}"/>
+                                </GridView>
+
+
+                                <GridView ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" ItemsSource="{Binding Group.AdminList}"                          
+                                      ItemTemplate="{StaticResource UserDataTemplate}" SelectionMode="None" IsItemClickEnabled="True">
+                                    <GridView.Header>
+                                        <TextBlock Text="{Binding Group.AdminRoleName}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"/>
+                                    </GridView.Header>
+
+                                    <i:Interaction.Behaviors>
+                                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                                    </i:Interaction.Behaviors>
+                                    <GridView.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                                        </ItemsPanelTemplate>
+                                    </GridView.ItemsPanel>
+                                </GridView>
+
+                                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding Group.MemberRoleName}" Margin="0 0 0 10"></TextBlock>
+                            </StackPanel>
+                        </GridView.Header>
+                    </GridView>
+                </Grid>
+            </PivotItem>
+        </Pivot>
+        
     </Grid>
-</Page>
+</mt:MtPage>

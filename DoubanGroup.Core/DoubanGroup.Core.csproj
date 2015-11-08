@@ -109,6 +109,12 @@
   <ItemGroup>
     <Compile Include="Api\ApiClient.cs" />
     <Compile Include="Api\ApiException.cs" />
+    <Compile Include="Api\Entity\Album.cs" />
+    <Compile Include="Api\Entity\AlbumList.cs" />
+    <Compile Include="Api\Entity\AlbumPhotoList.cs" />
+    <Compile Include="Api\Entity\Photo.cs" />
+    <Compile Include="Api\Entity\PhotoList.cs" />
+    <Compile Include="Api\Entity\PhotoSizes.cs" />
     <Compile Include="Api\Entity\User.cs" />
     <Compile Include="Api\Entity\Channel.cs" />
     <Compile Include="Api\Entity\ChannelTopic.cs" />
@@ -118,13 +124,14 @@
     <Compile Include="Api\Entity\Group.cs" />
     <Compile Include="Api\Entity\GroupList.cs" />
     <Compile Include="Api\Entity\GroupMemberList.cs" />
-    <Compile Include="Api\Entity\Photo.cs" />
-    <Compile Include="Api\Entity\PhotoSize.cs" />
+    <Compile Include="Api\Entity\TopicPhoto.cs" />
+    <Compile Include="Api\Entity\TopicPhotoSize.cs" />
     <Compile Include="Api\Entity\Session.cs" />
     <Compile Include="Api\Entity\Topic.cs" />
     <Compile Include="Api\Entity\TopicList.cs" />
     <Compile Include="Api\Entity\UserDetail.cs" />
     <Compile Include="Api\Entity\UserTopicList.cs" />
+    <Compile Include="Api\Entity\VoteCommentResult.cs" />
     <Compile Include="Api\IAccessTokenProvider.cs" />
     <Compile Include="Api\Parameters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

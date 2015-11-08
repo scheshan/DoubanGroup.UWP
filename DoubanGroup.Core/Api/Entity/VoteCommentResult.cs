@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace DoubanGroup.Core.Api.Entity
 {
-    public class PhotoSize
+    public class VoteCommentResult
     {
-        [JsonProperty("height")]
-        public double Height { get; set; }
+        [JsonProperty("result")]
+        public bool Result { get; set; }
 
-        [JsonProperty("width")]
-        public double Width { get; set; }
+        [JsonProperty("vote_count")]
+        public int VoteCount { get; set; }
     }
 }

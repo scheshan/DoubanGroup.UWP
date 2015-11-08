@@ -25,54 +25,83 @@ using Prism.Mvvm;
 using DoubanGroup.Client.Controls;
 using DoubanGroup.Client.CacheItem;
 using AutoMapper;
+using MyToolkit.Paging;
+using Prism.Windows.Navigation;
+using Prism.Events;
+using Windows.UI.Core;
+using MyToolkit.Controls;
 
 namespace DoubanGroup.Client
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
     /// </summary>
-    sealed partial class App : PrismUnityApplication
+    sealed partial class App : MtApplication
     {
-        protected override Task OnLaunchApplicationAsync(LaunchActivatedEventArgs args)
-        {
-            this.NavigationService.Navigate("Home", null);
+        private static IUnityContainer _container = new UnityContainer();
 
-            return Task.FromResult<object>(null);
+        public static IUnityContainer Container
+        {
+            get
+            {
+                return _container;
+            }
         }
 
-        protected override UIElement CreateShell(Frame rootFrame)
+        private Shell Shell { get; set; }
+
+        private INavigationService NavigationService { get; set; }
+
+        private MtFrame RootFrame { get; set; }
+
+        public override Type StartPageType
         {
-            var shell = new Shell(rootFrame);
-            return shell;
+            get
+            {
+                return typeof(Views.HomePage);
+            }
         }
 
-        protected override void ConfigureViewModelLocator()
+        public override UIElement CreateWindowContentElement()
         {
-            base.ConfigureViewModelLocator();
+            this.InitializeFrame();
+
+            this.Shell = new Shell(this.RootFrame);
+            return this.Shell;
+        }
+
+        public override MtFrame GetFrame(UIElement windowContentElement)
+        {
+            return this.Shell.RootFrame;
+        }
+
+        private void ConfigureViewModelLocator()
+        {
+            ViewModelLocationProvider.SetDefaultViewModelFactory(type =>
+           {
+               return Container.Resolve(type);
+           });
 
             ViewModelLocationProvider.Register(typeof(ChannelDetail).FullName, () =>
             {
-                return this.Container.Resolve<ViewModels.ChannelDetailViewModel>();
+                return Container.Resolve<ViewModels.ChannelDetailViewModel>();
             });
             ViewModelLocationProvider.Register(typeof(Shell).FullName, () =>
             {
-                return this.Container.Resolve<ViewModels.ShellViewModel>();
+                return Container.Resolve<ViewModels.ShellViewModel>();
             });
         }
 
-        protected override void ConfigureContainer()
+        private void ConfigureContainer()
         {
-            base.ConfigureContainer();
+            Container.RegisterInstance(Container);
+            Container.RegisterInstance(this.NavigationService);
+            Container.RegisterInstance<IEventAggregator>(new EventAggregator());
 
-            var currentUserViewModel = this.Container.Resolve<ViewModels.CurrentUserViewModel>();
+            var currentUserViewModel = Container.Resolve<ViewModels.CurrentUserViewModel>();
 
-            this.Container.RegisterInstance<IAccessTokenProvider>(currentUserViewModel);
-            this.Container.RegisterInstance(currentUserViewModel);
-        }
-
-        protected override void OnRegisterKnownTypesForSerialization()
-        {
-            base.OnRegisterKnownTypesForSerialization();
+            Container.RegisterInstance<IAccessTokenProvider>(currentUserViewModel);
+            Container.RegisterInstance(currentUserViewModel);
         }
 
         public App()
@@ -85,16 +114,36 @@ namespace DoubanGroup.Client
             Debug.Write(e.Exception);
         }
 
-        protected override async Task OnInitializeAsync(IActivatedEventArgs args)
+        private void InitializeFrame()
         {
-            //注册AutoMapper
-            Mapper.CreateMap<Topic, TopicCacheInfo>().ForMember(t => t.Content, t =>
-            {
-                t.MapFrom(j => j.ShortContent);
-            });
-            Mapper.CreateMap<TopicCacheInfo, Topic>();
+            var frame = new MtFrame();
+            frame.DisableForwardStack = false;
+            frame.Navigated += Frame_Navigated;
+            this.RootFrame = frame;
+            this.NavigationService = new MtNavigationService(frame);
 
-            await base.OnInitializeAsync(args);
+            this.ConfigureContainer();
+            this.ConfigureViewModelLocator();
+        }
+
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        {
+            base.OnLaunched(args);
+
+            if (!string.IsNullOrWhiteSpace(args.Arguments))
+            {
+                var arguments = args.Arguments;
+                var arr = arguments.Split('-');
+                var pageToken = arr[0];
+                var parameter = arr[1];
+
+                this.NavigationService.Navigate(pageToken, Convert.ToInt64(parameter));
+            }
+        }
+
+        private void Frame_Navigated(object sender, MtNavigationEventArgs e)
+        {
+            SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
         }
     }
 }
