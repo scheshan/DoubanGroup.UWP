@@ -90,6 +90,17 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
+        /// <summary>
+        /// 缓存服务
+        /// </summary>
+        public Service.ICacheService CacheService
+        {
+            get
+            {
+                return new Service.FileCacheService();
+            }
+        }
+
         #endregion
 
         #region 构造器

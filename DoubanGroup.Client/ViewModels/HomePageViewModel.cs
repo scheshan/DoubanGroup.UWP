@@ -16,12 +16,8 @@ namespace DoubanGroup.Client.ViewModels
     {
         public ObservableCollection<Channel> ChannelList { get; private set; }
 
-        private ApiClient ApiClient { get; set; }
-
-        public HomePageViewModel(ApiClient apiClient)
+        public HomePageViewModel()
         {
-            this.ApiClient = apiClient;
-
             this.ChannelList = new ObservableCollection<Channel>();
 
             this.InitChannels();

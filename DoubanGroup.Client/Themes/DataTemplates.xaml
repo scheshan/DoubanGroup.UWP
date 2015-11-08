@@ -103,28 +103,28 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                         <Button Content="{Binding Author.Name}" Style="{StaticResource HyperlinkButtonStyle}"/>
 
                         <TextBlock Text="{Binding Time, Converter={StaticResource DateTimeToStringConverter}}" Margin="10 0 0 0" Style="{StaticResource ListTipsTextBlockStyle}" VerticalAlignment="Center"/>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal" Grid.Column="1">
-                        <Button Command="{Binding DataContext.VoteCommentCommand, ElementName=page}" CommandParameter="{Binding}" Style="{StaticResource TextBlockButtonStyle}" Foreground="#999999" 
+                        <Button Command="{Binding DataContext.VoteCommentCommand, ElementName=page}" CommandParameter="{Binding}" Style="{StaticResource HyperlinkButtonStyle}" Foreground="#999999" 
                                 IsEnabled="{Binding CanVote}">
                             <StackPanel Orientation="Horizontal">
-                                <FontIcon Glyph="&#xE19F;"/>
+                                <FontIcon FontSize="14" Glyph="&#xE19F;"/>
                                 <TextBlock Margin="2 0 0 0" Text="{Binding VoteCount}"/>
                             </StackPanel>
                             
                         </Button>
-                        <Button Command="{Binding DataContext.AddCommentCommand, ElementName=page}" CommandParameter="{Binding}" Style="{StaticResource TextBlockButtonStyle}" Foreground="#999999" Margin="5 0 0 0">
-                            <FontIcon Glyph="&#xE134;"/>
+                        <Button Command="{Binding DataContext.AddCommentCommand, ElementName=page}" CommandParameter="{Binding}" Style="{StaticResource HyperlinkButtonStyle}" Foreground="#999999" Margin="10 0 0 0">
+                            <FontIcon FontSize="14" Glyph="&#xE134;"/>
                         </Button>
                     </StackPanel>
                 </Grid>
 
-                <Grid Margin="0 10 0 0" Background="#F9F9F9" Visibility="{Binding QuoteComment, Converter={StaticResource NotNullToVisibilityConverter}}">
+                <Grid Margin="0 5 0 0" Background="#F9F9F9" Visibility="{Binding QuoteComment, Converter={StaticResource NotNullToVisibilityConverter}}">
                     <Rectangle HorizontalAlignment="Left" Width="2" Fill="#EEEEEE"/>
 
                     <StackPanel Margin="2 0 0 0" Padding="10 5">
@@ -134,7 +134,7 @@
                     </StackPanel>
                 </Grid>
 
-                <TextBlock Text="{Binding Text}" Style="{StaticResource ListDescriptionTextBlockStyle}" Margin="0 10 0 0"/>
+                <TextBlock Text="{Binding Text}" Style="{StaticResource ListDescriptionTextBlockStyle}" Margin="0 5 0 0"/>
             </StackPanel>
         </Grid>
     </DataTemplate>

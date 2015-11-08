@@ -239,6 +239,11 @@
         <Setter Property="Foreground" Value="{StaticResource HighlightForeground}"/>
     </Style>
 
+    <Style x:Key="LoadingProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="Foreground" Value="{StaticResource HighlightForeground}"/>
+        <Setter Property="IsIndeterminate" Value="True"/>
+    </Style>
+
     <Style TargetType="PivotHeaderItem">
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Height" Value="35"/>
@@ -263,5 +268,43 @@
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Margin" Value="0"/>
         <Setter Property="Padding" Value="0"/>
+    </Style>
+
+    <Style TargetType="Button" x:Key="DefaultButtonStyle">
+        <Setter Property="Padding" Value="10 5"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="container" Background="{TemplateBinding Background}" Opacity="0.9" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}">
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <PointerDownThemeAnimation Storyboard.TargetName="container"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="container" Storyboard.TargetProperty="Opacity" To="1" Duration="0"/>
+                                        <PointerUpThemeAnimation Storyboard.TargetName="container"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="container" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0"/>
+                                        <DoubleAnimation Storyboard.TargetName="content" Storyboard.TargetProperty="Opacity" To="0.6" Duration="0"/>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        
+                        <ContentPresenter x:Name="content" Margin="{TemplateBinding Padding}" Foreground="{TemplateBinding Foreground}" ContentTemplate="{TemplateBinding ContentTemplate}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

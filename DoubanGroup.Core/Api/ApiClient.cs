@@ -533,5 +533,26 @@ namespace DoubanGroup.Core.Api
 
             return await this.Post<VoteCommentResult>(url, para);
         }
+
+        /// <summary>
+        /// 添加评论
+        /// </summary>
+        /// <param name="topicID"></param>
+        /// <param name="commentID"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task<Comment> AddComment(long topicID, long? commentID, string content)
+        {
+            string url = $"group/topic/{topicID}/add_comment";
+
+            var para = new Parameters();
+            para.Add("content", content);
+            if (commentID.HasValue)
+            {
+                para.Add("comment_id", commentID.Value.ToString());
+            }
+
+            return await this.Post<Comment>(url, para);
+        }
     }
 }

@@ -22,8 +22,14 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <controls:HeaderBar Title="推荐内容" EnableSearch="True"/>
+
+        <controls:HeaderBar Title="推荐内容" EnableSearch="True">
+            <controls:HeaderBar.CommandBar>
+                <CommandBar>
+                    <AppBarButton Label="刷新" Icon="Refresh"/>
+                </CommandBar>
+            </controls:HeaderBar.CommandBar>
+        </controls:HeaderBar>
 
         <Pivot ItemsSource="{Binding ChannelList}" Grid.Row="1" Style="{StaticResource TabStyle}">
             <Pivot.HeaderTemplate>

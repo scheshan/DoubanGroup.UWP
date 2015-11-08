@@ -37,18 +37,56 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.Channel = channel;
 
-            this.InitGroups();
+            this.LoadGroupsFromCache();
 
-            this.LoadTopics();
+            this.LoadTopicsFromCache();
         }
 
-        private async Task InitGroups()
+        private async Task LoadGroupsFromCache()
+        {
+            string cacheKey = this.GetGroupsCacheKey();
+            var groupList = await this.CacheService.Get<List<Group>>(cacheKey);
+
+            if (groupList != null)
+            {
+                foreach (var group in groupList)
+                {
+                    this.GroupList.Add(group);
+                }
+            }
+            else
+            {
+                await this.LoadGroups();
+            }
+        }
+
+        private async Task LoadGroups()
         {
             var groupList = await this.ApiClient.GetGroupByChannel(this.Channel.Name);
 
             foreach (var group in groupList.Items)
             {
                 this.GroupList.Add(group);
+            }
+
+            await this.CacheService.Set(this.GetGroupsCacheKey(), this.GroupList.ToList());
+        }
+
+        private async Task LoadTopicsFromCache()
+        {
+            string cacheKey = this.GetTopicsCacheKey();
+            var topicList = await this.CacheService.Get<List<ChannelTopic>>(cacheKey);
+
+            if (topicList != null)
+            {
+                foreach (var topic in topicList)
+                {
+                    this.TopicList.Add(topic);
+                }
+            }
+            else
+            {
+                await this.LoadTopics();
             }
         }
 
@@ -71,6 +109,8 @@ namespace DoubanGroup.Client.ViewModels
                 {
                     this.TopicList.Add(topic);
                 }
+
+                await this.CacheService.Set(this.GetTopicsCacheKey(), this.TopicList.ToList());
             }
             finally
             {
@@ -133,6 +173,16 @@ namespace DoubanGroup.Client.ViewModels
         private void LoadMore()
         {
             this.LoadTopics();
+        }
+
+        private string GetGroupsCacheKey()
+        {
+            return $"Channel_{this.Channel.Name}_Groups";
+        }
+
+        private string GetTopicsCacheKey()
+        {
+            return $"Channel_{this.Channel.Name}_Topics";
         }
     }
 }
