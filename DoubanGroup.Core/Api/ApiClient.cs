@@ -605,5 +605,59 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<TopicList>(url, para);
         }
+
+        /// <summary>
+        /// 得到用户创建的图片列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<PhotoList> GetUserCreatedPhotos(long userID, int start, int count)
+        {
+            string url = $"photo/user_created/{userID}";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<PhotoList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到用户创建的相册列表
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<AlbumList> GetUserCreatedAlbums(long userID, int start, int count)
+        {
+            string url = $"album/user_created/{userID}";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<AlbumList>(url, para);
+        }
+
+        /// <summary>
+        /// 得到相册下的图片列表
+        /// </summary>
+        /// <param name="albumID"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<AlbumPhotoList> GetPhotosByAlbum(long albumID, int start, int count)
+        {
+            string url = $"album/{albumID}/photos";
+
+            var para = new Parameters();
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<AlbumPhotoList>(url, para);
+        }
     }
 }

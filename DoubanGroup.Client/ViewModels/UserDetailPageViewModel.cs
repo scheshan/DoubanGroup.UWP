@@ -29,6 +29,8 @@ namespace DoubanGroup.Client.ViewModels
 
         public ObservableCollection<Group> TopGroupList { get; private set; }
 
+        public ObservableCollection<Photo> TopPhotoList { get; private set; }
+
         public Models.IncrementalLoadingList<Group> JoinedGroupList { get; private set; }
 
         public Models.IncrementalLoadingList<Topic> RecommandTopicList { get; private set; }
@@ -38,6 +40,8 @@ namespace DoubanGroup.Client.ViewModels
         public UserDetailPageViewModel()
         {
             this.TopGroupList = new ObservableCollection<Group>();
+            this.TopPhotoList = new ObservableCollection<Photo>();
+            
             this.JoinedGroupList = new Models.IncrementalLoadingList<Group>(this.LoadJoinedGroups);
             this.RecommandTopicList = new Models.IncrementalLoadingList<Topic>(this.LoadRecommandTopicList);
             this.LikeTopicList = new Models.IncrementalLoadingList<Topic>(this.LoadLikeTopicList);
@@ -48,6 +52,7 @@ namespace DoubanGroup.Client.ViewModels
             this.IsLoading = true;
 
             var userDetail = await this.ApiClient.GetUserDetail(this.UserID, 20);
+            var photoList = await this.ApiClient.GetUserCreatedPhotos(this.UserID, 0, 20);
 
             this.IsLoading = false;
 
@@ -60,6 +65,11 @@ namespace DoubanGroup.Client.ViewModels
                     this.TopGroupList.Add(group);
                     this.JoinedGroupList.Add(group);
                 }
+            }
+
+            foreach (var photo in photoList.Photos)
+            {
+                this.TopPhotoList.Add(photo);
             }
         }
 
@@ -111,7 +121,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.IsLoading = true;
 
-            var topicList = await this.ApiClient.GetTopicByUserRecommand(this.UserID, this.LikeTopicList.Count, 30);
+            var topicList = await this.ApiClient.GetTopicByUserLike(this.UserID, this.LikeTopicList.Count, 30);
 
             this.IsLoading = false;
 

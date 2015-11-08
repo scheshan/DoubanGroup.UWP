@@ -121,6 +121,7 @@
     <Compile Include="Controls\HeaderBar.xaml.cs">
       <DependentUpon>HeaderBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\HorizontalScrollList.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />
     <Compile Include="Converters\InverseConverter.cs" />
@@ -234,6 +235,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Styles.xaml">
       <SubType>Designer</SubType>

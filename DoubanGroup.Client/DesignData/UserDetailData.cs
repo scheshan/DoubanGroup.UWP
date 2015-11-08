@@ -15,6 +15,8 @@ namespace DoubanGroup.Client.DesignData
 
         public List<Group> JoinedGroupList { get; private set; }
 
+        public List<Photo> TopPhotoList { get; private set; }
+
         public UserDetailData()
         {
             this.User = new User
@@ -43,6 +45,18 @@ namespace DoubanGroup.Client.DesignData
                 };
                 this.TopGroupList.Add(group);
                 this.JoinedGroupList.Add(group);
+            }
+
+            this.TopPhotoList = new List<Photo>();
+
+            for (var i = 0; i < 10; i++)
+            {
+                var photo = new Photo
+                {
+                    Cover = "https://img3.doubanio.com/view/photo/albumcover/public/p2223005146.jpg"
+                };
+
+                this.TopPhotoList.Add(photo);
             }
         }
     }

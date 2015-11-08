@@ -44,7 +44,7 @@ namespace DoubanGroup.Client.CacheItem
         public DateTime Updated { get; set; }
 
         [JsonProperty("photos")]
-        public List<Photo> Photos { get; set; }
+        public List<TopicPhoto> Photos { get; set; }
 
         [JsonProperty("content")]
         public string Content { get; set; }

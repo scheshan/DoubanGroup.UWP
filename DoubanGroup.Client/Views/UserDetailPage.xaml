@@ -25,7 +25,7 @@
             
         </controls:HeaderBar>
 
-        <Pivot Grid.Row="1" Style="{StaticResource TabStyle}">
+        <Pivot Name="container" CanDrag="False" Grid.Row="1" Style="{StaticResource TabStyle}">
             <PivotItem Header="用户信息">
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <StackPanel Padding="20 10">
@@ -58,27 +58,43 @@
 
                             <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="0 20 0 0" Text="{Binding User.Description}" Style="{StaticResource DescriptionTextBlockStyle}"></TextBlock>
                         </Grid>
+                        
+                        <GridView MaxHeight="110" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding TopGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
+                            <i:Interaction.Behaviors>
+                                <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
+                                <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                            </i:Interaction.Behaviors>
 
-                        <StackPanel>
-                            <Grid>
-                                <TextBlock Text="加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
-                                <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看所有</Button>
-                            </Grid>
+                            <GridView.Header>
+                                <Grid Margin="0 0 0 10">
+                                    <TextBlock Text="加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
+                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看所有</Button>
+                                </Grid>
+                            </GridView.Header>
+                        </GridView>
 
-                            <GridView MaxHeight="70" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding TopGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
-                                <i:Interaction.Behaviors>
-                                    <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
-                                    <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
-                                </i:Interaction.Behaviors>
-                            </GridView>
-                        </StackPanel>
-
-                        <StackPanel Margin="0 10 0 0">
-                            <Grid>
-                                <TextBlock Text="最近上传的照片" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
-                                <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看相册</Button>
-                            </Grid>
-                        </StackPanel>
+                        <GridView Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding TopPhotoList}">
+                            <i:Interaction.Behaviors>
+                                <behavior:GridViewItemFitWidthBehavior MaxWidth="140"/>
+                                <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                            </i:Interaction.Behaviors>
+                            <GridView.Header>
+                                <Grid Margin="0 0 0 10">
+                                    <TextBlock Text="最近上传的照片" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
+                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看相册</Button>
+                                </Grid>
+                            </GridView.Header>
+                            <GridView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <ItemsWrapGrid Orientation="Horizontal" ItemWidth="120"/>
+                                </ItemsPanelTemplate>
+                            </GridView.ItemsPanel>
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Image Source="{Binding Cover}"/>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
                     </StackPanel>
                 </ScrollViewer>
             </PivotItem>

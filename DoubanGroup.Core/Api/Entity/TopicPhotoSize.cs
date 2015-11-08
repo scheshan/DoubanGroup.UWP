@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DoubanGroup.Core.Api.Entity
 {
-    public class PhotoSize
+    public class TopicPhotoSize
     {
         [JsonProperty("height")]
         public double Height { get; set; }

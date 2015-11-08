@@ -46,7 +46,7 @@ namespace DoubanGroup.Core.Api.Entity
         public DateTime Updated { get; set; }
         
         [JsonProperty("photos")]
-        public List<Photo> Photos { get; set; }
+        public List<TopicPhoto> Photos { get; set; }
 
         [JsonIgnore]
         public string ShortContent
@@ -90,7 +90,7 @@ namespace DoubanGroup.Core.Api.Entity
         }
 
         [JsonIgnore]
-        public Photo Avatar
+        public TopicPhoto Avatar
         {
             get
             {
