@@ -31,7 +31,7 @@
 
         <ContentControl Name="commandbar_container" Grid.Column="2" HorizontalContentAlignment="Right" VerticalContentAlignment="Stretch"></ContentControl>
 
-        <AutoSuggestBox Visibility="{Binding EnableSearch, ElementName=control, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="3" Width="200" VerticalAlignment="Center" VerticalContentAlignment="Center" QueryIcon="Find" PlaceholderText="搜索小组/主题" Margin="0 0 2 0">
+        <AutoSuggestBox Name="searchbox" Visibility="{Binding EnableSearch, ElementName=control, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Column="3" Width="200" VerticalAlignment="Center" VerticalContentAlignment="Center" QueryIcon="Find" PlaceholderText="搜索小组/主题" Margin="0 0 2 0">
             <AutoSuggestBox.TextBoxStyle>
                 <Style TargetType="TextBox">
                     <Setter Property="BorderBrush" Value="Transparent"/>

@@ -65,6 +65,16 @@ namespace DoubanGroup.Client.Controls
             this.RootFrame = (Window.Current.Content as Shell)?.RootFrame;
 
             this.Loaded += HeaderBar_Loaded;
+
+            searchbox.QuerySubmitted += Searchbox_QuerySubmitted;
+        }
+
+        private void Searchbox_QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
+        {
+            if (!string.IsNullOrWhiteSpace(args.QueryText))
+            {
+                this.RootFrame.NavigateAsync(typeof(Views.SearchPage), args.QueryText);
+            }
         }
 
         private void HeaderBar_Loaded(object sender, RoutedEventArgs e)

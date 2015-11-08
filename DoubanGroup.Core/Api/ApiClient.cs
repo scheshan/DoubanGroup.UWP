@@ -659,5 +659,43 @@ namespace DoubanGroup.Core.Api
 
             return await this.Get<AlbumPhotoList>(url, para);
         }
+
+        /// <summary>
+        /// 搜索小组
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<GroupList> SearchGroup(string keywords, int start, int count)
+        {
+            string url = $"group/group_search";
+
+            var para = new Parameters();
+            para.Add("q", keywords);
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<GroupList>(url, para);
+        }
+
+        /// <summary>
+        /// 搜索主题
+        /// </summary>
+        /// <param name="keywords"></param>
+        /// <param name="start"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
+        public async Task<TopicList> SearchTopic(string keywords, int start, int count)
+        {
+            string url = $"group/topic_search";
+
+            var para = new Parameters();
+            para.Add("q", keywords);
+            para.Add("start", start.ToString());
+            para.Add("count", count.ToString());
+
+            return await this.Get<TopicList>(url, para);
+        }
     }
 }

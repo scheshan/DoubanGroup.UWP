@@ -132,6 +132,7 @@
     <Compile Include="DesignData\GroupDetailData.cs" />
     <Compile Include="DesignData\HomePageData.cs" />
     <Compile Include="DesignData\MyGroupData.cs" />
+    <Compile Include="DesignData\SearchData.cs" />
     <Compile Include="DesignData\TopicDetailData.cs" />
     <Compile Include="DesignData\UserDetailData.cs" />
     <Compile Include="Events\JoinGroupEvent.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="ViewModels\MyGroupPageViewModel.cs" />
     <Compile Include="ViewModels\MyLikePageViewModel.cs" />
     <Compile Include="ViewModels\MyTopicPageViewModel.cs" />
+    <Compile Include="ViewModels\SearchPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
     <Compile Include="ViewModels\UserDetailPageViewModel.cs" />
@@ -190,6 +192,9 @@
     </Compile>
     <Compile Include="Views\MyTopicPage.xaml.cs">
       <DependentUpon>MyTopicPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SearchPage.xaml.cs">
+      <DependentUpon>SearchPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
@@ -281,6 +286,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MyTopicPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SearchPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
