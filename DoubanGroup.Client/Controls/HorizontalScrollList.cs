@@ -16,16 +16,16 @@ namespace DoubanGroup.Client.Controls
 {
     [TemplatePart(Name = "PrevButton", Type = typeof(Button))]
     [TemplatePart(Name = "NextButton", Type = typeof(Button))]
-    [TemplatePart(Name = "ItemsPresenter", Type = typeof(ItemsPresenter))]
+    [TemplatePart(Name = "ScrollViewer", Type = typeof(ScrollViewer))]
     public sealed class HorizontalScrollList : ItemsControl
     {
         private Button prevBtn = null;
 
         private Button nextBtn = null;
 
-        private ItemsPresenter itemsPresenter = null;
+        private ScrollViewer scrollViewer = null;
 
-        private Storyboard sb_scroll = null;
+        private bool isScrolling = false;
 
         public object Header
         {
@@ -48,16 +48,7 @@ namespace DoubanGroup.Client.Controls
         public HorizontalScrollList()
         {
             this.DefaultStyleKey = typeof(HorizontalScrollList);
-        }
-
-        public double HorizontalOffset
-        {
-            get { return (double)GetValue(HorizontalOffsetProperty); }
-            set { SetValue(HorizontalOffsetProperty, value); }
-        }
-
-        public static readonly DependencyProperty HorizontalOffsetProperty =
-            DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(HorizontalScrollList), new PropertyMetadata(0));
+        }        
 
         protected override DependencyObject GetContainerForItemOverride()
         {
@@ -80,54 +71,69 @@ namespace DoubanGroup.Client.Controls
             nextBtn = this.GetTemplateChild("NextButton") as Button;
             prevBtn.Click += PrevBtn_Click;
             nextBtn.Click += NextBtn_Click;
-            itemsPresenter = this.GetTemplateChild("ItemsPresenter") as ItemsPresenter;
-            sb_scroll = (this.GetTemplateChild("container") as FrameworkElement).Resources["scroll"] as Storyboard;
+            scrollViewer = this.GetTemplateChild("ScrollViewer") as ScrollViewer;
 
-            itemsPresenter.SizeChanged += ItemsPresenter_SizeChanged;
+            scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
+        }
+
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            if (scrollViewer.HorizontalOffset < 2.3)
+            {
+                prevBtn.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                prevBtn.Visibility = Visibility.Visible;
+            }
+
+            if (scrollViewer.ScrollableWidth - scrollViewer.HorizontalOffset < 0.3)
+            {
+                nextBtn.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                nextBtn.Visibility = Visibility.Visible;
+            }
         }
 
         private void NextBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.ChangeTransform(-300);
+            this.DoScroll(3);
         }
 
         private void PrevBtn_Click(object sender, RoutedEventArgs e)
         {
-            this.ChangeTransform(300);
+            this.DoScroll(-3);
         }
 
-        private void ChangeTransform(double offset)
+        private void DoScroll(double offset)
         {
-            sb_scroll.Stop();
+            if (isScrolling)
+            {
+                return;
+            }
 
-            var scrollableWidth = itemsPresenter.ActualWidth;
-            var viewportWidth = this.ActualWidth;
+            isScrolling = true;
 
-            var current = ((TranslateTransform)itemsPresenter.RenderTransform);
-            var target = current.X + offset;
+            double target = scrollViewer.HorizontalOffset + offset;
 
-            if (target > 0)
+            if (target < 0)
             {
                 target = 0;
             }
-            else if (viewportWidth - target > scrollableWidth)
+            if (target > scrollViewer.ScrollableWidth)
             {
-                target = viewportWidth - scrollableWidth;
+                target = scrollViewer.ScrollableWidth;
             }
 
-            var anamination = (DoubleAnimation)sb_scroll.Children[0];
-            anamination.To = target;
+            scrollViewer.ChangeView(target, null, null, false);
 
-            sb_scroll.Begin();
-        }
-
-        private void ItemsPresenter_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            
+            isScrolling = false;
         }
     }
 
-    public class HorizontalScrollItem : ContentControl
+    public class HorizontalScrollItem : ListViewItem
     {
         public HorizontalScrollItem()
         {

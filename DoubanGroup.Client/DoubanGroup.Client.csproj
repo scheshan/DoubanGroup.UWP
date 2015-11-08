@@ -191,6 +191,9 @@
     <Compile Include="Views\MyTopicPage.xaml.cs">
       <DependentUpon>MyTopicPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\TestPage.xaml.cs">
+      <DependentUpon>TestPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\TopicDetailPage.xaml.cs">
       <DependentUpon>TopicDetailPage.xaml</DependentUpon>
     </Compile>
@@ -278,6 +281,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MyTopicPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TestPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

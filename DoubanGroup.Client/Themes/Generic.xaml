@@ -5,7 +5,6 @@
     xmlns:local="using:DoubanGroup.Client">
 
     <Style TargetType="controls:HorizontalScrollList">
-        <Setter Property="HorizontalOffset" Value="-50"/>
         <Setter Property="ItemsPanel">
             <Setter.Value>
                 <ItemsPanelTemplate>
@@ -18,33 +17,82 @@
                 <Style TargetType="controls:HorizontalScrollItem">
                     <Setter Property="Margin" Value="0 0 10 0"/>
                     <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="controls:HorizontalScrollItem">
+                                <Border Name="container">
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Normal"/>
+                                            <VisualState x:Name="PointerOver">
+                                                <Storyboard>
+                                                    <PointerUpThemeAnimation Storyboard.TargetName="content" />
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="Pressed">
+                                                <Storyboard>
+                                                    <PointerDownThemeAnimation TargetName="content"/>
+                                                </Storyboard>
+                                            </VisualState>
+                                            <VisualState x:Name="PressedSelected">
+                                                <Storyboard>
+                                                    <PointerDownThemeAnimation TargetName="content" />
+                                                </Storyboard>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                    
+                                    <ContentPresenter Name="content"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="controls:HorizontalScrollList">     
+                <ControlTemplate TargetType="controls:HorizontalScrollList">
                     <Border
                         Name="container"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup x:Name="Triggers">
-                                
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
-                        
+
                         <Border.Resources>
                             <Style TargetType="Button">
                                 <Setter Property="VerticalAlignment" Value="Stretch"/>
                                 <Setter Property="Background" Value="#FFFFFF"/>
                                 <Setter Property="Foreground" Value="#666666"/>
-                                <Setter Property="Opacity" Value="0.6"/>
+                                <Setter Property="BorderThickness" Value="0"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border x:Name="container" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+                                                    Opacity="0.6" BorderThickness="{TemplateBinding BorderThickness}">
+                                                <VisualStateManager.VisualStateGroups>
+                                                    <VisualStateGroup x:Name="CommonStates">
+                                                        <VisualState x:Name="Normal"/>
+                                                        <VisualState x:Name="Pressed">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="container" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0"/>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                        <VisualState x:Name="PointerOver">
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetName="container" Storyboard.TargetProperty="Opacity" To="0.8" Duration="0:0:0"/>
+                                                            </Storyboard>
+                                                        </VisualState>
+                                                    </VisualStateGroup>
+                                                </VisualStateManager.VisualStateGroups>
+                                                
+                                                <ContentPresenter x:Name="content" Foreground="{TemplateBinding Foreground}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                                  Margin="{TemplateBinding Padding}" HorizontalAlignment="{TemplateBinding HorizontalAlignment}"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
                             </Style>
-                            <Storyboard x:Key="scroll" AutoReverse="False">
-                                <DoubleAnimation Storyboard.TargetName="translateTransform" Storyboard.TargetProperty="X" Duration="0:0:0.3"/>
-                            </Storyboard>
                         </Border.Resources>
 
                         <Grid>
@@ -55,13 +103,10 @@
 
                             <ContentPresenter Content="{TemplateBinding Header}" ContentTemplate="{TemplateBinding HeaderTemplate}"></ContentPresenter>
 
-                            <Border Grid.Row="1">
-                                <ItemsPresenter Name="ItemsPresenter">
-                                    <ItemsPresenter.RenderTransform>
-                                        <TranslateTransform x:Name="translateTransform" X="{TemplateBinding HorizontalOffset}"></TranslateTransform>
-                                    </ItemsPresenter.RenderTransform>
-                                </ItemsPresenter>
-                            </Border>
+                            <ScrollViewer HorizontalScrollBarVisibility="Hidden" HorizontalScrollMode="Enabled" VerticalScrollBarVisibility="Disabled" VerticalScrollMode="Disabled" 
+                                          Name="ScrollViewer" Grid.Row="1">
+                                <ItemsPresenter></ItemsPresenter>
+                            </ScrollViewer>
 
                             <Button Height="Auto" x:Name="PrevButton" Grid.Row="1" HorizontalAlignment="Left">&lt;</Button>
                             <Button Height="Auto" x:Name="NextButton" Grid.Row="1" HorizontalAlignment="Right">&gt;</Button>
