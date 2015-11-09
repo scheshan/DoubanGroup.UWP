@@ -17,10 +17,10 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <controls:HeaderBar Title="{Binding Title}">
+        <controls:HeaderBar Title="发布主题">
             <controls:HeaderBar.CommandBar>
                 <CommandBar>
-                    <AppBarButton Command="{Binding ChooseImageCommand}" Icon="Pictures" Label="添加图片"></AppBarButton>
+                    <AppBarButton Visibility="Collapsed" Command="{Binding ChooseImageCommand}" Icon="Pictures" Label="添加图片"></AppBarButton>
                     <AppBarButton Command="{Binding SubmitCommand}" Icon="Send" Label="发表"></AppBarButton>
                 </CommandBar>
             </controls:HeaderBar.CommandBar>
