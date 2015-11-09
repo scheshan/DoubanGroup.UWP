@@ -166,9 +166,10 @@ namespace DoubanGroup.Core.Api
 
             using (var client = this.CreateClient())
             {
-                var response = await client.GetAsync(url);
-
-                return await this.ProcessResponse<T>(response);
+                using (var response = await client.GetAsync(url))
+                {
+                    return await this.ProcessResponse<T>(response);
+                }
             }
         }
 
@@ -189,15 +190,20 @@ namespace DoubanGroup.Core.Api
                 HttpResponseMessage response;
                 if (parameters != null)
                 {
-                    var postContent = new FormUrlEncodedContent(parameters.ToKeyValuePairs());
-                    response = await client.PostAsync(url, postContent);
+                    using (var postContent = new FormUrlEncodedContent(parameters.ToKeyValuePairs()))
+                    {
+                        response = await client.PostAsync(url, postContent);
+                    }
                 }
                 else
                 {
                     response = await client.PostAsync(url, null);
                 }
 
-                return await this.ProcessResponse<T>(response);
+                using (response)
+                {
+                    return await this.ProcessResponse<T>(response);
+                }
             }
         }
 
@@ -215,28 +221,30 @@ namespace DoubanGroup.Core.Api
 
             using (var client = this.CreateClient())
             {
-                MultipartFormDataContent requestContent = new MultipartFormDataContent(Guid.NewGuid().ToString());
-
-                if (parameters != null)
+                using (MultipartFormDataContent requestContent = new MultipartFormDataContent(Guid.NewGuid().ToString()))
                 {
-                    foreach (string key in parameters)
+                    if (parameters != null)
                     {
-                        requestContent.Add(new StringContent(parameters[key]), key);
+                        foreach (string key in parameters)
+                        {
+                            requestContent.Add(new StringContent(parameters[key]), key);
+                        }
+                    }
+                    if (fileList != null && fileList.Count > 0)
+                    {
+                        foreach (var file in fileList)
+                        {
+                            var ms = new MemoryStream(file.Stream);
+                            var streamContent = new StreamContent(ms);
+                            requestContent.Add(streamContent, file.FieldName, file.FileName);
+                        }
+                    }
+
+                    using (var response = await client.PostAsync(url, requestContent))
+                    {
+                        return await this.ProcessResponse<T>(response);
                     }
                 }
-                if (fileList != null && fileList.Count > 0)
-                {
-                    foreach (var file in fileList)
-                    {
-                        var ms = new MemoryStream(file.Stream);
-                        var streamContent = new StreamContent(ms);
-                        requestContent.Add(streamContent, file.FieldName, file.FileName);
-                    }
-                }
-
-                var response = await client.PostAsync(url, requestContent);
-
-                return await this.ProcessResponse<T>(response);
             }
         }
 

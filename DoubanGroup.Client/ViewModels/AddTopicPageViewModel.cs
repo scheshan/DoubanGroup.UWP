@@ -48,6 +48,11 @@ namespace DoubanGroup.Client.ViewModels
                 if (this.SetProperty(ref _imageFile, value))
                 {
                     this.SetImageSource();
+
+                    if (!this.Content.Contains("<图片1>"))
+                    {
+                        this.Content = this.Content + "\r\n" + "<图片1>";
+                    }
                 }
             }
         }
