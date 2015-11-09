@@ -326,4 +326,11 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="TextBox" x:Key="DefaultTextBoxStyle">
+        <Setter Property="BorderBrush" Value="{StaticResource HighlightForeground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="18"/>
+    </Style>
 </ResourceDictionary>

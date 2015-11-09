@@ -2,11 +2,13 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
 
 namespace DoubanGroup.Core.Api
 {
@@ -194,6 +196,45 @@ namespace DoubanGroup.Core.Api
                 {
                     response = await client.PostAsync(url, null);
                 }
+
+                return await this.ProcessResponse<T>(response);
+            }
+        }
+
+        /// <summary>
+        /// 通用的上传文件方法，返回实体类
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="url"></param>
+        /// <param name="parameters"></param>
+        /// <param name="fileList"></param>
+        /// <returns></returns>
+        private async Task<T> PostWithFile<T>(string url, Parameters parameters, List<File> fileList)
+        {
+            url = this.BuildUrl(url, null);
+
+            using (var client = this.CreateClient())
+            {
+                MultipartFormDataContent requestContent = new MultipartFormDataContent(Guid.NewGuid().ToString());
+
+                if (parameters != null)
+                {
+                    foreach (string key in parameters)
+                    {
+                        requestContent.Add(new StringContent(parameters[key]), key);
+                    }
+                }
+                if (fileList != null && fileList.Count > 0)
+                {
+                    foreach (var file in fileList)
+                    {
+                        var ms = new MemoryStream(file.Stream);
+                        var streamContent = new StreamContent(ms);
+                        requestContent.Add(streamContent, file.FieldName, file.FileName);
+                    }
+                }
+
+                var response = await client.PostAsync(url, requestContent);
 
                 return await this.ProcessResponse<T>(response);
             }
@@ -735,6 +776,52 @@ namespace DoubanGroup.Core.Api
             para.Add("count", count.ToString());
 
             return await this.Get<TopicList>(url, para);
+        }
+
+        /// <summary>
+        /// 发表主题
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="title"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task<Topic> AddTopic(long groupID, string title, string content, StorageFile image)
+        {
+            string url = $"group/{groupID}/post";
+
+            var para = new Parameters();
+            para.Add("title", title);
+            para.Add("content", content);
+
+            List<File> files = new List<File>();
+            if (image != null)
+            {
+                using (var stream = await image.OpenReadAsync())
+                {
+                    byte[] data = new byte[stream.Size];
+                    files.Add(new File { FieldName = "file", FileName = image.Name, Stream = data });
+                }
+            }
+
+            return await this.PostWithFile<Topic>(url, para, files);
+        }
+
+        /// <summary>
+        /// 发表主题
+        /// </summary>
+        /// <param name="groupID"></param>
+        /// <param name="title"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
+        public async Task<Topic> AddTopic(long groupID, string title, string content)
+        {
+            string url = $"group/{groupID}/post";
+
+            var para = new Parameters();
+            para.Add("title", title);
+            para.Add("content", content);
+
+            return await this.Post<Topic>(url, para);
         }
     }
 }

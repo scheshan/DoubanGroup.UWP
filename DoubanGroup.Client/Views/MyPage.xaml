@@ -34,12 +34,27 @@
                     </i:Interaction.Behaviors>
                 </GridView>
             </PivotItem>
-            <PivotItem Header="小组">
+            <PivotItem Header="小组">                
                 <GridView ItemsSource="{Binding JoinedGroupList}" Style="{StaticResource GroupGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}" Padding="20 10">
                     <i:Interaction.Behaviors>
                         <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
                     </i:Interaction.Behaviors>
+
+                    <GridView.Header>
+                        <StackPanel>
+                            <TextBlock Style="{StaticResource GroupHeaderTextBlockStyle}" Text="管理的小组" Margin="0 0 0 10"></TextBlock>
+
+                            <GridView ItemsSource="{Binding ManagedGroupList}" Style="{StaticResource GroupGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}" Padding="0 10">
+                                <i:Interaction.Behaviors>
+                                    <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                                    <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                                </i:Interaction.Behaviors>
+                            </GridView>
+
+                            <TextBlock Style="{StaticResource GroupHeaderTextBlockStyle}" Text="加入的小组" Margin="0 0 0 10"></TextBlock>
+                        </StackPanel>
+                    </GridView.Header>
                 </GridView>
             </PivotItem>
             <PivotItem Header="喜欢">

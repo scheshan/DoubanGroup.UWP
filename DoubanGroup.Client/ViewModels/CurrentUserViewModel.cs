@@ -29,6 +29,14 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _user, value); }
         }
 
+        private UserDetail _userDetail;
+
+        public UserDetail UserDetail
+        {
+            get { return _userDetail; }
+            set { this.SetProperty(ref _userDetail, value); }
+        }
+
         public ObservableCollection<Group> JoinedGroupList { get; private set; }
 
         public ObservableCollection<Group> ManagedGroupList { get; private set; }
@@ -105,6 +113,7 @@ namespace DoubanGroup.Client.ViewModels
         private async Task LoadUser()
         {
             var userDetail = await this.ApiClient.GetUserDetail(this.Session.DoubanUserID, 0);
+            this.UserDetail = userDetail;
             this.User = userDetail.User;
 
             await this.LoadJoinedGroups();
@@ -115,7 +124,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.JoinedGroupList.Clear();
 
-            var groupList = await this.ApiClient.GetUserJoinedGroups(this.User.ID, 0, 200);
+            var groupList = await this.ApiClient.GetUserJoinedGroups(this.User.ID, 0, this.UserDetail.JoinGroupCount);
 
             foreach (var group in groupList.Items)
             {

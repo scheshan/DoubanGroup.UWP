@@ -18,6 +18,12 @@ namespace DoubanGroup.Client.ViewModels
             private set;
         }
 
+        public ObservableCollection<Group> ManagedGroupList
+        {
+            get;
+            private set;
+        }
+
         public IncrementalLoadingList<Topic> SuggestTopicList { get; private set; }
 
         public IncrementalLoadingList<Topic> LikeTopicList { get; private set; }
@@ -39,6 +45,7 @@ namespace DoubanGroup.Client.ViewModels
             base.OnNavigatedTo(e, viewModelState);
 
             this.JoinedGroupList = this.CurrentUser.JoinedGroupList;
+            this.ManagedGroupList = this.CurrentUser.ManagedGroupList;
         }
 
         private async Task<IEnumerable<Topic>> LoadSuggestTopics(uint count)

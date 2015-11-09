@@ -277,5 +277,24 @@ namespace DoubanGroup.Client.ViewModels
             var updater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID);
             updater.Update(notification);
         }
+
+        private DelegateCommand _addTopicCommand;
+
+        public DelegateCommand AddTopicCommand
+        {
+            get
+            {
+                if (_addTopicCommand == null)
+                {
+                    _addTopicCommand = new DelegateCommand(AddTopic);
+                }
+                return _addTopicCommand;
+            }
+        }
+
+        private void AddTopic()
+        {
+            this.NavigationService.Navigate("AddTopic", this.GroupID);
+        }
     }
 }
