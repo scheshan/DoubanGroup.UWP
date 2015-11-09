@@ -123,6 +123,13 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="Transitions">
+            <Setter.Value>
+                <TransitionCollection>
+                    <ContentThemeTransition/>
+                </TransitionCollection>
+            </Setter.Value>
+        </Setter>
     </Style>
 
     <Style x:Key="DefaultListViewItemStyle" TargetType="ListViewItem">

@@ -34,6 +34,13 @@ namespace DoubanGroup.Client
             this.InitializeComponent();
 
             this.main_content.Content = this.RootFrame;
+
+            this.Loaded += Shell_Loaded;
+        }
+
+        private void Shell_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void Navigate(object sender, RoutedEventArgs e)

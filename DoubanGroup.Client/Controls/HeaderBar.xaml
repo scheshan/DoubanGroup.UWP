@@ -14,6 +14,13 @@
         <Style TargetType="CommandBar">
             <Setter Property="Background" Value="{StaticResource TitleBackground}"/>
             <Setter Property="Height" Value="60"/>
+            <Setter Property="Transitions">
+                <Setter.Value>
+                    <TransitionCollection>
+                        <EdgeUIThemeTransition/>
+                    </TransitionCollection>
+                </Setter.Value>
+            </Setter>
         </Style>
     </UserControl.Resources>
 

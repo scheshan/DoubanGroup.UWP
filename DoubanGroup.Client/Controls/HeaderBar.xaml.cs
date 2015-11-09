@@ -30,7 +30,13 @@ namespace DoubanGroup.Client.Controls
         public static readonly DependencyProperty TitleProperty =
             DependencyProperty.Register("Title", typeof(string), typeof(HeaderBar), new PropertyMetadata(null));
 
-        private MtFrame RootFrame { get; set; }
+        private MtFrame RootFrame
+        {
+            get
+            {
+                return (Window.Current.Content as Shell)?.RootFrame;
+            }
+        }
 
         public CommandBar CommandBar
         {
@@ -62,8 +68,6 @@ namespace DoubanGroup.Client.Controls
         {
             this.InitializeComponent();
 
-            this.RootFrame = (Window.Current.Content as Shell)?.RootFrame;
-
             this.Loaded += HeaderBar_Loaded;
 
             searchbox.QuerySubmitted += Searchbox_QuerySubmitted;
@@ -73,7 +77,7 @@ namespace DoubanGroup.Client.Controls
         {
             if (!string.IsNullOrWhiteSpace(args.QueryText))
             {
-                this.RootFrame.NavigateAsync(typeof(Views.SearchPage), args.QueryText);
+                this.RootFrame?.NavigateAsync(typeof(Views.SearchPage), args.QueryText);
             }
         }
 
@@ -89,7 +93,7 @@ namespace DoubanGroup.Client.Controls
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            this.RootFrame.GoBackAsync();
+            this.RootFrame?.GoBackAsync();
         }
     }
 }

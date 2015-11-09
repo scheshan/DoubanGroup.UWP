@@ -249,18 +249,22 @@ namespace DoubanGroup.Client.ViewModels
             {
                 PeekImage = new TilePeekImage()
                 {
-                    Source = new TileImageSource(this.Group.LargeAvatar)
-                }
+                    Source = new TileImageSource(this.Group.LargeAvatar)                    
+                }                
             };
+            bindingContent.Children.Add(new TileText
+            {
+                Text = this.Group.Name,
+                Wrap = true,
+                Style = TileTextStyle.Body
+            });
 
             TileBinding binding = new TileBinding()
             {
                 Branding = TileBranding.NameAndLogo,
-
                 DisplayName = this.Group.Name,
-
-                Content = bindingContent
-            };
+                Content = bindingContent                
+            };            
 
             TileContent content = new TileContent()
             {
@@ -268,7 +272,7 @@ namespace DoubanGroup.Client.ViewModels
                 {
                     TileMedium = binding,
                     TileWide = binding,
-                    TileLarge = binding
+                    TileLarge = binding                    
                 }
             };
 
@@ -276,6 +280,8 @@ namespace DoubanGroup.Client.ViewModels
 
             var updater = TileUpdateManager.CreateTileUpdaterForSecondaryTile(tileID);
             updater.Update(notification);
+
+            bool result = await tile.UpdateAsync();
         }
 
         private DelegateCommand _addTopicCommand;
