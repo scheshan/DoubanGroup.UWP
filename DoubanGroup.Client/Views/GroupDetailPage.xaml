@@ -158,6 +158,7 @@
                 </Grid>
             </PivotItem>
         </Pivot>
-        
+
+        <ProgressBar Style="{StaticResource LoadingProgressBarStyle}" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" VerticalAlignment="Top"/>
     </Grid>
 </mt:MtPage>

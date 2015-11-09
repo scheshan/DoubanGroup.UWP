@@ -138,6 +138,11 @@ namespace DoubanGroup.Core.Api
             {
                 return JsonConvert.DeserializeObject<T>(json);
             }
+            else if (response.StatusCode == HttpStatusCode.BadGateway)
+            {
+                var error = new ApiError() { Message = "服务器开小差了,请稍后再试吧" };
+                throw new ApiException(error);
+            }
             else
             {
                 var error = JsonConvert.DeserializeObject<ApiError>(json);
