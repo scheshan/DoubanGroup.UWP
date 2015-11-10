@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class AddCommentPageViewModel : DialogViewModelBase<bool>
+    public class AddCommentPageViewModel : DialogViewModelBase<Comment>
     {
         public Topic Topic { get; private set; }
 
@@ -62,6 +62,7 @@ namespace DoubanGroup.Client.ViewModels
             try
             {
                 var comment = await this.ApiClient.AddComment(this.Topic.ID, this.ReplyTo?.ID, this.Content);
+                this.DialogResult = comment;
                 this.Alert("评论发表成功");
                 this.Hide();
             }

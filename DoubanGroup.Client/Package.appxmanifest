@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="DoubanGroup.Client.App">
-      <uap:VisualElements DisplayName="豆瓣小组UWP" Square150x150Logo="assets\logo-150.png" Square44x44Logo="Assets\logo-44.png" Description="这是一个独一无二的网络社区" BackgroundColor="transparent">
+      <uap:VisualElements DisplayName="豆瓣小组UWP" Square150x150Logo="assets\logo-150.png" Square44x44Logo="Assets\logo-44.png" Description="这是一个独一无二的网络社区" BackgroundColor="#FFFFFF">
         <uap:DefaultTile Square71x71Logo="Assets\logo-71.png">
         </uap:DefaultTile>
         <uap:SplashScreen Image="Assets\splash.png" />

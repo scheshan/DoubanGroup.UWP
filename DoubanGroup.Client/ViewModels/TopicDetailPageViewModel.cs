@@ -60,6 +60,14 @@ namespace DoubanGroup.Client.ViewModels
 
         public ObservableCollection<CommentListViewModel> CommentList { get; private set; }
 
+        private CommentListViewModel _currentComment;
+
+        public CommentListViewModel CurrentComment
+        {
+            get { return _currentComment; }
+            set { this.SetProperty(ref _currentComment, value); }
+        }
+
         public bool HasPopularComments
         {
             get
@@ -136,6 +144,8 @@ namespace DoubanGroup.Client.ViewModels
                     this.CommentList.Add(item);
                 }
             }
+
+            this.CurrentComment = this.CommentList.FirstOrDefault();
 
             if (this.PopularCommentList.Count == 0)
             {
@@ -258,7 +268,12 @@ namespace DoubanGroup.Client.ViewModels
             }
 
             var vm = new AddCommentPageViewModel(this.Topic, parameter);
-            await vm.Show();
+            var comment = await vm.Show();
+
+            if (comment != null)
+            {
+                this.CommentList.LastOrDefault()?.CommentList.Add(comment);
+            }
         }
 
         private DelegateCommand<Comment> _voteCommentCommand;
@@ -299,6 +314,27 @@ namespace DoubanGroup.Client.ViewModels
             {
                 this.Alert("您已经投过票了");
             }
+        }
+
+        private DelegateCommand _chooseCommentPageCommand;
+
+        public DelegateCommand ChooseCommentPageCommand
+        {
+            get
+            {
+                if (_chooseCommentPageCommand == null)
+                {
+                    _chooseCommentPageCommand = new DelegateCommand(ChooseCommentPage);
+                }
+                return _chooseCommentPageCommand;
+            }
+        }
+
+        private async void ChooseCommentPage()
+        {
+            var vm = new SelectCommentPageViewModel(Convert.ToInt32(this.TotalPage), this.CurrentComment.Page);
+            var page = await vm.Show();
+            this.CurrentComment = this.CommentList[page - 1];
         }
     }
 }

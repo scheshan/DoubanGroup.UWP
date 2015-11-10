@@ -162,6 +162,7 @@
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MyPageViewModel.cs" />
     <Compile Include="ViewModels\SearchPageViewModel.cs" />
+    <Compile Include="ViewModels\SelectCommentPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
     <Compile Include="ViewModels\UserDetailPageViewModel.cs" />
@@ -186,6 +187,9 @@
     </Compile>
     <Compile Include="Views\SearchPage.xaml.cs">
       <DependentUpon>SearchPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SelectCommentPage.xaml.cs">
+      <DependentUpon>SelectCommentPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TestPage.xaml.cs">
       <DependentUpon>TestPage.xaml</DependentUpon>
@@ -268,6 +272,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SearchPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SelectCommentPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -43,7 +43,7 @@
                 <CommandBar Grid.Row="1" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
                     <AppBarButton Command="{Binding JoinGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}" Icon="AddFriend" Label="加入小组"></AppBarButton>
                     <AppBarButton Command="{Binding QuitGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}" Icon="BlockContact" Label="退出小组"></AppBarButton>
-                    <AppBarButton Command="{Binding PinCommand}" Icon="Pin" Label="固定到桌面"/>
+                    <AppBarButton Command="{Binding PinCommand}" Icon="Pin" Label="固定到开始菜单"/>
                     <AppBarButton Command="{Binding AddTopicCommand}" Icon="Edit" Label="发表主题"></AppBarButton>
                 </CommandBar>
             </controls:HeaderBar.CommandBar>

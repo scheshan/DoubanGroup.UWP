@@ -134,7 +134,7 @@
             <PivotItem Header="评论">
                 <Grid>
                     <FlipView Grid.Row="1" Name="fvMain" SelectionChanged="fvMain_SelectionChanged" ItemsSource="{Binding CommentList}" Background="{StaticResource DefaultBackground}" 
-                              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyle="{StaticResource CommentListFlipViewItemStyle}">
+                              ItemTemplate="{StaticResource CommentListDataTemplate}" ItemContainerStyle="{StaticResource CommentListFlipViewItemStyle}" SelectedItem="{Binding CurrentComment, Mode=TwoWay}">
                         <FlipView.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <VirtualizingStackPanel AreScrollSnapPointsRegular="True" Orientation="Horizontal"/>
@@ -143,6 +143,12 @@
                     </FlipView>
 
                     <Border Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0 0 40 40" Background="#7F000000" Padding="10">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="PointerPressed">
+                                <ic:InvokeCommandAction Command="{Binding ChooseCommentPageCommand}"/>
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <TextBlock Foreground="#FFFFFF">
                             <Run Text="{Binding SelectedItem.Page, ElementName=fvMain}"></Run>
                             <Run Text="/"/>
