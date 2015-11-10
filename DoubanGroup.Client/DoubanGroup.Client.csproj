@@ -166,6 +166,7 @@
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\TopicDetailPageViewModel.cs" />
     <Compile Include="ViewModels\UserDetailPageViewModel.cs" />
+    <Compile Include="ViewModels\ViewImagePageViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\AddCommentPage.xaml.cs">
       <DependentUpon>AddCommentPage.xaml</DependentUpon>
@@ -199,6 +200,9 @@
     </Compile>
     <Compile Include="Views\UserDetailPage.xaml.cs">
       <DependentUpon>UserDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ViewImagePage.xaml.cs">
+      <DependentUpon>ViewImagePage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +292,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserDetailPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ViewImagePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

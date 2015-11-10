@@ -1,0 +1,29 @@
+﻿<ContentDialog
+    x:Class="DoubanGroup.Client.Views.ViewImagePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:DoubanGroup.Client.Views"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    HorizontalContentAlignment="Stretch"
+    VerticalContentAlignment="Stretch"
+    xmlns:toolkit="using:MyToolkit.Controls"
+    Padding="50 20"
+    BorderThickness="0"
+    HorizontalAlignment="Stretch"
+    VerticalAlignment="Stretch"
+    mc:Ignorable="d" Background="#7F666666">
+    <ContentDialog.Title>
+        <Button HorizontalAlignment="Right">X</Button>
+    </ContentDialog.Title>
+    
+    <FlipView Background="Transparent" ItemsSource="{Binding PhotoList}" BorderThickness="0">
+        <FlipView.ItemTemplate>
+            <DataTemplate>
+                
+            </DataTemplate>
+        </FlipView.ItemTemplate>
+    </FlipView>
+
+    
+</ContentDialog>

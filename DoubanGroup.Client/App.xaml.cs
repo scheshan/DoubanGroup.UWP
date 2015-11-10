@@ -58,7 +58,7 @@ namespace DoubanGroup.Client
         {
             get
             {
-                return typeof(Views.HomePage);
+                return typeof(Views.TestPage);
             }
         }
 
@@ -112,6 +112,11 @@ namespace DoubanGroup.Client
         private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             Debug.Write(e.Exception);
+
+            if (e.Exception is Core.Api.ApiException)
+            {
+                e.Handled = true;
+            }
         }
 
         private void InitializeFrame()

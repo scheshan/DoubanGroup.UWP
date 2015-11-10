@@ -32,7 +32,7 @@ namespace DoubanGroup.Client.Views
 
         private void TestPage_Loaded(object sender, RoutedEventArgs e)
         {
-
+            new ViewModels.ViewImagePageViewModel().Show();
         }
     }
 }
