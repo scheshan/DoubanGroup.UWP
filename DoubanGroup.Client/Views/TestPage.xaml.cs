@@ -32,7 +32,11 @@ namespace DoubanGroup.Client.Views
 
         private void TestPage_Loaded(object sender, RoutedEventArgs e)
         {
-            new ViewModels.ViewImagePageViewModel().Show();
+            //new ViewModels.ViewImagePageViewModel().Show();
+
+            Popup p = new Popup();
+            p.Child = new TextBlock() { Text = "1" };
+            p.IsOpen = true;
         }
     }
 }

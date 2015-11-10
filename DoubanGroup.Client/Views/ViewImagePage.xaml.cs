@@ -13,32 +13,15 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Content Dialog item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+// The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace DoubanGroup.Client.Views
 {
-    public sealed partial class ViewImagePage : ContentDialog
+    public sealed partial class ViewImagePage : UserControl
     {
-        public UIElement RootContent
-        {
-            get
-            {
-                return Window.Current.Content;
-            }
-        }
-
         public ViewImagePage()
         {
             this.InitializeComponent();
-        }
-
-        private void ContentDialog_PrimaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
-            
-        }
-
-        private void ContentDialog_SecondaryButtonClick(ContentDialog sender, ContentDialogButtonClickEventArgs args)
-        {
         }
     }
 }
