@@ -142,6 +142,7 @@
     <Compile Include="Extensions\ApplicationDataContainerExtensions.cs" />
     <Compile Include="Extensions\DependencyObjectExtensions.cs" />
     <Compile Include="Extensions\ISessionStateServiceExtensions.cs" />
+    <Compile Include="Models\ImageItem.cs" />
     <Compile Include="MtNavigationService.cs" />
     <Compile Include="Service\FileCacheService.cs" />
     <Compile Include="Service\ICacheService.cs" />

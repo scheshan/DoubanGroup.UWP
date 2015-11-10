@@ -58,7 +58,7 @@ namespace DoubanGroup.Client
         {
             get
             {
-                return typeof(Views.TestPage);
+                return typeof(Views.HomePage);
             }
         }
 
