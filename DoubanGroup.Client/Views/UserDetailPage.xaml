@@ -8,10 +8,12 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:designData="using:DoubanGroup.Client.DesignData"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:behavior="using:DoubanGroup.Client.Behaviors"
     xmlns:controls="using:DoubanGroup.Client.Controls"
     xmlns:mvvm="using:Prism.Windows.Mvvm"
     mc:Ignorable="d"
+    Name="page"
     mvvm:ViewModelLocator.AutoWireViewModel="True"
     d:DataContext="{d:DesignInstance Type=designData:UserDetailData, IsDesignTimeCreatable=True}">
 
@@ -73,7 +75,7 @@
                             </GridView.Header>
                         </GridView>
 
-                        <controls:HorizontalScrollList Margin="0 10 0 0" ItemsSource="{Binding TopPhotoList}">
+                        <controls:HorizontalScrollList Margin="0 10 0 0" ItemsSource="{Binding TopPhotoList}" ItemClickCommand="{Binding ViewImageCommand}">
                             <controls:HorizontalScrollList.Header>
                                 <Grid Margin="0 0 0 10">
                                     <TextBlock Text="最近上传的照片" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
@@ -82,7 +84,13 @@
                             </controls:HorizontalScrollList.Header>
                             <controls:HorizontalScrollList.ItemTemplate>
                                 <DataTemplate>
-                                    <Image Width="120" Height="120" Source="{Binding Cover}"/>
+                                    <Image Width="120" Height="120" Source="{Binding Cover}">
+                                        <i:Interaction.Behaviors>
+                                            <ic:EventTriggerBehavior EventName="PointerPressed">
+                                                <ic:InvokeCommandAction Command="{Binding DataContext.ViewImageCommand, ElementName=page}" CommandParameter="{Binding}"/>
+                                            </ic:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </Image>
                                 </DataTemplate>
                             </controls:HorizontalScrollList.ItemTemplate>
                         </controls:HorizontalScrollList>

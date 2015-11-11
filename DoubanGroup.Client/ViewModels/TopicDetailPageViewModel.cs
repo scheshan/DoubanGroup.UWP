@@ -174,6 +174,7 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
+            this.Topic = topic;
             this.OnPropertyChanged(() => this.Liked);
             this.IsLoading = false;
         }

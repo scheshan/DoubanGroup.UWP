@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Prism.Windows.Navigation;
+using Prism.Commands;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -128,6 +129,34 @@ namespace DoubanGroup.Client.ViewModels
             }
 
             return topicList?.Items;
+        }
+
+        private DelegateCommand _viewImageCommand;
+
+        public DelegateCommand ViewImageCommand
+        {
+            get
+            {
+                if (_viewImageCommand == null)
+                {
+                    _viewImageCommand = new DelegateCommand(ViewImage);
+                }
+                return _viewImageCommand;
+            }
+        }
+
+        private void ViewImage()
+        {
+            var imageList = this.TopPhotoList.Select(t => new Models.ImageItem
+            {
+                Description = t.Description,
+                Height = t.Sizes.Image[1],
+                Width = t.Sizes.Image[0],
+                Source = t.Large,
+                Title = t.AlbumTitle
+            }).ToList();
+
+            new Views.ViewImagePage(imageList).Show();
         }
     }
 }

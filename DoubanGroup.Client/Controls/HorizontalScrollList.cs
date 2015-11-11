@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
@@ -45,6 +46,17 @@ namespace DoubanGroup.Client.Controls
         public static readonly DependencyProperty HeaderTemplateProperty =
             DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(HorizontalScrollList), new PropertyMetadata(null));
 
+        public ICommand ItemClickCommand
+        {
+            get { return (ICommand)GetValue(ItemClickCommandProperty); }
+            set { SetValue(ItemClickCommandProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemClickCommand.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemClickCommandProperty =
+            DependencyProperty.Register("ItemClickCommand", typeof(ICommand), typeof(HorizontalScrollList), new PropertyMetadata(null));
+
+
         public HorizontalScrollList()
         {
             this.DefaultStyleKey = typeof(HorizontalScrollList);
@@ -52,7 +64,24 @@ namespace DoubanGroup.Client.Controls
 
         protected override DependencyObject GetContainerForItemOverride()
         {
-            return new HorizontalScrollItem();
+            var container = new HorizontalScrollItem();
+            container.Unloaded += Container_Unloaded;
+            container.PointerPressed += Container_PointerPressed;
+            return container;
+        }
+
+        private void Container_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            e.Handled = true;
+            var item = sender as HorizontalScrollItem;
+            this.ItemClickCommand?.Execute(item?.DataContext);
+        }
+
+        private void Container_Unloaded(object sender, RoutedEventArgs e)
+        {
+            var item = sender as HorizontalScrollItem;
+            item.Unloaded -= Container_Unloaded;
+            item.PointerPressed -= Container_PointerPressed;
         }
 
         protected override void PrepareContainerForItemOverride(DependencyObject element, object item)
