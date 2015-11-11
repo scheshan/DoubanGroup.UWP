@@ -5,8 +5,10 @@
     xmlns:local="using:DoubanGroup.Client.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ptr="using:PullToRefresh.UWP"
     mc:Ignorable="d"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:behavior="using:DoubanGroup.Client.Behaviors"
     xmlns:designData="using:DoubanGroup.Client.DesignData"
     d:DesignHeight="600"
@@ -16,36 +18,45 @@
         
     </UserControl.Resources>
 
-    <Grid>
-        <GridView Padding="20 10" Style="{StaticResource DefaultGridViewStyle}" ItemsSource="{Binding TopicList}" ItemTemplate="{StaticResource ChannelTopicItemTemplate}">
-            <i:Interaction.Behaviors>
-                <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
-                <behavior:ItemClickBehavior Command="{Binding ViewTopicCommand}"/>
-            </i:Interaction.Behaviors>
+    <Grid>        
+        <ptr:PullToRefreshBox>
+            <ptr:PullToRefreshBox.TopIndicatorTemplate>
+                <DataTemplate>
+                    <ptr:PullRefreshProgressControl/>
+                </DataTemplate>
+            </ptr:PullToRefreshBox.TopIndicatorTemplate>
+            
+            <GridView Padding="20 10 10 10" Style="{StaticResource DefaultGridViewStyle}" ItemsSource="{Binding TopicList}" ItemTemplate="{StaticResource ChannelTopicItemTemplate}">
+                <i:Interaction.Behaviors>
+                    <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                    <behavior:ItemClickBehavior Command="{Binding ViewTopicCommand}"/>
+                </i:Interaction.Behaviors>
 
-            <GridView.Header>
-                <StackPanel>
-                    <GridView Margin="0 0 -5 0" Height="265" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
-                        <GridView.Header>
-                            <Grid Margin="0 0 0 10">
-                                <TextBlock Text="值得加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
+                <GridView.Header>
+                    <StackPanel>
+                        <GridView Height="265" Margin="0 0 5 0" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
+                            <GridView.Header>
+                                <Grid Margin="0 0 0 10">
+                                    <TextBlock Text="值得加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
 
-                                <Button Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource HyperlinkButtonStyle}" Content="查看更多"></Button>
-                            </Grid>
-                        </GridView.Header>
+                                    <Button Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource HyperlinkButtonStyle}" Content="查看更多"></Button>
+                                </Grid>
+                            </GridView.Header>
 
-                        <i:Interaction.Behaviors>
-                            <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
-                            <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
-                        </i:Interaction.Behaviors>
-                    </GridView>
+                            <i:Interaction.Behaviors>
+                                <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                                <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                            </i:Interaction.Behaviors>
+                        </GridView>
 
-                    <Grid Margin="0 10 0 10">
-                        <TextBlock Text="推荐主题" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
-                    </Grid>
-                </StackPanel>
-            </GridView.Header>
-        </GridView>
+                        <Grid Margin="0 10 0 10">
+                            <TextBlock Text="推荐主题" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
+                        </Grid>
+                    </StackPanel>
+                </GridView.Header>
+            </GridView>
+        </ptr:PullToRefreshBox>
+        
         
         <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>   
