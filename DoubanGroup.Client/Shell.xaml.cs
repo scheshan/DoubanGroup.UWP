@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
@@ -27,6 +28,8 @@ namespace DoubanGroup.Client
             get; private set;
         }
 
+        private DispatcherTimer HideToastTimer { get; set; }
+
         public Shell(MtFrame rootFrame)
         {
             this.RootFrame = rootFrame;
@@ -36,6 +39,15 @@ namespace DoubanGroup.Client
             this.main_content.Content = this.RootFrame;
 
             this.Loaded += Shell_Loaded;
+
+            this.HideToastTimer = new DispatcherTimer();
+            this.HideToastTimer.Interval = TimeSpan.FromSeconds(3);
+            this.HideToastTimer.Tick += HideToastTimer_Tick;
+        }
+
+        private void HideToastTimer_Tick(object sender, object e)
+        {
+            this.HideToast();
         }
 
         private void Shell_Loaded(object sender, RoutedEventArgs e)
@@ -78,6 +90,22 @@ namespace DoubanGroup.Client
             {
                 this.RootFrame.Navigate(pageType);
             }
+        }
+
+        public void ShowToast(string message)
+        {
+            toast_content.Text = message;
+            var sb = this.Resources["ShowToastStoryboard"] as Storyboard;
+            sb.Begin();
+            this.HideToastTimer.Start();
+        }
+
+        public void HideToast()
+        {
+            toast_content.Text = string.Empty;
+            toast_container.Visibility = Visibility.Collapsed;
+            toast_container.Opacity = 0;
+            this.HideToastTimer.Stop();
         }
     }
 }

@@ -156,24 +156,22 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            this.IsLoading = true;
-
             Topic topic;
 
             if (this.ImageFile != null)
             {
-                topic = await this.ApiClient.AddTopic(this.GroupID, this.Title, this.Content, this.ImageFile);
+                topic = await this.RunTaskAsync(this.ApiClient.AddTopic(this.GroupID, this.Title, this.Content, this.ImageFile));
             }
             else
             {
-                topic = await this.ApiClient.AddTopic(this.GroupID, this.Title, this.Content);
+                topic = await this.RunTaskAsync(this.ApiClient.AddTopic(this.GroupID, this.Title, this.Content));
             }
 
-            this.IsLoading = false;
-
-            this.Alert("提交成功");
-
-            this.NavigationService.GoBack();
+            if (topic != null)
+            {
+                this.NavigationService.GoBack();
+                this.ShowToast("发表成功");
+            }
         }
     }
 }

@@ -111,6 +111,8 @@ namespace DoubanGroup.Client.Behaviors
 
                     var img = new Image();
 
+                    img.PointerPressed += OnImagePressed;
+
                     BitmapImage bi = new BitmapImage();
                     bi.UriSource = new Uri(photo.Alt);
                     img.Source = bi;
@@ -164,6 +166,20 @@ namespace DoubanGroup.Client.Behaviors
             }
 
             return container;
+        }
+
+        private void OnImagePressed(object sender, RoutedEventArgs e)
+        {
+            var imageList = this.Topic.Photos.Select(t => new Models.ImageItem
+            {
+                Description = "",
+                Height = t.Size.Height,
+                Width = t.Size.Width,
+                Title = t.Title,
+                Source = t.Alt
+            }).ToList();
+
+            new Views.ViewImagePage(imageList).Show();
         }
     }
 }

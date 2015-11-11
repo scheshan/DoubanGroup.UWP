@@ -63,16 +63,7 @@
             </CommandBar.Content>
         </CommandBar>
 
-        <FlipView Name="container" Grid.Row="1">
-            <FlipView.Items>
-                <x:String>http://img4.cache.netease.com/photo/0003/2015-11-10/600x450_B834T1NO00AJ0003.jpg</x:String>
-                <x:String>http://img4.cache.netease.com/photo/0003/2015-11-10/600x450_B834T1NO00AJ0003.jpg</x:String>
-                <x:String>http://img4.cache.netease.com/photo/0003/2015-11-10/600x450_B834T1NO00AJ0003.jpg</x:String>
-                <x:String>http://img4.cache.netease.com/photo/0003/2015-11-10/600x450_B834T1NO00AJ0003.jpg</x:String>
-                <x:String>http://img4.cache.netease.com/photo/0003/2015-11-10/600x450_B834T1NO00AJ0003.jpg</x:String>
-                <x:String>http://img4.cache.netease.com/photo/0003/2015-11-10/600x450_B834T1NO00AJ0003.jpg</x:String>
-                <x:String>http://img4.cache.netease.com/photo/0003/2015-11-10/600x450_B834T1NO00AJ0003.jpg</x:String>
-            </FlipView.Items>
+        <FlipView Name="container" Grid.Row="1" Background="Transparent">
             <FlipView.ItemTemplate>
                 <DataTemplate>
                     <ScrollViewer ZoomMode="Enabled" VerticalScrollBarVisibility="Hidden">
@@ -82,8 +73,6 @@
             </FlipView.ItemTemplate>
         </FlipView>
 
-        <Grid Grid.Row="2" Padding="0 20" Background="Transparent">
-            <TextBlock Text="{Binding SelectedItem.Description, ElementName=container}" Foreground="#FFFFFF" MaxWidth="300" HorizontalAlignment="Center" TextWrapping="Wrap"></TextBlock>
-        </Grid>
+        <TextBlock Text="{Binding SelectedItem.Description, ElementName=container}" Grid.Row="2" Foreground="#FFFFFF" MaxWidth="300" HorizontalAlignment="Center" TextWrapping="Wrap" Margin="0 20"></TextBlock>
     </Grid>
 </UserControl>

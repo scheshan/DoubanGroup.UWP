@@ -8,6 +8,7 @@ using Microsoft.Practices.Unity;
 using DoubanGroup.Core.Api;
 using Windows.UI.Popups;
 using Prism.Events;
+using Windows.UI.Xaml;
 
 namespace DoubanGroup.Client.ViewModels
 {
@@ -28,7 +29,7 @@ namespace DoubanGroup.Client.ViewModels
             }
             set
             {
-                if(value)
+                if (value)
                 {
                     _loadingCounters++;
                 }
@@ -181,6 +182,78 @@ namespace DoubanGroup.Client.ViewModels
 
             var vm = new LoginPageViewModel();
             return await vm.Show();
+        }
+
+        /// <summary>
+        /// 异步执行方法，并返回结果
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
+        /// <returns></returns>
+        public async Task<T> RunTaskAsync<T>(Task<T> task)
+        {
+            T result = default(T);
+            try
+            {
+                this.IsLoading = true;
+                result = await task;
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(ex);
+            }
+            finally
+            {
+                this.IsLoading = false;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// 异步执行方法
+        /// </summary>
+        /// <param name="task"></param>
+        /// <returns></returns>
+        public async Task<bool> RunTaskAsync(Task task)
+        {
+            try
+            {
+                this.IsLoading = true;
+                await task;
+                return true;
+            }
+            catch(Exception ex)
+            {
+                this.HandleException(ex);
+                return false;
+            }
+            finally
+            {
+                this.IsLoading = false;
+            }
+        }
+
+        protected virtual void HandleException(Exception ex)
+        {
+            string message;
+
+            if (ex is ApiException)
+            {
+                message = ex.Message;
+            }
+            else
+            {
+                message = "系统发生错误";
+            }
+
+            this.ShowToast(message);
+        }
+
+        public void ShowToast(string message)
+        {
+            var shell = Window.Current.Content as Shell;
+            shell?.ShowToast(message);
         }
 
         #endregion

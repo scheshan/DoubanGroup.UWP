@@ -21,11 +21,9 @@ namespace DoubanGroup.Client.ViewModels
             set { this.SetProperty(ref _channel, value); }
         }
 
-        private const int QUERY_COUNT = 20;
-
         public ObservableCollection<Group> GroupList { get; private set; }
 
-        public ObservableCollection<ChannelTopic> TopicList { get; private set; }
+        public Models.IncrementalLoadingList<ChannelTopic> TopicList { get; private set; }
 
         private bool _initialized = false;
 
@@ -33,97 +31,43 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.Channel = channel;
             this.GroupList = new ObservableCollection<Group>();
-            this.TopicList = new ObservableCollection<ChannelTopic>();
+            this.TopicList = new Models.IncrementalLoadingList<ChannelTopic>(this.LoadTopics);
         }
 
         public void Init()
         {
-            if(_initialized)
+            if (_initialized)
             {
                 return;
             }
 
             _initialized = true;
 
-            this.LoadGroupsFromCache();
-
-            this.LoadTopicsFromCache();
-        }
-
-        private async Task LoadGroupsFromCache()
-        {
-            string cacheKey = this.GetGroupsCacheKey();
-            var groupList = await this.CacheService.Get<List<Group>>(cacheKey);
-
-            if (groupList != null)
-            {
-                foreach (var group in groupList)
-                {
-                    this.GroupList.Add(group);
-                }
-            }
-            else
-            {
-                await this.LoadGroups();
-            }
+            this.LoadGroups();
         }
 
         private async Task LoadGroups()
         {
-            var groupList = await this.ApiClient.GetChannelGroups(this.Channel.Name);
+            var groupList = await this.RunTaskAsync(this.ApiClient.GetChannelGroups(this.Channel.Name));
 
-            foreach (var group in groupList.Items)
+            foreach (var group in groupList?.Items)
             {
                 this.GroupList.Add(group);
             }
-
-            await this.CacheService.Set(this.GetGroupsCacheKey(), this.GroupList.ToList());
         }
 
-        private async Task LoadTopicsFromCache()
+        private async Task<IEnumerable<ChannelTopic>> LoadTopics(uint count)
         {
-            string cacheKey = this.GetTopicsCacheKey();
-            var topicList = await this.CacheService.Get<List<ChannelTopic>>(cacheKey);
+            int queryCount = 30;
 
-            if (topicList != null)
-            {
-                foreach (var topic in topicList)
-                {
-                    this.TopicList.Add(topic);
-                }
-            }
-            else
-            {
-                await this.LoadTopics();
-            }
-        }
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetChannelTopics(this.Channel.Name, this.TopicList.Count, queryCount));
 
-        private async Task LoadTopics()
-        {
-            if (this.IsLoading)
+            if (topicList == null || topicList.Count < queryCount)
             {
-                return;
+                this.TopicList.NoMore();
             }
 
-            try
-            {
-                this.IsLoading = true;
-
-                var start = this.TopicList.Count;
-
-                var topicList = await this.ApiClient.GetChannelTopics(this.Channel.Name, start, QUERY_COUNT);
-
-                foreach (var topic in topicList.Topics)
-                {
-                    this.TopicList.Add(topic);
-                }
-
-                await this.CacheService.Set(this.GetTopicsCacheKey(), this.TopicList.ToList());
-            }
-            finally
-            {
-                this.IsLoading = false;
-            }
+            return topicList.Topics;
         }
 
         private DelegateCommand<Group> _viewGroupCommand;
@@ -164,45 +108,12 @@ namespace DoubanGroup.Client.ViewModels
             this.NavigationService.Navigate("TopicDetail", parameter.Topic.ID);
         }
 
-        private DelegateCommand _loadMoreCommand;
-
-        public DelegateCommand LoadMoreCommand
-        {
-            get
-            {
-                if (_loadMoreCommand == null)
-                {
-                    _loadMoreCommand = new DelegateCommand(this.LoadMore);
-                }
-                return _loadMoreCommand;
-            }
-        }
-
-        private void LoadMore()
-        {
-            this.LoadTopics();
-        }
-
-        private string GetGroupsCacheKey()
-        {
-            return $"Channel_{this.Channel.Name}_Groups";
-        }
-
-        private string GetTopicsCacheKey()
-        {
-            return $"Channel_{this.Channel.Name}_Topics";
-        }
-
         public void Refresh()
         {
             this.GroupList.Clear();
             this.TopicList.Clear();
-
-            this.CacheService.Remove(this.GetGroupsCacheKey());
-            this.CacheService.Remove(this.GetTopicsCacheKey());
-
+            this.TopicList.HasMore();            
             this.LoadGroups();
-            this.LoadTopics();
         }
     }
 }

@@ -57,22 +57,13 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            this.IsLoading = true;
+            var comment = await this.RunTaskAsync(this.ApiClient.AddComment(this.Topic.ID, this.ReplyTo?.ID, this.Content));
 
-            try
+            if (comment != null)
             {
-                var comment = await this.ApiClient.AddComment(this.Topic.ID, this.ReplyTo?.ID, this.Content);
                 this.DialogResult = comment;
-                this.Alert("评论发表成功");
                 this.Hide();
-            }
-            catch (ApiException ex)
-            {
-                this.Alert(ex.Message);
-            }
-            finally
-            {
-                this.IsLoading = false;
+                this.ShowToast("评论发表成功");
             }
         }
     }

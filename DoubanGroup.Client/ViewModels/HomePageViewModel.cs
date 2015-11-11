@@ -39,18 +39,13 @@ namespace DoubanGroup.Client.ViewModels
 
         private async Task InitChannels()
         {
-#if DEBUG
-            var channels = new List<Channel>();
-            channels.Add(new Channel { NameCN = "精选", Name = "all" });
-            channels.Add(new Channel { NameCN = "文化", Name = "culture" });
-            channels.Add(new Channel { NameCN = "行摄", Name = "travel" });
-            channels.Add(new Channel { NameCN = "娱乐", Name = "ent" });
-            channels.Add(new Channel { NameCN = "时尚", Name = "fashion" });
-            channels.Add(new Channel { NameCN = "生活", Name = "life" });
-            channels.Add(new Channel { NameCN = "科技", Name = "tech" });
-#else
-            var channels = await this.ApiClient.GetChannelList();
-#endif
+            var channels = await this.RunTaskAsync(this.ApiClient.GetChannelList());
+
+            if (channels == null)
+            {
+                return;
+            }
+
             foreach (var channel in channels)
             {
                 var vm = new ChannelDetailViewModel(channel);

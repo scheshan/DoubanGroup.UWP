@@ -82,14 +82,15 @@ namespace DoubanGroup.Client.ViewModels
 
             if (this.ViewAuthor)
             {
-                commentList = await this.ApiClient.GetOpCommentList(this.TopicID, start, this.PageSize);
+                commentList = await this.RunTaskAsync(this.ApiClient.GetOpCommentList(this.TopicID, start, this.PageSize));
             }
             else
             {
-                commentList = await this.ApiClient.GetCommentList(this.TopicID, start, this.PageSize);
+                commentList = await this.RunTaskAsync(this.ApiClient.GetCommentList(this.TopicID, start, this.PageSize));
             }
 
-            foreach (var comment in commentList.Comments)
+            this.CommentList.Clear();
+            foreach (var comment in commentList?.Comments)
             {
                 this.CommentList.Add(comment);
             }

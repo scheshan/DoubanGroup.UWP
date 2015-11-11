@@ -66,60 +66,45 @@ namespace DoubanGroup.Client.ViewModels
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 30;
 
-            var topicList = await this.ApiClient.GetGroupTopics(this.GroupID, this.TopicList.Count, 30);
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetGroupTopics(this.GroupID, this.TopicList.Count, queryCount));
 
-            if (topicList.Items.Count < 30)
+            if (topicList == null || topicList.Items.Count < queryCount)
             {
                 this.TopicList.NoMore();
             }
-
-            this.IsLoading = false;
 
             return topicList.Items;
         }
 
         private async Task<IEnumerable<User>> LoadUsers(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 100;
 
-            var userList = await this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, 100);
+            var userList = await this.RunTaskAsync(this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, queryCount));
 
-            if (userList.Items.Count < 100)
+            if (userList == null || userList.Items.Count < queryCount)
             {
                 this.UserList.NoMore();
             }
-
-            this.IsLoading = false;
 
             return userList.Items;
         }
 
         private async Task LoadGroup()
         {
-            var group = await this.ApiClient.GetGroup(this.GroupID);
+            var group = await this.RunTaskAsync(this.ApiClient.GetGroup(this.GroupID));
+
+            if (group == null)
+            {
+                this.ShowToast("小组加载失败");
+                this.NavigationService.GoBack();
+                return;
+            }
+
             this.Group = group;
             this.OnPropertyChanged(() => this.IsGroupMember);
-        }
-
-        private DelegateCommand _viewMembersCommand;
-
-        public DelegateCommand ViewMembersCommand
-        {
-            get
-            {
-                if (_viewMembersCommand == null)
-                {
-                    _viewMembersCommand = new DelegateCommand(this.ViewMembers);
-                }
-                return _viewMembersCommand;
-            }
-        }
-
-        private void ViewMembers()
-        {
-            this.NavigationService.Navigate("GroupMembers", this.GroupID);
         }
 
         private DelegateCommand _joinGroupCommand;
@@ -148,27 +133,19 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            this.IsLoading = true;
-
             if (this.Group.JoinType == "A")
             {
-                try
+                if (await this.RunTaskAsync(this.ApiClient.JoinGroup(this.GroupID)))
                 {
-                    await this.ApiClient.JoinGroup(this.GroupID);
+                    this.ShowToast("加入小组成功");
                     this.EventAggretator.GetEvent<Events.JoinGroupEvent>().Publish(this.Group);
                     this.OnPropertyChanged(() => this.IsGroupMember);
-                }
-                catch (ApiException ex)
-                {
-                    this.Alert(ex.Message);
                 }
             }
             else
             {
 
             }
-
-            this.IsLoading = false;
         }
 
         private DelegateCommand _quitGroupCommand;
@@ -202,20 +179,12 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            this.IsLoading = true;
-
-            try
+            if (await this.RunTaskAsync(this.ApiClient.QuitGroup(this.GroupID)))
             {
-                await this.ApiClient.QuitGroup(this.GroupID);
+                this.ShowToast("退出小组成功");
                 this.EventAggretator.GetEvent<Events.QuitGroupEvent>().Publish(this.Group);
                 this.OnPropertyChanged(() => this.IsGroupMember);
             }
-            catch (ApiException ex)
-            {
-                this.Alert(ex.Message);
-            }
-
-            this.IsLoading = false;
         }
 
         private DelegateCommand _pinCommand;

@@ -102,20 +102,21 @@ namespace DoubanGroup.Client.ViewModels
         /// <returns></returns>
         private async Task LoadComments()
         {
-            this.IsLoading = true;
-
             CommentList commentList;
 
             if (this.ViewAuthor)
             {
-                commentList = await this.ApiClient.GetOpCommentList(this.TopicID, 0, PageSize);
+                commentList = await this.RunTaskAsync(this.ApiClient.GetOpCommentList(this.TopicID, 0, PageSize));
             }
             else
             {
-                commentList = await this.ApiClient.GetCommentList(this.TopicID, 0, PageSize);
+                commentList = await this.RunTaskAsync(this.ApiClient.GetCommentList(this.TopicID, 0, PageSize));
             }
 
-            this.IsLoading = false;
+            if (commentList == null)
+            {
+                return;
+            }
 
             var totalPage = commentList.Total / PageSize;
             if (commentList.Total % PageSize > 0)
@@ -164,14 +165,16 @@ namespace DoubanGroup.Client.ViewModels
         /// <returns></returns>
         private async Task LoadTopic()
         {
-            this.IsLoading = true;
+            var topic = await this.RunTaskAsync(this.ApiClient.GetTopic(this.TopicID));
 
-            var topic = await this.ApiClient.GetTopic(this.TopicID);
-
-            this.Topic = topic;
+            if (topic == null)
+            {
+                this.ShowToast("获取主题失败");
+                this.NavigationService.GoBack();
+                return;
+            }
 
             this.OnPropertyChanged(() => this.Liked);
-
             this.IsLoading = false;
         }
 
@@ -201,13 +204,11 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            this.IsLoading = true;
-
-            await this.ApiClient.LikeTopic(this.TopicID);
-            this.Topic.Liked = true;
-            this.OnPropertyChanged(() => this.Liked);
-
-            this.IsLoading = false;
+            if (await this.RunTaskAsync(this.ApiClient.LikeTopic(this.TopicID)))
+            {
+                this.Topic.Liked = true;
+                this.OnPropertyChanged(() => this.Liked);
+            }
         }
 
         private DelegateCommand _dislikeTopicCommand;
@@ -234,15 +235,13 @@ namespace DoubanGroup.Client.ViewModels
             if (this.IsLoading)
             {
                 return;
+            }            
+
+            if (await this.RunTaskAsync(this.ApiClient.DislikeTopic(this.TopicID)))
+            {
+                this.Topic.Liked = false;
+                this.OnPropertyChanged(() => this.Liked);
             }
-
-            this.IsLoading = true;
-
-            await this.ApiClient.DislikeTopic(this.TopicID);
-            this.Topic.Liked = false;
-            this.OnPropertyChanged(() => this.Liked);
-
-            this.IsLoading = false;
         }
 
         private DelegateCommand<Comment> _addCommentCommand;
@@ -302,17 +301,20 @@ namespace DoubanGroup.Client.ViewModels
                 return;
             }
 
-            var result = await this.ApiClient.VoteComment(this.TopicID, parameter.ID);
+            var result = await this.RunTaskAsync(this.ApiClient.VoteComment(this.TopicID, parameter.ID));
 
-            parameter.CanVote = false;
+            if (result != null)
+            {
+                parameter.CanVote = false;
 
-            if (result.Result)
-            {
-                parameter.VoteCount = result.VoteCount;
-            }
-            else
-            {
-                this.Alert("您已经投过票了");
+                if (result.Result)
+                {
+                    parameter.VoteCount = result.VoteCount;
+                }
+                else
+                {
+                    this.ShowToast("您已经投过票了");
+                }
             }
         }
 
@@ -335,6 +337,6 @@ namespace DoubanGroup.Client.ViewModels
             var vm = new SelectCommentPageViewModel(Convert.ToInt32(this.TotalPage), this.CurrentComment.Page);
             var page = await vm.Show();
             this.CurrentComment = this.CommentList[page - 1];
-        }
+        }        
     }
 }

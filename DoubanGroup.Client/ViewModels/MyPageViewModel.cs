@@ -50,66 +50,56 @@ namespace DoubanGroup.Client.ViewModels
 
         private async Task<IEnumerable<Topic>> LoadSuggestTopics(uint count)
         {
-            this.IsLoading = true;
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetMySuggestTopics(this.SuggestTopicList.Count, 30));
 
-            var topicList = await this.ApiClient.GetMySuggestTopics(this.SuggestTopicList.Count, 30);
-
-            this.IsLoading = false;
-
-            if (!topicList.HasMore)
+            if (topicList == null || !topicList.HasMore)
             {
                 this.SuggestTopicList.NoMore();
             }
 
-            return topicList.Topics;
+            return topicList?.Topics;
         }
 
         private async Task<IEnumerable<Topic>> LoadLikeTopics(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 30;
 
-            var topicList = await this.ApiClient.GetMyLikedTopics(this.LikeTopicList.Count, 30);
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetMyLikedTopics(this.LikeTopicList.Count, queryCount));
 
-            this.IsLoading = false;
-
-            if (topicList.Items.Count < 30)
+            if (topicList == null || topicList.Items.Count < queryCount)
             {
                 this.LikeTopicList.NoMore();
             }
 
-            return topicList.Items;
+            return topicList?.Items;
         }
 
         private async Task<IEnumerable<Topic>> LoadPostTopics(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 30;
 
-            var topicList = await this.ApiClient.GetMyCreatedTopics(this.PostTopicList.Count, 30);
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetMyCreatedTopics(this.PostTopicList.Count, queryCount));
 
-            this.IsLoading = false;
-
-            if (topicList.Items.Count < 30)
+            if (topicList == null || topicList.Items.Count < queryCount)
             {
                 this.PostTopicList.NoMore();
             }
 
-            return topicList.Items;
+            return topicList?.Items;
         }
 
         private async Task<IEnumerable<Topic>> LoadReplyTopics(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 30;
 
-            var topicList = await this.ApiClient.GetMyRepliedTopics(this.ReplyTopicList.Count, 30);
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetMyRepliedTopics(this.ReplyTopicList.Count, queryCount));
 
-            this.IsLoading = false;
-
-            if (topicList.Items.Count < 30)
+            if (topicList == null || topicList.Items.Count < queryCount)
             {
                 this.ReplyTopicList.NoMore();
             }
 
-            return topicList.Items;
+            return topicList?.Items;
         }
     }
 }

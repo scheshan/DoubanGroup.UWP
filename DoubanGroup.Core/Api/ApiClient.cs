@@ -603,11 +603,11 @@ namespace DoubanGroup.Core.Api
         /// </summary>
         /// <param name="topicID"></param>
         /// <returns></returns>
-        public async Task<object> LikeTopic(long topicID)
+        public async Task LikeTopic(long topicID)
         {
             string url = $"group/topic/{topicID}/like";
 
-            return await this.Post<object>(url, null);
+            await this.Post<object>(url, null);
         }
 
         /// <summary>
@@ -615,11 +615,11 @@ namespace DoubanGroup.Core.Api
         /// </summary>
         /// <param name="topicID"></param>
         /// <returns></returns>
-        public async Task<object> DislikeTopic(long topicID)
+        public async Task DislikeTopic(long topicID)
         {
             string url = $"group/topic/{topicID}/remove_like";
 
-            return await this.Post<object>(url, null);
+            await this.Post<object>(url, null);
         }
 
         /// <summary>

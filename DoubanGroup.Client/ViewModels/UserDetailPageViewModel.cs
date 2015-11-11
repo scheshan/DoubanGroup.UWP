@@ -41,7 +41,7 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.TopGroupList = new ObservableCollection<Group>();
             this.TopPhotoList = new ObservableCollection<Photo>();
-            
+
             this.JoinedGroupList = new Models.IncrementalLoadingList<Group>(this.LoadJoinedGroups);
             this.RecommandTopicList = new Models.IncrementalLoadingList<Topic>(this.LoadRecommandTopicList);
             this.LikeTopicList = new Models.IncrementalLoadingList<Topic>(this.LoadLikeTopicList);
@@ -49,12 +49,15 @@ namespace DoubanGroup.Client.ViewModels
 
         private async Task InitData()
         {
-            this.IsLoading = true;
+            var userDetail = await this.RunTaskAsync(this.ApiClient.GetUserDetail(this.UserID, 20));
+            var photoList = await this.RunTaskAsync(this.ApiClient.GetUserCreatedPhotos(this.UserID, 0, 20));
 
-            var userDetail = await this.ApiClient.GetUserDetail(this.UserID, 20);
-            var photoList = await this.ApiClient.GetUserCreatedPhotos(this.UserID, 0, 20);
-
-            this.IsLoading = false;
+            if (userDetail == null)
+            {
+                this.ShowToast("获取用户失败");
+                this.NavigationService.GoBack();
+                return;
+            }
 
             this.User = userDetail.User;
 
@@ -67,7 +70,7 @@ namespace DoubanGroup.Client.ViewModels
                 }
             }
 
-            foreach (var photo in photoList.Photos)
+            foreach (var photo in photoList?.Photos)
             {
                 this.TopPhotoList.Add(photo);
             }
@@ -87,50 +90,44 @@ namespace DoubanGroup.Client.ViewModels
 
         private async Task<IEnumerable<Group>> LoadJoinedGroups(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 100;
 
-            var groupList = await this.ApiClient.GetUserJoinedGroups(this.UserID, this.JoinedGroupList.Count, 100);
+            var groupList = await this.RunTaskAsync(this.ApiClient.GetUserJoinedGroups(this.UserID, this.JoinedGroupList.Count, queryCount));
 
-            if(groupList.Items.Count < 100)
+            if (groupList == null || groupList.Items.Count < queryCount)
             {
                 this.JoinedGroupList.NoMore();
             }
 
-            this.IsLoading = false;
-
-            return groupList.Items;
+            return groupList?.Items;
         }
 
         private async Task<IEnumerable<Topic>> LoadRecommandTopicList(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 100;
 
-            var topicList = await this.ApiClient.GetUserRecommandTopics(this.UserID, this.RecommandTopicList.Count, 30);
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetUserRecommandTopics(this.UserID, this.RecommandTopicList.Count, queryCount));
 
-            this.IsLoading = false;
-
-            if(topicList.Items.Count < 30)
+            if (topicList == null || topicList.Items.Count < queryCount)
             {
                 this.RecommandTopicList.NoMore();
             }
 
-            return topicList.Items;
+            return topicList?.Items;
         }
 
         private async Task<IEnumerable<Topic>> LoadLikeTopicList(uint count)
         {
-            this.IsLoading = true;
+            int queryCount = 100;
 
-            var topicList = await this.ApiClient.GetUserLikeTopics(this.UserID, this.LikeTopicList.Count, 30);
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetUserLikeTopics(this.UserID, this.LikeTopicList.Count, queryCount));            
 
-            this.IsLoading = false;
-
-            if (topicList.Items.Count < 30)
+            if (topicList == null || topicList.Items.Count < queryCount)
             {
                 this.LikeTopicList.NoMore();
             }
 
-            return topicList.Items;
+            return topicList?.Items;
         }
     }
 }

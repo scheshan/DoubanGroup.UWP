@@ -22,5 +22,7 @@
             <Button Content="登录" Style="{StaticResource DefaultButtonStyle}" Background="#3fa156" Foreground="#FFFFFF" Command="{Binding LoginCommand}"/>
             <Button Content="取消" Style="{StaticResource DefaultButtonStyle}" Margin="20 0 0 0" Command="{Binding HideCommand}"/>
         </StackPanel>
+        
+        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" Grid.RowSpan="3" IsActive="{Binding IsLoading}"/>
     </Grid>
 </ContentDialog>

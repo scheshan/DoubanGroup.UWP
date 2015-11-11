@@ -31,34 +31,26 @@ namespace DoubanGroup.Client.ViewModels
 
         private async Task<IEnumerable<Group>> LoadGroups(uint count)
         {
-            this.IsLoading = true;
+            var groupList = await this.RunTaskAsync(this.ApiClient.SearchGroup(this.Keywords, this.GroupList.Count, 50));
 
-            var groupList = await this.ApiClient.SearchGroup(this.Keywords, this.GroupList.Count, 50);
-
-            this.IsLoading = false;
-
-            if (groupList.Items.Count < 50)
+            if (groupList == null || groupList.Items.Count < 50)
             {
                 this.GroupList.NoMore();
             }
 
-            return groupList.Items;
+            return groupList?.Items;
         }
 
         private async Task<IEnumerable<Topic>> LoadTopics(uint count)
         {
-            this.IsLoading = true;
+            var topicList = await this.RunTaskAsync(this.ApiClient.SearchTopic(this.Keywords, this.TopicList.Count, 30));
 
-            var topicList = await this.ApiClient.SearchTopic(this.Keywords, this.TopicList.Count, 30);
-
-            this.IsLoading = false;
-
-            if (topicList.Items.Count < 30)
+            if (topicList == null || topicList.Items.Count < 30)
             {
                 this.TopicList.NoMore();
             }
 
-            return topicList.Items;
+            return topicList?.Items;
         }
 
         public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)

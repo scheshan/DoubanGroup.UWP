@@ -43,8 +43,7 @@
                 </DataTemplate>
             </Pivot.ItemTemplate>
         </Pivot>
+        
+        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}" Grid.RowSpan="2"/>
     </Grid>
-
-    
-
 </mt:MtPage>
