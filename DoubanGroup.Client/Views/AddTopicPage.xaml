@@ -43,6 +43,6 @@
             </Grid>
         </ScrollViewer>
 
-        
+        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" Grid.RowSpan="2" IsActive="{Binding IsLoading}"/>
     </Grid>
 </mt:MtPage>

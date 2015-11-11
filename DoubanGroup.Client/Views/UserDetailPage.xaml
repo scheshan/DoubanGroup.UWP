@@ -27,7 +27,7 @@
             
         </controls:HeaderBar>
 
-        <Pivot Name="container" CanDrag="False" Grid.Row="1" Style="{StaticResource TabStyle}">
+        <Pivot Name="container" Grid.Row="1" Style="{StaticResource TabStyle}">
             <PivotItem Header="用户信息">
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <StackPanel Padding="20 10">
@@ -70,7 +70,13 @@
                             <GridView.Header>
                                 <Grid Margin="0 0 0 10">
                                     <TextBlock Text="加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
-                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看所有</Button>
+                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="查看所有">
+                                        <i:Interaction.Behaviors>
+                                            <ic:EventTriggerBehavior EventName="Click">
+                                                <ic:ChangePropertyAction TargetObject="{Binding ElementName=container}" PropertyName="SelectedIndex" Value="1"/>
+                                            </ic:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </Button>
                                 </Grid>
                             </GridView.Header>
                         </GridView>
@@ -79,7 +85,13 @@
                             <controls:HorizontalScrollList.Header>
                                 <Grid Margin="0 0 0 10">
                                     <TextBlock Text="最近上传的照片" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
-                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center">查看相册</Button>
+                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="查看相册">
+                                        <i:Interaction.Behaviors>
+                                            <ic:EventTriggerBehavior EventName="Click">
+                                                <ic:ChangePropertyAction TargetObject="{Binding ElementName=container}" PropertyName="SelectedIndex" Value="4"/>
+                                            </ic:EventTriggerBehavior>
+                                        </i:Interaction.Behaviors>
+                                    </Button>
                                 </Grid>
                             </controls:HorizontalScrollList.Header>
                             <controls:HorizontalScrollList.ItemTemplate>
@@ -125,9 +137,6 @@
             <PivotItem Header="相册"></PivotItem>
         </Pivot>
 
-        <ProgressBar Style="{StaticResource LoadingProgressBarStyle}" Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" VerticalAlignment="Top"/>
-
-    </Grid>
-
-    
+        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}" Grid.RowSpan="2"/>
+    </Grid>    
 </mt:MtPage>
