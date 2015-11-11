@@ -9,8 +9,7 @@
     "NotificationsExtensions.Win10": "10586.0.0",
     "Prism.Core": "6.1.0",
     "Prism.Unity": "6.1.1",
-    "Prism.Windows": "6.0.1",
-    "PullToRefresh.UWP": "0.3.2"
+    "Prism.Windows": "6.0.1"
   },
   "frameworks": {
     "uap10.0": {}

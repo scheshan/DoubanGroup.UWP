@@ -98,7 +98,7 @@
                                 <DataTemplate>
                                     <Image Width="120" Height="120" Source="{Binding Cover}">
                                         <i:Interaction.Behaviors>
-                                            <ic:EventTriggerBehavior EventName="PointerPressed">
+                                            <ic:EventTriggerBehavior EventName="Tapped">
                                                 <ic:InvokeCommandAction Command="{Binding DataContext.ViewImageCommand, ElementName=page}" CommandParameter="{Binding}"/>
                                             </ic:EventTriggerBehavior>
                                         </i:Interaction.Behaviors>

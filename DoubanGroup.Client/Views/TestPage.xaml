@@ -10,30 +10,30 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
-        <controls:HorizontalScrollList>
-            <controls:HorizontalScrollList.Items>
+        <ListView>
+            <ListView.Items>
                 <x:String>1</x:String>
-                <x:String>2</x:String>
-                <x:String>3</x:String>
-                <x:String>4</x:String>
-                <x:String>5</x:String>
-                <x:String>6</x:String>
-                <x:String>7</x:String>
-                <x:String>8</x:String>
-                <x:String>9</x:String>
-                <x:String>10</x:String>
-                <x:String>11</x:String>
-                <x:String>12</x:String>
-                <x:String>13</x:String>
-            </controls:HorizontalScrollList.Items>
-            <controls:HorizontalScrollList.ItemTemplate>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+                <x:String>1</x:String>
+            </ListView.Items>
+            <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border Background="Red" Width="200" Height="100">
-                        <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center" Text="{Binding}"/>
-                    </Border>
+                    <Border Width="200" Height="200" Background="Red"/>
                 </DataTemplate>
-            </controls:HorizontalScrollList.ItemTemplate>
-        </controls:HorizontalScrollList>
+            </ListView.ItemTemplate>
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+        </ListView>
     </Grid>
 </mt:MtPage>

@@ -110,8 +110,8 @@ namespace DoubanGroup.Client.Behaviors
                     var photo = this.Topic.Photos[photoIndex - 1];
 
                     var img = new Image();
-
-                    img.PointerPressed += OnImagePressed;
+                    
+                    img.Tapped += OnImageTapped;
 
                     BitmapImage bi = new BitmapImage();
                     bi.UriSource = new Uri(photo.Alt);
@@ -128,47 +128,7 @@ namespace DoubanGroup.Client.Behaviors
             return para;
         }
 
-        private Inline CreateContentInline(string content)
-        {
-            Regex regex = new Regex(@"<图片(\d{1,})>*");
-
-            var matches = regex.Matches(content);
-
-            if (matches.Count == 0)
-            {
-                return new Run() { Text = content };
-            }
-
-            InlineUIContainer container = new InlineUIContainer();
-            var root = new StackPanel();
-            container.Child = root;
-
-            foreach (Match match in matches)
-            {
-                int photoIndex = Convert.ToInt32(match.Groups[1].Value);
-
-                if (this.Topic.Photos.Count >= photoIndex)
-                {
-                    var photo = this.Topic.Photos[photoIndex - 1];
-
-                    var img = new Image();
-
-                    BitmapImage bi = new BitmapImage();
-                    bi.UriSource = new Uri(photo.Alt);
-                    img.Source = bi;
-                    img.Stretch = Windows.UI.Xaml.Media.Stretch.UniformToFill;
-                    img.MaxWidth = photo.Size.Width;
-                    img.MaxHeight = photo.Size.Height;
-                    img.Margin = new Thickness(0, 0, 0, 10);
-
-                    root.Children.Add(img);
-                }
-            }
-
-            return container;
-        }
-
-        private void OnImagePressed(object sender, RoutedEventArgs e)
+        private void OnImageTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
             var imageList = this.Topic.Photos.Select(t => new Models.ImageItem
             {
