@@ -271,5 +271,25 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.NavigationService.Navigate("AddTopic", this.GroupID);
         }
+
+        private DelegateCommand _refreshCommand;
+
+        public DelegateCommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new DelegateCommand(Refresh);
+                }
+                return _refreshCommand;
+            }
+        }
+
+        private void Refresh()
+        {
+            this.TopicList.Clear();
+            this.TopicList.HasMore();
+        }
     }
 }
