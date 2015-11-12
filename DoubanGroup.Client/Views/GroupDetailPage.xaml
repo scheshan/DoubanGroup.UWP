@@ -16,22 +16,6 @@
     Name="page"
     d:DataContext="{d:DesignInstance Type=designData:GroupDetailData, IsDesignTimeCreatable=True}">
 
-    <mt:MtPage.Resources>
-        <DataTemplate x:Key="UserDataTemplate">
-            <Border Padding="10 0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Image Source="{Binding Avatar}" Width="50" Height="50"/>
-                    <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10 0 0 0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                </Grid>
-            </Border>
-        </DataTemplate>
-    </mt:MtPage.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -40,7 +24,7 @@
 
         <controls:HeaderBar Title="查看小组">
             <controls:HeaderBar.CommandBar>
-                <CommandBar Height="75" Visibility="{Binding Group, Converter={StaticResource NotNullToVisibilityConverter}}" IsEnabled="{Binding IsLoading}">
+                <CommandBar Height="75" Visibility="{Binding Group, Converter={StaticResource NotNullToVisibilityConverter}}" IsEnabled="{Binding IsLoading, Converter={StaticResource InverseConverter}}">
                     <AppBarButton Command="{Binding JoinGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}" Icon="AddFriend" Label="加入小组"></AppBarButton>
                     <AppBarButton Command="{Binding QuitGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}" Icon="BlockContact" Label="退出小组"></AppBarButton>
                     <AppBarButton Command="{Binding PinCommand}" Icon="Pin" Label="固定到开始菜单"/>
@@ -115,22 +99,17 @@
             </PivotItem>
             <PivotItem Header="成员">
                 <Grid>
-                    <controls:RefreshGridView Padding="20 10 10 10" Grid.Row="1" ItemsSource="{Binding GroupUsersViewModel.ItemList}"                       
-                                              ItemTemplate="{StaticResource UserDataTemplate}"
+                    <controls:RefreshGridView ItemsSource="{Binding GroupUsersViewModel.ItemList}"                       
+                                              ItemTemplate="{StaticResource DefaultUserItemTemplate}"
                                               RefreshButtonVisibility="{Binding GroupUsersViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"                                            
                                               RefreshCommand="{Binding GroupUsersViewModel.RefreshCommand}">
                         <i:Interaction.Behaviors>
                             <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
                             <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
                         </i:Interaction.Behaviors>
-                        <GridView.ItemsPanel>
-                            <ItemsPanelTemplate>
-                                <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
-                            </ItemsPanelTemplate>
-                        </GridView.ItemsPanel>
                         <GridView.Header>
                             <StackPanel>
-                                <GridView ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" SelectionMode="None" IsItemClickEnabled="True">
+                                <GridView Style="{StaticResource DefaultGridViewStyle}" Padding="0">
                                     <GridView.Header>
                                         <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="创建者" Margin="0 0 0 10"></TextBlock>
                                     </GridView.Header>
@@ -143,12 +122,12 @@
                                             <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
                                         </ItemsPanelTemplate>
                                     </GridView.ItemsPanel>
-                                    <GridViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource UserDataTemplate}"/>
+                                    <GridViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource DefaultUserItemTemplate}"/>
                                 </GridView>
 
 
-                                <GridView ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" Padding="0" ItemsSource="{Binding Group.AdminList}"                          
-                                      ItemTemplate="{StaticResource UserDataTemplate}" SelectionMode="None" IsItemClickEnabled="True">
+                                <GridView Style="{StaticResource DefaultGridViewStyle}" Padding="0" ItemsSource="{Binding Group.AdminList}"
+                                          ItemTemplate="{StaticResource DefaultUserItemTemplate}">
                                     <GridView.Header>
                                         <TextBlock Text="{Binding Group.AdminRoleName}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"/>
                                     </GridView.Header>

@@ -35,7 +35,7 @@
                 </GridView>
             </PivotItem>
             <PivotItem Header="小组">                
-                <GridView ItemsSource="{Binding JoinedGroupList}" Style="{StaticResource GroupGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}" Padding="20 10">
+                <GridView ItemsSource="{Binding JoinedGroupList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
                     <i:Interaction.Behaviors>
                         <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>

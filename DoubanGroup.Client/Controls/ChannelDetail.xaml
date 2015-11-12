@@ -25,13 +25,11 @@
 
             <GridView.Header>
                 <StackPanel>
-                    <GridView Height="265" ItemsSource="{Binding GroupList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource DefaultGroupItemTemplate}"
-                              ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Margin="-20 -10">
+                    <GridView Height="305" ItemsSource="{Binding GroupList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource DefaultGroupItemTemplate}"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Margin="-20 -10 -10 -10">
                         <GridView.Header>
                             <Grid Margin="0 0 0 10">
                                 <TextBlock Text="值得加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>
-
-                                <Button Margin="0 0 5 0" HorizontalAlignment="Right" VerticalAlignment="Center" Style="{StaticResource HyperlinkButtonStyle}" Content="查看更多"></Button>
                             </Grid>
                         </GridView.Header>
 

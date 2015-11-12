@@ -168,7 +168,7 @@
     <Style x:Key="NonPressedListViewItemStyle" TargetType="ListViewItem">
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-        <Setter Property="Padding" Value="0 10"/>
+        <Setter Property="Padding" Value="10"/>
         <Setter Property="Margin" Value="0 0 0 10"/>
         <Setter Property="BorderBrush" Value="#cccccc"/>
         <Setter Property="BorderThickness" Value="0"/>

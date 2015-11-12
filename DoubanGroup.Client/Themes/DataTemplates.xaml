@@ -9,19 +9,19 @@
     
 
     <DataTemplate x:Key="DefaultGroupItemTemplate">
-        <Grid Height="80">
+        <Grid Height="100">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
+                <RowDefinition Height="50"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
+            <Image Source="{Binding Avatar}" Height="50" Width="50" Margin="0 0 10 0"></Image>
 
-            <TextBlock Text="{Binding Name}" MaxHeight="40" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" 
+            <TextBlock Text="{Binding Name}" MaxHeight="50" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" 
                            Style="{StaticResource ListTitleTextBlockStyle}"/>
 
             <TextBlock Text="{Binding ShortDescription, TargetNullValue=没有介绍}" TextTrimming="CharacterEllipsis" Height="40" 
@@ -37,7 +37,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Image Source="{Binding Avatar}" Height="40" Width="40" Margin="0 0 10 0"></Image>
+            <Image Source="{Binding Avatar}" Height="50" Width="50" Margin="0 0 10 0"></Image>
 
             <TextBlock Text="{Binding Name}" MaxHeight="50" TextWrapping="Wrap" Grid.Column="1" VerticalAlignment="Top" TextTrimming="CharacterEllipsis" 
                         Style="{StaticResource ListTitleTextBlockStyle}"/>
@@ -227,6 +227,18 @@
                             <Run Text="人回应"/>
                 </TextBlock>
             </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="DefaultUserItemTemplate">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Image Source="{Binding Avatar}" Width="50" Height="50"/>
+            <TextBlock Grid.Column="1" Text="{Binding Name}" Margin="10 0 0 0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
         </Grid>
     </DataTemplate>
 </ResourceDictionary>
