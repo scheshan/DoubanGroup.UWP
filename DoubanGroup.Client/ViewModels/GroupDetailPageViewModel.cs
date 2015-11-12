@@ -42,14 +42,13 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        public IncrementalLoadingList<Topic> TopicList { get; private set; }
+        public GroupTopicsViewModel GroupTopicsViewModel { get; private set; }
 
-        public IncrementalLoadingList<User> UserList { get; private set; }
+        public GroupUsersViewModel GroupUsersViewModel { get; private set; }
 
         public GroupDetailPageViewModel()
         {
-            this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
-            this.UserList = new IncrementalLoadingList<User>(this.LoadUsers);
+
         }
 
         public override async void OnNavigatedTo(NavigatedToEventArgs e)
@@ -61,35 +60,9 @@ namespace DoubanGroup.Client.ViewModels
             if (e.NavigationMode == NavigationMode.New)
             {
                 this.LoadGroup();
+                this.GroupTopicsViewModel = new GroupTopicsViewModel(this.GroupID);
+                this.GroupUsersViewModel = new GroupUsersViewModel(this.GroupID);
             }
-        }
-
-        private async Task<IEnumerable<Topic>> LoadTopics(uint count)
-        {
-            int queryCount = 30;
-
-            var topicList = await this.RunTaskAsync(this.ApiClient.GetGroupTopics(this.GroupID, this.TopicList.Count, queryCount));
-
-            if (topicList == null || topicList.Items.Count < queryCount)
-            {
-                this.TopicList.NoMore();
-            }
-
-            return topicList.Items;
-        }
-
-        private async Task<IEnumerable<User>> LoadUsers(uint count)
-        {
-            int queryCount = 100;
-
-            var userList = await this.RunTaskAsync(this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, queryCount));
-
-            if (userList == null || userList.Items.Count < queryCount)
-            {
-                this.UserList.NoMore();
-            }
-
-            return userList.Items;
         }
 
         private async Task LoadGroup()
@@ -271,6 +244,39 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.NavigationService.Navigate("AddTopic", this.GroupID);
         }
+    }
+
+    public class GroupTopicsViewModel : ViewModelBase
+    {
+        public IncrementalLoadingList<Topic> TopicList { get; private set; }
+
+        private long _groupID;
+
+        public long GroupID
+        {
+            get { return _groupID; }
+            set { this.SetProperty(ref _groupID, value); }
+        }
+
+        public GroupTopicsViewModel(long groupID)
+        {
+            this.GroupID = groupID;
+            this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
+        }
+
+        public async Task<IEnumerable<Topic>> LoadTopics(uint count)
+        {
+            int queryCount = 30;
+
+            var topicList = await this.RunTaskAsync(this.ApiClient.GetGroupTopics(this.GroupID, this.TopicList.Count, queryCount));
+
+            if (topicList == null || topicList.Items.Count < queryCount)
+            {
+                this.TopicList.NoMore();
+            }
+
+            return topicList.Items;
+        }
 
         private DelegateCommand _refreshCommand;
 
@@ -290,6 +296,59 @@ namespace DoubanGroup.Client.ViewModels
         {
             this.TopicList.Clear();
             this.TopicList.HasMore();
+        }
+    }
+
+    public class GroupUsersViewModel : ViewModelBase
+    {
+        public IncrementalLoadingList<User> UserList { get; private set; }
+
+        private long _groupID;
+
+        public long GroupID
+        {
+            get { return _groupID; }
+            set { this.SetProperty(ref _groupID, value); }
+        }
+
+        public GroupUsersViewModel(long groupID)
+        {
+            this.GroupID = groupID;
+            this.UserList = new IncrementalLoadingList<User>(this.LoadUsers);
+        }
+
+        private async Task<IEnumerable<User>> LoadUsers(uint count)
+        {
+            int queryCount = 100;
+
+            var userList = await this.RunTaskAsync(this.ApiClient.GetGroupMembers(this.GroupID, this.UserList.Count, queryCount));
+
+            if (userList == null || userList.Items.Count < queryCount)
+            {
+                this.UserList.NoMore();
+            }
+
+            return userList.Items;
+        }
+
+        private DelegateCommand _refreshCommand;
+
+        public DelegateCommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new DelegateCommand(Refresh);
+                }
+                return _refreshCommand;
+            }
+        }
+
+        private void Refresh()
+        {
+            this.UserList.Clear();
+            this.UserList.HasMore();
         }
     }
 }

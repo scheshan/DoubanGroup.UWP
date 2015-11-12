@@ -40,12 +40,10 @@
 
         <controls:HeaderBar Title="查看小组">
             <controls:HeaderBar.CommandBar>
-                <CommandBar Height="75" Visibility="{Binding Group, Converter={StaticResource NotNullToVisibilityConverter}}">
+                <CommandBar Height="75" Visibility="{Binding Group, Converter={StaticResource NotNullToVisibilityConverter}}" IsEnabled="{Binding IsLoading}">
                     <AppBarButton Command="{Binding JoinGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource InverseToVisibilityConverter}}" Icon="AddFriend" Label="加入小组"></AppBarButton>
                     <AppBarButton Command="{Binding QuitGroupCommand}" Visibility="{Binding IsGroupMember, Converter={StaticResource BooleanToVisibilityConverter}}" Icon="BlockContact" Label="退出小组"></AppBarButton>
                     <AppBarButton Command="{Binding PinCommand}" Icon="Pin" Label="固定到开始菜单"/>
-                    <AppBarSeparator/>
-                    <AppBarButton Command="{Binding RefreshCommand}" Icon="Refresh" Label="刷新主题"></AppBarButton>
                     <AppBarButton Command="{Binding AddTopicCommand}" Icon="Edit" Label="发表主题"></AppBarButton>
                 </CommandBar>
             </controls:HeaderBar.CommandBar>
@@ -53,62 +51,74 @@
 
         <Pivot Style="{StaticResource TabStyle}" Grid.Row="1" SelectedIndex="1">
             <PivotItem Header="详情">
-                <ScrollViewer Background="#FFFFFF" VerticalScrollBarVisibility="Auto">
-                    <StackPanel>
-                        <Grid Padding="40 20">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            
-                            <Image Width="110" Height="110" Source="{Binding Group.LargeAvatar}" VerticalAlignment="Top" Margin="0 0 20 0"/>
-
-                            <Grid Grid.Column="1">
+                <Grid>
+                    <ScrollViewer Background="#FFFFFF" VerticalScrollBarVisibility="Auto">
+                        <StackPanel>
+                            <Grid Padding="40 20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                
-                                <TextBlock Text="{Binding Group.Name}" Style="{StaticResource TitleTextBlockStyle}"/>
 
-                                <StackPanel Grid.Row="1" Margin="0 5 0 0" Orientation="Horizontal">
-                                    <Button Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Group.Owner}" Padding="0" Content="{Binding Group.Owner.Name}" Style="{StaticResource HyperlinkButtonStyle}"/>
-                                    <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Margin="5 0" Text="于" VerticalAlignment="Center"/>
-                                    <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Group.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center"/>
-                                    <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Margin="5 0" Text="创建" VerticalAlignment="Center"/>
-                                </StackPanel>
+                                <Image Width="110" Height="110" Source="{Binding Group.LargeAvatar}" VerticalAlignment="Top" Margin="0 0 20 0"/>
 
-                                <TextBlock Grid.Row="2" Margin="0 5 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
+                                <Grid Grid.Column="1">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock Text="{Binding Group.Name}" Style="{StaticResource TitleTextBlockStyle}"/>
+
+                                    <StackPanel Grid.Row="1" Margin="0 5 0 0" Orientation="Horizontal">
+                                        <Button Command="{StaticResource ViewUserCommand}" CommandParameter="{Binding Group.Owner}" Padding="0" Content="{Binding Group.Owner.Name}" Style="{StaticResource HyperlinkButtonStyle}"/>
+                                        <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Margin="5 0" Text="于" VerticalAlignment="Center"/>
+                                        <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Text="{Binding Group.Created, Converter={StaticResource DateTimeToStringConverter}}" VerticalAlignment="Center"/>
+                                        <TextBlock Style="{StaticResource DescriptionTextBlockStyle}" Margin="5 0" Text="创建" VerticalAlignment="Center"/>
+                                    </StackPanel>
+
+                                    <TextBlock Grid.Row="2" Margin="0 5 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
                                     <Run Text="{Binding Group.MemberCount}"/>
                                     <Run Text="位成员"/>
-                                </TextBlock>
+                                    </TextBlock>
+                                </Grid>
+
+                                <TextBlock Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Group.Description}" Margin="0 10 0 0" Style="{StaticResource ContentTextBlockStyle}"/>
                             </Grid>
-                            
-                            <TextBlock Grid.ColumnSpan="2" Grid.Row="1" Text="{Binding Group.Description}" Margin="0 10 0 0" Style="{StaticResource ContentTextBlockStyle}"/>
-                        </Grid>
-                    </StackPanel>
-                </ScrollViewer>                
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
+                </Grid>
             </PivotItem>
             <PivotItem Header="主题">
-                <GridView Name="gvList" ItemsSource="{Binding TopicList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}">
-                    <i:Interaction.Behaviors>
-                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
-                        <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
-                    </i:Interaction.Behaviors>
-                </GridView>
+                <Grid>
+                    <controls:RefreshGridView ItemsSource="{Binding GroupTopicsViewModel.TopicList}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}"
+                                          RefreshButtonVisibility="{Binding GroupTopicsViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"
+                                          RefreshCommand="{Binding GroupTopicsViewModel.RefreshCommand}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                            <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
+                        </i:Interaction.Behaviors>
+                    </controls:RefreshGridView>
+
+                    <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding GroupTopicsViewModel.IsLoading}"/>
+                </Grid>
             </PivotItem>
             <PivotItem Header="成员">
                 <Grid>
-                    <GridView Padding="20 10 10 10" Grid.Row="1" ItemsSource="{Binding UserList}" SelectionMode="None" IsItemClickEnabled="True"
-                          ItemContainerStyle="{StaticResource DefaultGridViewItemStyle}" ItemTemplate="{StaticResource UserDataTemplate}">
+                    <controls:RefreshGridView Padding="20 10 10 10" Grid.Row="1" ItemsSource="{Binding GroupUsersViewModel.UserList}"                       
+                                              ItemTemplate="{StaticResource UserDataTemplate}"
+                                              RefreshButtonVisibility="{Binding GroupUsersViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"                                            
+                                              RefreshCommand="{Binding GroupUsersViewModel.RefreshCommand}">
                         <i:Interaction.Behaviors>
                             <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
                             <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
@@ -157,11 +167,11 @@
                                 <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding Group.MemberRoleName}" Margin="0 0 0 10"></TextBlock>
                             </StackPanel>
                         </GridView.Header>
-                    </GridView>
+                    </controls:RefreshGridView>
+                    
+                    <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding GroupUsersViewModel.IsLoading}"/>
                 </Grid>
             </PivotItem>
         </Pivot>
-        
-        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}" Grid.RowSpan="2"/>
     </Grid>
 </mt:MtPage>
