@@ -164,6 +164,7 @@
     <Compile Include="ViewModels\HomePageViewModel.cs" />
     <Compile Include="ViewModels\LoginPageViewModel.cs" />
     <Compile Include="ViewModels\MyPageViewModel.cs" />
+    <Compile Include="ViewModels\RefreshableViewModel.cs" />
     <Compile Include="ViewModels\SearchPageViewModel.cs" />
     <Compile Include="ViewModels\SelectCommentPageViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />

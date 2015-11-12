@@ -32,20 +32,20 @@ namespace DoubanGroup.Client.ViewModels
 
         public ObservableCollection<Photo> TopPhotoList { get; private set; }
 
-        public Models.IncrementalLoadingList<Group> JoinedGroupList { get; private set; }
+        public RefreshableViewModel<Group> JoinedGroupViewModel { get; private set; }
 
-        public Models.IncrementalLoadingList<Topic> RecommandTopicList { get; private set; }
+        public RefreshableViewModel<Topic> RecommandTopicViewModel { get; private set; }
 
-        public Models.IncrementalLoadingList<Topic> LikeTopicList { get; private set; }
+        public RefreshableViewModel<Topic> LikeTopicViewModel { get; private set; }
 
         public UserDetailPageViewModel()
         {
             this.TopGroupList = new ObservableCollection<Group>();
             this.TopPhotoList = new ObservableCollection<Photo>();
 
-            this.JoinedGroupList = new Models.IncrementalLoadingList<Group>(this.LoadJoinedGroups);
-            this.RecommandTopicList = new Models.IncrementalLoadingList<Topic>(this.LoadRecommandTopicList);
-            this.LikeTopicList = new Models.IncrementalLoadingList<Topic>(this.LoadLikeTopicList);
+            this.JoinedGroupViewModel = new RefreshableViewModel<Group>(this.LoadJoinedGroups, 100);
+            this.RecommandTopicViewModel = new RefreshableViewModel<Topic>(this.LoadRecommandTopics, 30);
+            this.LikeTopicViewModel = new RefreshableViewModel<Topic>(this.LoadLikeTopics, 30);
         }
 
         private async Task InitData()
@@ -67,7 +67,7 @@ namespace DoubanGroup.Client.ViewModels
                 foreach (var group in userDetail.JoinedGroups.Items)
                 {
                     this.TopGroupList.Add(group);
-                    this.JoinedGroupList.Add(group);
+                    this.JoinedGroupViewModel.ItemList.Add(group);
                 }
             }
 
@@ -89,46 +89,22 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        private async Task<IEnumerable<Group>> LoadJoinedGroups(uint count)
+        private async Task<IEnumerable<Group>> LoadJoinedGroups(int start, int count)
         {
-            int queryCount = 100;
-
-            var groupList = await this.RunTaskAsync(this.ApiClient.GetUserJoinedGroups(this.UserID, this.JoinedGroupList.Count, queryCount));
-
-            if (groupList == null || groupList.Items.Count < queryCount)
-            {
-                this.JoinedGroupList.NoMore();
-            }
-
-            return groupList?.Items;
+            var groupList = await this.ApiClient.GetUserJoinedGroups(this.UserID, start, count);
+            return groupList.Items;
         }
 
-        private async Task<IEnumerable<Topic>> LoadRecommandTopicList(uint count)
+        private async Task<IEnumerable<Topic>> LoadRecommandTopics(int start, int count)
         {
-            int queryCount = 100;
-
-            var topicList = await this.RunTaskAsync(this.ApiClient.GetUserRecommandTopics(this.UserID, this.RecommandTopicList.Count, queryCount));
-
-            if (topicList == null || topicList.Items.Count < queryCount)
-            {
-                this.RecommandTopicList.NoMore();
-            }
-
-            return topicList?.Items;
+            var topicList = await this.ApiClient.GetUserRecommandTopics(this.UserID, start, count);
+            return topicList.Items;
         }
 
-        private async Task<IEnumerable<Topic>> LoadLikeTopicList(uint count)
+        private async Task<IEnumerable<Topic>> LoadLikeTopics(int start, int count)
         {
-            int queryCount = 100;
-
-            var topicList = await this.RunTaskAsync(this.ApiClient.GetUserLikeTopics(this.UserID, this.LikeTopicList.Count, queryCount));            
-
-            if (topicList == null || topicList.Items.Count < queryCount)
-            {
-                this.LikeTopicList.NoMore();
-            }
-
-            return topicList?.Items;
+            var topicList = await this.ApiClient.GetUserLikeTopics(this.UserID, start, count);
+            return topicList.Items;
         }
 
         private DelegateCommand _viewImageCommand;

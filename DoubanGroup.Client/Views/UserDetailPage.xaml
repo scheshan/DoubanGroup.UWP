@@ -24,99 +24,107 @@
         </Grid.RowDefinitions>
 
         <controls:HeaderBar Title="用户详情">
-            
+
         </controls:HeaderBar>
 
         <Pivot Name="container" Grid.Row="1" Style="{StaticResource TabStyle}">
             <PivotItem Header="用户信息">
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                    <StackPanel Padding="20 10">
-                        <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
+                <Grid>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                        <StackPanel Padding="20 10">
+                            <Grid Background="#FFFFFF" Height="Auto" Padding="40 20" Margin="-20 -10 -20 10">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
 
-                            <Image Source="{Binding User.LargeAvatar}" Width="130" Height="130" Margin="0 0 20 0"/>
+                                <Image Source="{Binding User.LargeAvatar}" Width="130" Height="130" Margin="0 0 20 0"/>
 
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Grid.Column="1" Text="{Binding User.Name}" Style="{StaticResource TitleTextBlockStyle}"/>
+                                <StackPanel Grid.Column="1">
+                                    <TextBlock Grid.Column="1" Text="{Binding User.Name}" Style="{StaticResource TitleTextBlockStyle}"/>
 
-                                <TextBlock Margin="0 10 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
+                                    <TextBlock Margin="0 10 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
                                     <Run Text="常居:"/>
                                     <Run Text="{Binding User.LocationName}"/>
-                                </TextBlock>
+                                    </TextBlock>
 
-                                <TextBlock Margin="0 10 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
+                                    <TextBlock Margin="0 10 0 0" Style="{StaticResource DescriptionTextBlockStyle}">
                                     <Run Text="注册时间:"/>
                                     <Run Text="{Binding User.Created, Converter={StaticResource DateTimeToStringConverter}}"/>
-                                </TextBlock>
-                            </StackPanel>
+                                    </TextBlock>
+                                </StackPanel>
 
-                            <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="0 20 0 0" Text="{Binding User.Description}" Style="{StaticResource DescriptionTextBlockStyle}"></TextBlock>
-                        </Grid>
-                        
-                        <GridView MaxHeight="110" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding TopGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
-                            <i:Interaction.Behaviors>
-                                <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
-                                <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
-                            </i:Interaction.Behaviors>
+                                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="0 20 0 0" Text="{Binding User.Description}" Style="{StaticResource DescriptionTextBlockStyle}"></TextBlock>
+                            </Grid>
 
-                            <GridView.Header>
-                                <Grid Margin="0 0 0 10">
-                                    <TextBlock Text="加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
-                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="查看所有">
-                                        <i:Interaction.Behaviors>
-                                            <ic:EventTriggerBehavior EventName="Click">
-                                                <ic:ChangePropertyAction TargetObject="{Binding ElementName=container}" PropertyName="SelectedIndex" Value="1"/>
-                                            </ic:EventTriggerBehavior>
-                                        </i:Interaction.Behaviors>
-                                    </Button>
-                                </Grid>
-                            </GridView.Header>
-                        </GridView>
+                            <GridView MaxHeight="110" Margin="0 10 0 0" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding TopGroupList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
+                                <i:Interaction.Behaviors>
+                                    <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                                    <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                                </i:Interaction.Behaviors>
 
-                        <controls:HorizontalScrollList Margin="0 10 0 0" ItemsSource="{Binding TopPhotoList}" ItemClickCommand="{Binding ViewImageCommand}">
-                            <controls:HorizontalScrollList.Header>
-                                <Grid Margin="0 0 0 10">
-                                    <TextBlock Text="最近上传的照片" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
-                                    <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="查看相册">
-                                        <i:Interaction.Behaviors>
-                                            <ic:EventTriggerBehavior EventName="Click">
-                                                <ic:ChangePropertyAction TargetObject="{Binding ElementName=container}" PropertyName="SelectedIndex" Value="4"/>
-                                            </ic:EventTriggerBehavior>
-                                        </i:Interaction.Behaviors>
-                                    </Button>
-                                </Grid>
-                            </controls:HorizontalScrollList.Header>
-                            <controls:HorizontalScrollList.ItemTemplate>
-                                <DataTemplate>
-                                    <Image Width="120" Height="120" Source="{Binding Cover}">
-                                        <i:Interaction.Behaviors>
-                                            <ic:EventTriggerBehavior EventName="Tapped">
-                                                <ic:InvokeCommandAction Command="{Binding DataContext.ViewImageCommand, ElementName=page}" CommandParameter="{Binding}"/>
-                                            </ic:EventTriggerBehavior>
-                                        </i:Interaction.Behaviors>
-                                    </Image>
-                                </DataTemplate>
-                            </controls:HorizontalScrollList.ItemTemplate>
-                        </controls:HorizontalScrollList>
-                    </StackPanel>
-                </ScrollViewer>
+                                <GridView.Header>
+                                    <Grid Margin="0 0 0 10">
+                                        <TextBlock Text="加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
+                                        <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="查看所有">
+                                            <i:Interaction.Behaviors>
+                                                <ic:EventTriggerBehavior EventName="Click">
+                                                    <ic:ChangePropertyAction TargetObject="{Binding ElementName=container}" PropertyName="SelectedIndex" Value="1"/>
+                                                </ic:EventTriggerBehavior>
+                                            </i:Interaction.Behaviors>
+                                        </Button>
+                                    </Grid>
+                                </GridView.Header>
+                            </GridView>
+
+                            <controls:HorizontalScrollList Margin="0 10 0 0" ItemsSource="{Binding TopPhotoList}" ItemClickCommand="{Binding ViewImageCommand}">
+                                <controls:HorizontalScrollList.Header>
+                                    <Grid Margin="0 0 0 10">
+                                        <TextBlock Text="最近上传的照片" Style="{StaticResource GroupHeaderTextBlockStyle}"></TextBlock>
+                                        <Button Style="{StaticResource HyperlinkButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Content="查看相册">
+                                            <i:Interaction.Behaviors>
+                                                <ic:EventTriggerBehavior EventName="Click">
+                                                    <ic:ChangePropertyAction TargetObject="{Binding ElementName=container}" PropertyName="SelectedIndex" Value="4"/>
+                                                </ic:EventTriggerBehavior>
+                                            </i:Interaction.Behaviors>
+                                        </Button>
+                                    </Grid>
+                                </controls:HorizontalScrollList.Header>
+                                <controls:HorizontalScrollList.ItemTemplate>
+                                    <DataTemplate>
+                                        <Image Width="120" Height="120" Source="{Binding Cover}">
+                                            <i:Interaction.Behaviors>
+                                                <ic:EventTriggerBehavior EventName="Tapped">
+                                                    <ic:InvokeCommandAction Command="{Binding DataContext.ViewImageCommand, ElementName=page}" CommandParameter="{Binding}"/>
+                                                </ic:EventTriggerBehavior>
+                                            </i:Interaction.Behaviors>
+                                        </Image>
+                                    </DataTemplate>
+                                </controls:HorizontalScrollList.ItemTemplate>
+                            </controls:HorizontalScrollList>
+                        </StackPanel>
+                    </ScrollViewer>
+
+                    <ProgressRing IsActive="{Binding IsLoading}" Style="{StaticResource LoadingProgressRingStyle}"/>
+                </Grid>
             </PivotItem>
             <PivotItem Header="小组">
-                <GridView ItemsSource="{Binding JoinedGroupList}" Style="{StaticResource GroupGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource MinimumGroupItemTemplate}"
-                          ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollMode="Enabled">
-                    <i:Interaction.Behaviors>
-                        <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
-                        <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
-                    </i:Interaction.Behaviors>
-                </GridView>
+                <Grid>
+                    <controls:RefreshGridView ItemsSource="{Binding JoinedGroupViewModel.ItemList}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}"
+                                              RefreshCommand="{Binding JoinedGroupViewModel.RefreshCommand}" RefreshButtonVisibility="{Binding JoinedGroupViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}">
+                        <i:Interaction.Behaviors>
+                            <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                            <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
+                        </i:Interaction.Behaviors>
+                    </controls:RefreshGridView>
+                    
+                    <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding JoinedGroupViewModel.IsLoading}"/>
+                </Grid>
             </PivotItem>
             <PivotItem Header="推荐">
                 <GridView ItemsSource="{Binding RecommandTopicList}" Style="{StaticResource DefaultGridViewStyle}" Padding="20 10" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
@@ -136,7 +144,5 @@
             </PivotItem>
             <PivotItem Header="相册"></PivotItem>
         </Pivot>
-
-        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}" Grid.RowSpan="2"/>
-    </Grid>    
+    </Grid>
 </mt:MtPage>

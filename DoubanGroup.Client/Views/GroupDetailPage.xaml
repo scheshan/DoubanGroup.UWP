@@ -101,7 +101,7 @@
             </PivotItem>
             <PivotItem Header="主题">
                 <Grid>
-                    <controls:RefreshGridView ItemsSource="{Binding GroupTopicsViewModel.TopicList}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}"
+                    <controls:RefreshGridView ItemsSource="{Binding GroupTopicsViewModel.ItemList}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}"
                                           RefreshButtonVisibility="{Binding GroupTopicsViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"
                                           RefreshCommand="{Binding GroupTopicsViewModel.RefreshCommand}">
                         <i:Interaction.Behaviors>
@@ -115,7 +115,7 @@
             </PivotItem>
             <PivotItem Header="成员">
                 <Grid>
-                    <controls:RefreshGridView Padding="20 10 10 10" Grid.Row="1" ItemsSource="{Binding GroupUsersViewModel.UserList}"                       
+                    <controls:RefreshGridView Padding="20 10 10 10" Grid.Row="1" ItemsSource="{Binding GroupUsersViewModel.ItemList}"                       
                                               ItemTemplate="{StaticResource UserDataTemplate}"
                                               RefreshButtonVisibility="{Binding GroupUsersViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"                                            
                                               RefreshCommand="{Binding GroupUsersViewModel.RefreshCommand}">

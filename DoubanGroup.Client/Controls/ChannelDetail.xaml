@@ -25,7 +25,8 @@
 
             <GridView.Header>
                 <StackPanel>
-                    <GridView Height="265" Margin="0 0 5 0" ItemsSource="{Binding GroupList}" Style="{StaticResource GroupGridViewStyle}">
+                    <GridView Height="265" ItemsSource="{Binding GroupList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource DefaultGroupItemTemplate}"
+                              ScrollViewer.VerticalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollMode="Disabled" Margin="-20 -10">
                         <GridView.Header>
                             <Grid Margin="0 0 0 10">
                                 <TextBlock Text="值得加入的小组" Style="{StaticResource GroupHeaderTextBlockStyle}" HorizontalAlignment="Left"></TextBlock>

@@ -196,7 +196,7 @@
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
         <Setter Property="VerticalAlignment" Value="Stretch"/>
-        <Setter Property="Padding" Value="0 10"/>
+        <Setter Property="Padding" Value="10"/>
         <Setter Property="Margin" Value="0 0 10 10"/>
         <Setter Property="Background" Value="#FFFFFF"/>
         <Setter Property="Template">
