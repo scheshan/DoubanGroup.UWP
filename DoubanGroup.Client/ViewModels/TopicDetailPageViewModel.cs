@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class TopicDetailPageViewModel : ViewModelBase
+    public class TopicDetailPageViewModel : NavigationViewModelBase
     {
         private Topic _topic;
 
@@ -82,12 +82,12 @@ namespace DoubanGroup.Client.ViewModels
             this.CommentList = new ObservableCollection<CommentListViewModel>();
         }
 
-        public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override void OnNavigatedTo(NavigatedToEventArgs e)
         {
             var topicID = (long)e.Parameter;
             this.TopicID = topicID;
 
-            base.OnNavigatedTo(e, viewModelState);
+            base.OnNavigatedTo(e);
 
             if (e.NavigationMode == Windows.UI.Xaml.Navigation.NavigationMode.New)
             {

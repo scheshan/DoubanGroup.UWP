@@ -10,15 +10,14 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:behavior="using:DoubanGroup.Client.Behaviors"
     xmlns:designData="using:DoubanGroup.Client.DesignData"
+    xmlns:controls="using:DoubanGroup.Client.Controls"
     d:DesignHeight="600"
     d:DesignWidth="800"
     d:DataContext="{d:DesignInstance Type=designData:ChannelDetailData, IsDesignTimeCreatable=True}">
-    <UserControl.Resources>
-
-    </UserControl.Resources>
-
     <Grid>
-        <GridView Padding="20 10 10 10" Style="{StaticResource DefaultGridViewStyle}" ItemsSource="{Binding TopicList}" ItemTemplate="{StaticResource ChannelTopicItemTemplate}">
+        <controls:RefreshGridView Padding="20 10 10 10" ItemsSource="{Binding TopicList}" ItemTemplate="{StaticResource ChannelTopicItemTemplate}" 
+                                  RefreshButtonVisibility="{Binding IsLoading, Converter={StaticResource InverseToVisibilityConverter}}" 
+                                  RefreshCommand="{Binding RefreshCommand}">
             <i:Interaction.Behaviors>
                 <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                 <behavior:ItemClickBehavior Command="{Binding ViewTopicCommand}"/>
@@ -46,7 +45,7 @@
                     </Grid>
                 </StackPanel>
             </GridView.Header>
-        </GridView>
+        </controls:RefreshGridView>
 
         <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding IsLoading}"/>
     </Grid>

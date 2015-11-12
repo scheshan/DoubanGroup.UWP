@@ -9,10 +9,11 @@ using DoubanGroup.Core.Api;
 using Windows.UI.Popups;
 using Prism.Events;
 using Windows.UI.Xaml;
+using Prism.Mvvm;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public abstract class ViewModelBase : Prism.Windows.Mvvm.ViewModelBase
+    public abstract class ViewModelBase : BindableBase
     {
         #region 属性
 
@@ -257,5 +258,18 @@ namespace DoubanGroup.Client.ViewModels
         }
 
         #endregion
+    }
+
+    public abstract class NavigationViewModelBase : ViewModelBase
+    {
+        public virtual void OnNavigatingFrom(NavigatingFromEventArgs e)
+        {
+
+        }
+
+        public virtual void OnNavigatedTo(NavigatedToEventArgs e)
+        {
+
+        }
     }
 }

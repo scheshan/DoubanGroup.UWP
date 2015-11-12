@@ -12,7 +12,7 @@ using Prism.Windows.Navigation;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class AddTopicPageViewModel : ViewModelBase
+    public class AddTopicPageViewModel : NavigationViewModelBase
     {
         private string _title;
 
@@ -70,9 +70,9 @@ namespace DoubanGroup.Client.ViewModels
 
         }
 
-        public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override void OnNavigatedTo(NavigatedToEventArgs e)
         {
-            base.OnNavigatedTo(e, viewModelState);
+            base.OnNavigatedTo(e);
 
             this.GroupID = Convert.ToInt64(e.Parameter);
         }

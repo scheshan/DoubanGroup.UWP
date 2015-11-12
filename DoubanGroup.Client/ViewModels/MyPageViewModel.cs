@@ -10,7 +10,7 @@ using Prism.Windows.Navigation;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class MyPageViewModel : ViewModelBase
+    public class MyPageViewModel : NavigationViewModelBase
     {
         public ObservableCollection<Group> JoinedGroupList
         {
@@ -40,9 +40,9 @@ namespace DoubanGroup.Client.ViewModels
             this.ReplyTopicList = new IncrementalLoadingList<Topic>(this.LoadReplyTopics);
         }
 
-        public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override void OnNavigatedTo(NavigatedToEventArgs e)
         {
-            base.OnNavigatedTo(e, viewModelState);
+            base.OnNavigatedTo(e);
 
             this.JoinedGroupList = this.CurrentUser.JoinedGroupList;
             this.ManagedGroupList = this.CurrentUser.ManagedGroupList;

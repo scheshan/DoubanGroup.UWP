@@ -24,11 +24,7 @@
         </Grid.RowDefinitions>
 
         <controls:HeaderBar Title="推荐内容" EnableSearch="True">
-            <controls:HeaderBar.CommandBar>
-                <CommandBar>
-                    <AppBarButton Command="{Binding RefreshCommand}" Label="刷新" Icon="Refresh"/>
-                </CommandBar>
-            </controls:HeaderBar.CommandBar>
+            
         </controls:HeaderBar>
 
         <Pivot Name="container" ItemsSource="{Binding ChannelList}" SelectedItem="{Binding CurrentChannel, Mode=TwoWay}" Grid.Row="1" Style="{StaticResource TabStyle}">

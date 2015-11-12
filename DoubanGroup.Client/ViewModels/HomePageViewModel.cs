@@ -52,24 +52,5 @@ namespace DoubanGroup.Client.ViewModels
                 this.ChannelList.Add(vm);
             }
         }
-
-        private DelegateCommand _refreshCommand;
-
-        public DelegateCommand RefreshCommand
-        {
-            get
-            {
-                if (_refreshCommand == null)
-                {
-                    _refreshCommand = new DelegateCommand(this.Refresh);
-                }
-                return _refreshCommand;
-            }
-        }
-
-        private void Refresh()
-        {
-            this.CurrentChannel?.Refresh();
-        }
     }
 }

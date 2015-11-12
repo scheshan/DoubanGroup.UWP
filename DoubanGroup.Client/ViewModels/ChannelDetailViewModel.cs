@@ -108,6 +108,20 @@ namespace DoubanGroup.Client.ViewModels
             this.NavigationService.Navigate("TopicDetail", parameter.Topic.ID);
         }
 
+        private DelegateCommand _refreshCommand;
+
+        public DelegateCommand RefreshCommand
+        {
+            get
+            {
+                if (_refreshCommand == null)
+                {
+                    _refreshCommand = new DelegateCommand(Refresh);
+                }
+                return _refreshCommand;
+            }
+        }
+
         public void Refresh()
         {
             this.GroupList.Clear();

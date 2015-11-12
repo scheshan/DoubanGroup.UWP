@@ -9,7 +9,7 @@ using DoubanGroup.Client.Models;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class SearchPageViewModel : ViewModelBase
+    public class SearchPageViewModel : NavigationViewModelBase
     {
         public IncrementalLoadingList<Group> GroupList { get; private set; }
 
@@ -53,9 +53,9 @@ namespace DoubanGroup.Client.ViewModels
             return topicList?.Items;
         }
 
-        public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override void OnNavigatedTo(NavigatedToEventArgs e)
         {
-            base.OnNavigatedTo(e, viewModelState);
+            base.OnNavigatedTo(e);
 
             this.Keywords = e.Parameter as string;
         }

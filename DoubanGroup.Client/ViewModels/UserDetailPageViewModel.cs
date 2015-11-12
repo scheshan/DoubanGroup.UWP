@@ -10,7 +10,7 @@ using Prism.Commands;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class UserDetailPageViewModel : ViewModelBase
+    public class UserDetailPageViewModel : NavigationViewModelBase
     {
         private long _userID;
 
@@ -77,9 +77,9 @@ namespace DoubanGroup.Client.ViewModels
             }
         }
 
-        public override void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override void OnNavigatedTo(NavigatedToEventArgs e)
         {
-            base.OnNavigatedTo(e, viewModelState);
+            base.OnNavigatedTo(e);
 
             this.UserID = (long)e.Parameter;
 

@@ -16,7 +16,7 @@ using Windows.UI.StartScreen;
 
 namespace DoubanGroup.Client.ViewModels
 {
-    public class GroupDetailPageViewModel : ViewModelBase
+    public class GroupDetailPageViewModel : NavigationViewModelBase
     {
         private long _groupID;
 
@@ -52,9 +52,9 @@ namespace DoubanGroup.Client.ViewModels
             this.UserList = new IncrementalLoadingList<User>(this.LoadUsers);
         }
 
-        public override async void OnNavigatedTo(NavigatedToEventArgs e, Dictionary<string, object> viewModelState)
+        public override async void OnNavigatedTo(NavigatedToEventArgs e)
         {
-            base.OnNavigatedTo(e, viewModelState);
+            base.OnNavigatedTo(e);
 
             this.GroupID = (long)e.Parameter;
 

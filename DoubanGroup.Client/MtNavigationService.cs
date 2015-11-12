@@ -59,7 +59,7 @@ namespace DoubanGroup.Client
             {
                 return;
             }
-            var vm = ui.DataContext as ViewModelBase;
+            var vm = ui.DataContext as NavigationViewModelBase;
             if (vm == null)
             {
                 return;
@@ -72,7 +72,7 @@ namespace DoubanGroup.Client
                 Parameter = e.Parameter
             };
 
-            vm.OnNavigatingFrom(args, null, false);            
+            vm.OnNavigatingFrom(args);            
         }
 
         private void RootFrame_Navigated(object sender, MtNavigationEventArgs e)
@@ -82,7 +82,7 @@ namespace DoubanGroup.Client
             {
                 return;
             }
-            var vm = ui.DataContext as ViewModelBase;
+            var vm = ui.DataContext as NavigationViewModelBase;
             if (vm == null)
             {
                 return;
@@ -94,7 +94,7 @@ namespace DoubanGroup.Client
                 Parameter = e.Parameter
             };
 
-            vm.OnNavigatedTo(args, null);
+            vm.OnNavigatedTo(args);
         }
 
         public bool CanGoBack()
