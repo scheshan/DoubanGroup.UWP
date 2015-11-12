@@ -4,6 +4,10 @@
     xmlns:controls="using:DoubanGroup.Client.Controls"
     xmlns:local="using:DoubanGroup.Client">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="ms-appx:///Themes/Styles.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
     <Style TargetType="controls:HorizontalScrollList">
         <Setter Property="ItemsPanel">
             <Setter.Value>
@@ -193,7 +197,9 @@
                                 <Button Name="RefreshButton" Style="{StaticResource RefreshButtonStyle}" Visibility="{TemplateBinding RefreshButtonVisibility}">
                                     <FontIcon Glyph="&#xE72C;"/>
                                 </Button>
-                            </Border>                            
+                            </Border>      
+                            
+                            <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{TemplateBinding IsLoading}"/>
                         </Grid>
                     </Border>
                 </ControlTemplate>

@@ -25,20 +25,24 @@
 
         <Pivot Style="{StaticResource TabStyle}" Grid.Row="1">
             <PivotItem Header="小组">
-                <GridView Padding="20 10" ScrollViewer.VerticalScrollMode="Enabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Style="{StaticResource GroupGridViewStyle}" ItemsSource="{Binding GroupList}">
+                <controls:RefreshGridView ItemTemplate="{StaticResource DefaultGroupItemTemplate}" ItemsSource="{Binding GroupViewModel.ItemList}"
+                                          RefreshCommand="{Binding GroupViewModel.RefreshCommand}" IsLoading="{Binding GroupViewModel.IsLoading}"
+                                          RefreshButtonVisibility="{Binding GroupViewModel.IsLoading, Converter={StaticResource InverseConverter}}">
                     <i:Interaction.Behaviors>
-                        <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                        <behavior:GridViewItemFitWidthBehavior MaxWidth="300"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
                     </i:Interaction.Behaviors>
-                </GridView>
+                </controls:RefreshGridView>
             </PivotItem>
             <PivotItem Header="主题">
-                <GridView Style="{StaticResource DefaultGridViewStyle}" ItemsSource="{Binding TopicList}" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
+                <controls:RefreshGridView ItemsSource="{Binding TopicViewModel.ItemList}" ItemTemplate="{StaticResource GroupTopicItemTemplate}"
+                                          RefreshCommand="{Binding TopicViewModel.RefreshCommand}" IsLoading="{Binding TopicViewModel.IsLoading}"
+                                          RefreshButtonVisibility="{Binding TopicViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}">
                     <i:Interaction.Behaviors>
                         <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
                     </i:Interaction.Behaviors>
-                </GridView>
+                </controls:RefreshGridView>
             </PivotItem>
         </Pivot>
         

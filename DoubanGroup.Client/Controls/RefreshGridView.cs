@@ -16,26 +16,22 @@ namespace DoubanGroup.Client.Controls
 
         private ScrollViewer scrollViewer;
 
+        public static readonly DependencyProperty IsLoadingProperty =
+            DependencyProperty.Register("IsLoading", typeof(bool), typeof(RefreshGridView), new PropertyMetadata(false));
+
+        public static readonly DependencyProperty RefreshButtonVisibilityProperty =
+            DependencyProperty.Register("RefreshButtonVisibility", typeof(Visibility), typeof(RefreshGridView), new PropertyMetadata(Visibility.Visible));
+
         public Visibility RefreshButtonVisibility
         {
             get { return (Visibility)GetValue(RefreshButtonVisibilityProperty); }
             set { SetValue(RefreshButtonVisibilityProperty, value); }
         }
-
-        public static readonly DependencyProperty RefreshButtonVisibilityProperty =
-            DependencyProperty.Register("RefreshButtonVisibility", typeof(Visibility), typeof(RefreshGridView), new PropertyMetadata(Visibility.Visible));
-
-        private static void OnRefreshButtonVisibilityChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)
+                
+        public bool IsLoading
         {
-            var control = sender as RefreshGridView;
-            if (control == null || control.refreshButton == null)
-            {
-                return;
-            }
-
-            Visibility value = (Visibility)e.NewValue;
-
-            control.refreshButton.Visibility = value;
+            get { return (bool)GetValue(IsLoadingProperty); }
+            set { SetValue(IsLoadingProperty, value); }
         }
 
         public ICommand RefreshCommand

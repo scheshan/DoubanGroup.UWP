@@ -84,72 +84,64 @@
                 </Grid>
             </PivotItem>
             <PivotItem Header="主题">
-                <Grid>
-                    <controls:RefreshGridView ItemsSource="{Binding GroupTopicsViewModel.ItemList}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}"
-                                          RefreshButtonVisibility="{Binding GroupTopicsViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"
-                                          RefreshCommand="{Binding GroupTopicsViewModel.RefreshCommand}">
-                        <i:Interaction.Behaviors>
-                            <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
-                            <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
-                        </i:Interaction.Behaviors>
-                    </controls:RefreshGridView>
-
-                    <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding GroupTopicsViewModel.IsLoading}"/>
-                </Grid>
+                <controls:RefreshGridView ItemsSource="{Binding GroupTopicsViewModel.ItemList}" ItemTemplate="{StaticResource DefaultTopicItemTemplate}"                                          
+                                            RefreshButtonVisibility="{Binding GroupTopicsViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"                                          
+                                            RefreshCommand="{Binding GroupTopicsViewModel.RefreshCommand}" IsLoading="{Binding GroupTopicsViewModel.IsLoading}">
+                    <i:Interaction.Behaviors>
+                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="1200"/>
+                        <behaviors:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
+                    </i:Interaction.Behaviors>
+                </controls:RefreshGridView>
             </PivotItem>
             <PivotItem Header="成员">
-                <Grid>
-                    <controls:RefreshGridView ItemsSource="{Binding GroupUsersViewModel.ItemList}"                       
-                                              ItemTemplate="{StaticResource DefaultUserItemTemplate}"
-                                              RefreshButtonVisibility="{Binding GroupUsersViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"                                            
-                                              RefreshCommand="{Binding GroupUsersViewModel.RefreshCommand}">
-                        <i:Interaction.Behaviors>
-                            <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
-                            <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
-                        </i:Interaction.Behaviors>
-                        <GridView.Header>
-                            <StackPanel>
-                                <GridView Style="{StaticResource DefaultGridViewStyle}" Padding="0">
-                                    <GridView.Header>
-                                        <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="创建者" Margin="0 0 0 10"></TextBlock>
-                                    </GridView.Header>
-                                    <i:Interaction.Behaviors>
-                                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
-                                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
-                                    </i:Interaction.Behaviors>
-                                    <GridView.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
-                                        </ItemsPanelTemplate>
-                                    </GridView.ItemsPanel>
-                                    <GridViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource DefaultUserItemTemplate}"/>
-                                </GridView>
+                <controls:RefreshGridView ItemsSource="{Binding GroupUsersViewModel.ItemList}" ItemTemplate="{StaticResource DefaultUserItemTemplate}"
+                                            RefreshCommand="{Binding GroupUsersViewModel.RefreshCommand}" IsLoading="{Binding GroupUsersViewModel.IsLoading}"
+                                            RefreshButtonVisibility="{Binding GroupUsersViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}"                                            
+                                            >
+                    <i:Interaction.Behaviors>
+                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                    </i:Interaction.Behaviors>
+                    <GridView.Header>
+                        <StackPanel>
+                            <GridView Style="{StaticResource DefaultGridViewStyle}" Padding="0">
+                                <GridView.Header>
+                                    <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="创建者" Margin="0 0 0 10"></TextBlock>
+                                </GridView.Header>
+                                <i:Interaction.Behaviors>
+                                    <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                                    <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                                </i:Interaction.Behaviors>
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                                <GridViewItem Content="{Binding Group.Owner}" ContentTemplate="{StaticResource DefaultUserItemTemplate}"/>
+                            </GridView>
 
 
-                                <GridView Style="{StaticResource DefaultGridViewStyle}" Padding="0" ItemsSource="{Binding Group.AdminList}"
-                                          ItemTemplate="{StaticResource DefaultUserItemTemplate}">
-                                    <GridView.Header>
-                                        <TextBlock Text="{Binding Group.AdminRoleName}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"/>
-                                    </GridView.Header>
+                            <GridView Style="{StaticResource DefaultGridViewStyle}" Padding="0" ItemsSource="{Binding Group.AdminList}"
+                                        ItemTemplate="{StaticResource DefaultUserItemTemplate}">
+                                <GridView.Header>
+                                    <TextBlock Text="{Binding Group.AdminRoleName}" Style="{StaticResource SubtitleTextBlockStyle}" Margin="0 0 0 10"/>
+                                </GridView.Header>
 
-                                    <i:Interaction.Behaviors>
-                                        <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
-                                        <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
-                                    </i:Interaction.Behaviors>
-                                    <GridView.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
-                                        </ItemsPanelTemplate>
-                                    </GridView.ItemsPanel>
-                                </GridView>
+                                <i:Interaction.Behaviors>
+                                    <behaviors:GridViewItemFitWidthBehavior MaxWidth="300"/>
+                                    <behaviors:ItemClickBehavior Command="{StaticResource ViewUserCommand}"/>
+                                </i:Interaction.Behaviors>
+                                <GridView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <ItemsWrapGrid Orientation="Horizontal" ItemWidth="300"/>
+                                    </ItemsPanelTemplate>
+                                </GridView.ItemsPanel>
+                            </GridView>
 
-                                <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding Group.MemberRoleName}" Margin="0 0 0 10"></TextBlock>
-                            </StackPanel>
-                        </GridView.Header>
-                    </controls:RefreshGridView>
-                    
-                    <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" IsActive="{Binding GroupUsersViewModel.IsLoading}"/>
-                </Grid>
+                            <TextBlock Style="{StaticResource SubtitleTextBlockStyle}" Text="{Binding Group.MemberRoleName}" Margin="0 0 0 10"></TextBlock>
+                        </StackPanel>
+                    </GridView.Header>
+                </controls:RefreshGridView>
             </PivotItem>
         </Pivot>
     </Grid>

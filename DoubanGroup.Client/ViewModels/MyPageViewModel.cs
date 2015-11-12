@@ -24,20 +24,20 @@ namespace DoubanGroup.Client.ViewModels
             private set;
         }
 
-        public IncrementalLoadingList<Topic> SuggestTopicList { get; private set; }
+        public RefreshableViewModel<Topic> SuggestTopicViewModel { get; private set; }
 
-        public IncrementalLoadingList<Topic> LikeTopicList { get; private set; }
+        public RefreshableViewModel<Topic> LikeTopicViewModel { get; private set; }
 
-        public IncrementalLoadingList<Topic> PostTopicList { get; private set; }
+        public RefreshableViewModel<Topic> PostTopicViewModel { get; private set; }
 
-        public IncrementalLoadingList<Topic> ReplyTopicList { get; private set; }
+        public RefreshableViewModel<Topic> ReplyTopicViewModel { get; private set; }
 
         public MyPageViewModel()
         {
-            this.SuggestTopicList = new IncrementalLoadingList<Topic>(this.LoadSuggestTopics);
-            this.LikeTopicList = new IncrementalLoadingList<Topic>(this.LoadLikeTopics);
-            this.PostTopicList = new IncrementalLoadingList<Topic>(this.LoadPostTopics);
-            this.ReplyTopicList = new IncrementalLoadingList<Topic>(this.LoadReplyTopics);
+            this.SuggestTopicViewModel = new RefreshableViewModel<Topic>(this.LoadSuggestTopics, 30);
+            this.LikeTopicViewModel = new RefreshableViewModel<Topic>(this.LoadLikeTopics, 30);
+            this.PostTopicViewModel = new RefreshableViewModel<Topic>(this.LoadPostTopics, 30);
+            this.ReplyTopicViewModel = new RefreshableViewModel<Topic>(this.LoadReplyTopics, 30);
         }
 
         public override void OnNavigatedTo(NavigatedToEventArgs e)
@@ -48,58 +48,32 @@ namespace DoubanGroup.Client.ViewModels
             this.ManagedGroupList = this.CurrentUser.ManagedGroupList;
         }
 
-        private async Task<IEnumerable<Topic>> LoadSuggestTopics(uint count)
+        private async Task<IEnumerable<Topic>> LoadSuggestTopics(int start, int count)
         {
-            var topicList = await this.RunTaskAsync(this.ApiClient.GetMySuggestTopics(this.SuggestTopicList.Count, 30));
+            var topicList = await this.ApiClient.GetMySuggestTopics(start, count);
 
-            if (topicList == null || !topicList.HasMore)
-            {
-                this.SuggestTopicList.NoMore();
-            }
-
-            return topicList?.Topics;
+            return topicList.Topics;
         }
 
-        private async Task<IEnumerable<Topic>> LoadLikeTopics(uint count)
+        private async Task<IEnumerable<Topic>> LoadLikeTopics(int start, int count)
         {
-            int queryCount = 30;
+            var topicList = await this.ApiClient.GetMyLikedTopics(start, count);
 
-            var topicList = await this.RunTaskAsync(this.ApiClient.GetMyLikedTopics(this.LikeTopicList.Count, queryCount));
-
-            if (topicList == null || topicList.Items.Count < queryCount)
-            {
-                this.LikeTopicList.NoMore();
-            }
-
-            return topicList?.Items;
+            return topicList.Items;
         }
 
-        private async Task<IEnumerable<Topic>> LoadPostTopics(uint count)
+        private async Task<IEnumerable<Topic>> LoadPostTopics(int start, int count)
         {
-            int queryCount = 30;
+            var topicList = await this.ApiClient.GetMyCreatedTopics(start, count);
 
-            var topicList = await this.RunTaskAsync(this.ApiClient.GetMyCreatedTopics(this.PostTopicList.Count, queryCount));
-
-            if (topicList == null || topicList.Items.Count < queryCount)
-            {
-                this.PostTopicList.NoMore();
-            }
-
-            return topicList?.Items;
+            return topicList.Items;
         }
 
-        private async Task<IEnumerable<Topic>> LoadReplyTopics(uint count)
+        private async Task<IEnumerable<Topic>> LoadReplyTopics(int start, int count)
         {
-            int queryCount = 30;
+            var topicList = await this.ApiClient.GetMyRepliedTopics(start, count);
 
-            var topicList = await this.RunTaskAsync(this.ApiClient.GetMyRepliedTopics(this.ReplyTopicList.Count, queryCount));
-
-            if (topicList == null || topicList.Items.Count < queryCount)
-            {
-                this.ReplyTopicList.NoMore();
-            }
-
-            return topicList?.Items;
+            return topicList.Items;
         }
     }
 }

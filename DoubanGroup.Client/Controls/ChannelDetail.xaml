@@ -34,7 +34,7 @@
                         </GridView.Header>
 
                         <i:Interaction.Behaviors>
-                            <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                            <behavior:GridViewItemFitWidthBehavior MaxWidth="300"/>
                             <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
                         </i:Interaction.Behaviors>
                     </GridView>

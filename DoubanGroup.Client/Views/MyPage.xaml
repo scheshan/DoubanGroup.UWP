@@ -27,29 +27,33 @@
 
         <Pivot Grid.Row="1" Style="{StaticResource TabStyle}">
             <PivotItem Header="主题">
-                <GridView ItemsSource="{Binding SuggestTopicList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
+                <controls:RefreshGridView ItemsSource="{Binding SuggestTopicViewModel.ItemList}" ItemTemplate="{StaticResource GroupTopicItemTemplate}"
+                                            RefreshCommand="{Binding SuggestTopicViewModel.RefreshCommand}" IsLoading="{Binding SuggestTopicViewModel.IsLoading}"
+                                            RefreshButtonVisibility="{Binding SuggestTopicViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}">
                     <i:Interaction.Behaviors>
                         <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
                     </i:Interaction.Behaviors>
-                </GridView>
+                </controls:RefreshGridView>
             </PivotItem>
             <PivotItem Header="小组">                
                 <GridView ItemsSource="{Binding JoinedGroupList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}">
                     <i:Interaction.Behaviors>
-                        <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                        <behavior:GridViewItemFitWidthBehavior MaxWidth="300"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
                     </i:Interaction.Behaviors>
 
                     <GridView.Header>
                         <StackPanel>
-                            <TextBlock Style="{StaticResource GroupHeaderTextBlockStyle}" Text="管理的小组" Margin="0 0 0 10"></TextBlock>
-
-                            <GridView ItemsSource="{Binding ManagedGroupList}" Style="{StaticResource GroupGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}" Padding="0 10">
+                            <GridView ItemsSource="{Binding ManagedGroupList}" Style="{StaticResource GroupGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}" Padding="0">
                                 <i:Interaction.Behaviors>
-                                    <behavior:GridViewItemFitWidthBehavior MaxWidth="250"/>
+                                    <behavior:GridViewItemFitWidthBehavior MaxWidth="300"/>
                                     <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
                                 </i:Interaction.Behaviors>
+
+                                <GridView.Header>
+                                    <TextBlock Style="{StaticResource GroupHeaderTextBlockStyle}" Text="管理的小组" Margin="0 0 0 10"></TextBlock>
+                                </GridView.Header>
                             </GridView>
 
                             <TextBlock Style="{StaticResource GroupHeaderTextBlockStyle}" Text="加入的小组" Margin="0 0 0 10"></TextBlock>
@@ -58,31 +62,35 @@
                 </GridView>
             </PivotItem>
             <PivotItem Header="喜欢">
-                <GridView ItemsSource="{Binding LikeTopicList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
+                <controls:RefreshGridView ItemsSource="{Binding LikeTopicViewModel.ItemList}" ItemTemplate="{StaticResource GroupTopicItemTemplate}"
+                                        RefreshCommand="{Binding LikeTopicViewModel.RefreshCommand}" IsLoading="{Binding LikeTopicViewModel.IsLoading}"
+                                        RefreshButtonVisibility="{Binding LikeTopicViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}">
                     <i:Interaction.Behaviors>
                         <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
                     </i:Interaction.Behaviors>
-                </GridView>
+                </controls:RefreshGridView>         
             </PivotItem>            
             <PivotItem Header="我的发表">
-                <GridView ItemsSource="{Binding PostTopicList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
+                <controls:RefreshGridView ItemsSource="{Binding PostTopicViewModel.ItemList}" ItemTemplate="{StaticResource GroupTopicItemTemplate}"
+                                          RefreshCommand="{Binding PostTopicViewModel.RefreshCommand}" IsLoading="{Binding PostTopicViewModel.IsLoading}"
+                                          RefreshButtonVisibility="{Binding PostTopicViewModel.IsLoading, Converter={StaticResource InverseConverter}}">
                     <i:Interaction.Behaviors>
                         <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
                     </i:Interaction.Behaviors>
-                </GridView>
+                </controls:RefreshGridView>
             </PivotItem>
             <PivotItem Header="我的回应">
-                <GridView ItemsSource="{Binding ReplyTopicList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource GroupTopicItemTemplate}">
+                <controls:RefreshGridView ItemsSource="{Binding ReplyTopicViewModel.ItemList}" ItemTemplate="{StaticResource GroupTopicItemTemplate}"
+                                          RefreshCommand="{Binding ReplyTopicViewModel.RefreshCommand}" IsLoading="{Binding ReplyTopicViewModel.IsLoading}"
+                                          RefreshButtonVisibility="{Binding ReplyTopicViewModel.IsLoading, Converter={StaticResource InverseToVisibilityConverter}}">
                     <i:Interaction.Behaviors>
                         <behavior:GridViewItemFitWidthBehavior MaxWidth="1200"/>
                         <behavior:ItemClickBehavior Command="{StaticResource ViewTopicCommand}"/>
                     </i:Interaction.Behaviors>
-                </GridView>
+                </controls:RefreshGridView>
             </PivotItem>
         </Pivot>
-        
-        <ProgressRing Style="{StaticResource LoadingProgressRingStyle}" Grid.RowSpan="2" IsActive="{Binding IsLoading}"/>
     </Grid>       
 </mt:MtPage>

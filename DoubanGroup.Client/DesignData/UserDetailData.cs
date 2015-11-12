@@ -11,9 +11,9 @@ namespace DoubanGroup.Client.DesignData
     {
         public User User { get; private set; }
 
-        public List<Group> TopGroupList { get; private set; }
+        public RefreshableData<Group> JoinedGroupViewModel { get; private set; }
 
-        public List<Group> JoinedGroupList { get; private set; }
+        public List<Group> TopGroupList { get; private set; }
 
         public List<Photo> TopPhotoList { get; private set; }
 
@@ -32,7 +32,7 @@ namespace DoubanGroup.Client.DesignData
             };
 
             this.TopGroupList = new List<Group>();
-            this.JoinedGroupList = new List<Group>();
+            this.JoinedGroupViewModel = new RefreshableData<Group>();
 
             for (var i = 0; i < 20; i++)
             {
@@ -46,7 +46,7 @@ namespace DoubanGroup.Client.DesignData
                     MemberCount = 103745
                 };
                 this.TopGroupList.Add(group);
-                this.JoinedGroupList.Add(group);
+                this.JoinedGroupViewModel.ItemList.Add(group);
             }
 
             this.TopPhotoList = new List<Photo>();

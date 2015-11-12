@@ -11,9 +11,9 @@ namespace DoubanGroup.Client.ViewModels
 {
     public class SearchPageViewModel : NavigationViewModelBase
     {
-        public IncrementalLoadingList<Group> GroupList { get; private set; }
+        public RefreshableViewModel<Group> GroupViewModel { get; private set; }
 
-        public IncrementalLoadingList<Topic> TopicList { get; private set; }
+        public RefreshableViewModel<Topic> TopicViewModel { get; private set; }
 
         private string _keywords;
 
@@ -25,32 +25,22 @@ namespace DoubanGroup.Client.ViewModels
 
         public SearchPageViewModel()
         {
-            this.GroupList = new IncrementalLoadingList<Group>(this.LoadGroups);
-            this.TopicList = new IncrementalLoadingList<Topic>(this.LoadTopics);
+            this.GroupViewModel = new RefreshableViewModel<Group>(this.LoadGroups, 50);
+            this.TopicViewModel = new RefreshableViewModel<Topic>(this.LoadTopics, 30);
         }
 
-        private async Task<IEnumerable<Group>> LoadGroups(uint count)
+        private async Task<IEnumerable<Group>> LoadGroups(int start, int count)
         {
-            var groupList = await this.RunTaskAsync(this.ApiClient.SearchGroup(this.Keywords, this.GroupList.Count, 50));
+            var groupList = await this.ApiClient.SearchGroup(this.Keywords, start, count);
 
-            if (groupList == null || groupList.Items.Count < 50)
-            {
-                this.GroupList.NoMore();
-            }
-
-            return groupList?.Items;
+            return groupList.Items;
         }
 
-        private async Task<IEnumerable<Topic>> LoadTopics(uint count)
+        private async Task<IEnumerable<Topic>> LoadTopics(int start, int count)
         {
-            var topicList = await this.RunTaskAsync(this.ApiClient.SearchTopic(this.Keywords, this.TopicList.Count, 30));
+            var topicList = await this.ApiClient.SearchTopic(this.Keywords, start, count);
 
-            if (topicList == null || topicList.Items.Count < 30)
-            {
-                this.TopicList.NoMore();
-            }
-
-            return topicList?.Items;
+            return topicList.Items;
         }
 
         public override void OnNavigatedTo(NavigatedToEventArgs e)

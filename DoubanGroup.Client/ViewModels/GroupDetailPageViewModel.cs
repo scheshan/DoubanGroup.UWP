@@ -61,7 +61,7 @@ namespace DoubanGroup.Client.ViewModels
             {
                 this.LoadGroup();
                 this.GroupTopicsViewModel = new RefreshableViewModel<Topic>(this.LoadTopics, 30);
-                this.GroupUsersViewModel = new RefreshableViewModel<User>(this.LoadUsers, 30);
+                this.GroupUsersViewModel = new RefreshableViewModel<User>(this.LoadUsers, 100);
             }
         }
 

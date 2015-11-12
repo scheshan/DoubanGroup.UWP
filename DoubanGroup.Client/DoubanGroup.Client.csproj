@@ -131,6 +131,7 @@
     <Compile Include="Converters\NotNullToVisibilityConverter.cs" />
     <Compile Include="Converters\NullToVisibilityConverter.cs" />
     <Compile Include="DesignData\ChannelDetailData.cs" />
+    <Compile Include="DesignData\RefreshableData.cs" />
     <Compile Include="DesignData\GroupDetailData.cs" />
     <Compile Include="DesignData\HomePageData.cs" />
     <Compile Include="DesignData\MyData.cs" />
