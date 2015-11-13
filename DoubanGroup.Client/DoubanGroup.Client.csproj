@@ -123,6 +123,7 @@
       <DependentUpon>HeaderBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\HorizontalScrollList.cs" />
+    <Compile Include="Controls\ImageControl.cs" />
     <Compile Include="Controls\RefreshGridView.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converters\DateTimeToStringConverter.cs" />

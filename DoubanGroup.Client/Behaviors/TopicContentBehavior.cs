@@ -16,6 +16,8 @@ namespace DoubanGroup.Client.Behaviors
     {
         private static readonly Regex regex_photo = new Regex(@"<图片(\d{1,})>+");
 
+        private List<TopicPhoto> UsedPhotoList { get; set; }
+
         public Topic Topic
         {
             get { return (Topic)GetValue(TopicProperty); }
@@ -32,8 +34,15 @@ namespace DoubanGroup.Client.Behaviors
             behavior?.SetContent();
         }
 
+        public TopicContentBehavior()
+        {
+            this.UsedPhotoList = new List<TopicPhoto>();
+        }
+
         private void SetContent()
         {
+            this.UsedPhotoList.Clear();
+
             var tb = this.AssociatedObject as RichTextBlock;
             if (tb == null)
             {
@@ -120,8 +129,11 @@ namespace DoubanGroup.Client.Behaviors
                     img.MaxWidth = photo.Size.Width;
                     img.MaxHeight = photo.Size.Height;
                     img.Margin = new Thickness(0, 10, 0, 0);
+                    img.Tag = photo;
 
                     ((StackPanel)container.Child).Children.Add(img);
+
+                    this.UsedPhotoList.Add(photo);
                 }
             }
 
@@ -130,16 +142,21 @@ namespace DoubanGroup.Client.Behaviors
 
         private void OnImageTapped(object sender, Windows.UI.Xaml.Input.TappedRoutedEventArgs e)
         {
-            var imageList = this.Topic.Photos.Select(t => new Models.ImageItem
+            var imageList = this.UsedPhotoList.Select(t => new Models.ImageItem
             {
                 Description = "",
                 Height = t.Size.Height,
                 Width = t.Size.Width,
                 Title = t.Title,
-                Source = t.Alt
+                Source = t.Alt,
+                SourceObject = t
             }).ToList();
 
-            new Views.ViewImagePage(imageList).Show();
+            var imgControl = sender as Image;
+
+            var currentImage = imageList.FirstOrDefault(t => t.SourceObject == imgControl.Tag);
+
+            new Views.ViewImagePage(imageList, currentImage).Show();
         }
     }
 }

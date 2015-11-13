@@ -26,7 +26,7 @@ namespace DoubanGroup.Client.Views
 
         private List<ImageItem> ImageList { get; set; }
 
-        public ViewImagePage(List<ImageItem> imageList)
+        public ViewImagePage(List<ImageItem> imageList, ImageItem currentImage)
         {
             this.ImageList = imageList;
             this.InitializeComponent();
@@ -35,6 +35,7 @@ namespace DoubanGroup.Client.Views
             this.Popup = new Popup();
             this.Popup.Child = this;
             container.ItemsSource = imageList;
+            container.SelectedItem = currentImage;
         }
 
         private void ViewImagePage_Unloaded(object sender, RoutedEventArgs e)

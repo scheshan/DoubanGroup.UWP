@@ -32,7 +32,7 @@ namespace DoubanGroup.Client.Views
 
         private void TestPage_Loaded(object sender, RoutedEventArgs e)
         {
-            new ViewImagePage(new List<Models.ImageItem>
+            var imageList = new List<Models.ImageItem>
             {
                 new Models.ImageItem { Source = "http://img3.douban.com/view/photo/photo/public/p1180907094.jpg", Height = 333, Width = 500, Description = "小时候的梦想是成为画家，后来偶然的机会每周一次这样正统地学了一年的素描水粉。周末闲时会在家画油画。希望自己的画能挂满一屋子。（大多数画非原创）" },
                 new Models.ImageItem { Source = "http://img3.douban.com/view/photo/photo/public/p1180907094.jpg", Height = 333, Width = 500, Description = "小时候的梦想是成为画家，后来偶然的机会每周一次这样正统地学了一年的素描水粉。周末闲时会在家画油画。希望自己的画能挂满一屋子。（大多数画非原创）" },
@@ -40,7 +40,9 @@ namespace DoubanGroup.Client.Views
                 new Models.ImageItem { Source = "http://img3.douban.com/view/photo/photo/public/p1180907094.jpg", Height = 333, Width = 500, Description = "小时候的梦想是成为画家，后来偶然的机会每周一次这样正统地学了一年的素描水粉。周末闲时会在家画油画。希望自己的画能挂满一屋子。（大多数画非原创）" },
                 new Models.ImageItem { Source = "http://img3.douban.com/view/photo/photo/public/p1180907094.jpg", Height = 333, Width = 500, Description = "小时候的梦想是成为画家，后来偶然的机会每周一次这样正统地学了一年的素描水粉。周末闲时会在家画油画。希望自己的画能挂满一屋子。（大多数画非原创）" },
                 new Models.ImageItem { Source = "http://img3.douban.com/view/photo/photo/public/p1180907094.jpg", Height = 333, Width = 500, Description = "小时候的梦想是成为画家，后来偶然的机会每周一次这样正统地学了一年的素描水粉。周末闲时会在家画油画。希望自己的画能挂满一屋子。（大多数画非原创）" }
-            }).Show();
+            };
+
+            new ViewImagePage(imageList, imageList[0]).Show();
         }
     }
 }

@@ -116,21 +116,21 @@ namespace DoubanGroup.Client.ViewModels
             return albumList.Albums;
         }
 
-        private DelegateCommand _viewImageCommand;
+        private DelegateCommand<Photo> _viewImageCommand;
 
-        public DelegateCommand ViewImageCommand
+        public DelegateCommand<Photo> ViewImageCommand
         {
             get
             {
                 if (_viewImageCommand == null)
                 {
-                    _viewImageCommand = new DelegateCommand(ViewImage);
+                    _viewImageCommand = new DelegateCommand<Photo>(ViewImage);
                 }
                 return _viewImageCommand;
             }
         }
 
-        private void ViewImage()
+        private void ViewImage(Photo parameter)
         {
             var imageList = this.TopPhotoList.Select(t => new Models.ImageItem
             {
@@ -138,10 +138,13 @@ namespace DoubanGroup.Client.ViewModels
                 Height = t.Sizes.Image[1],
                 Width = t.Sizes.Image[0],
                 Source = t.Large,
-                Title = t.AlbumTitle
+                Title = t.AlbumTitle,
+                SourceObject = t
             }).ToList();
 
-            new Views.ViewImagePage(imageList).Show();
+            var currentImage = imageList.FirstOrDefault(t => t.SourceObject == parameter);
+
+            new Views.ViewImagePage(imageList, currentImage).Show();
         }
     }
 }

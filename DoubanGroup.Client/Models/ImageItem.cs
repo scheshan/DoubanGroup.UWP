@@ -48,5 +48,13 @@ namespace DoubanGroup.Client.Models
             get { return _height; }
             set { this.SetProperty(ref _height, value); }
         }
+
+        private object _sourceObject;
+
+        public object SourceObject
+        {
+            get { return _sourceObject; }
+            set { this.SetProperty(ref _sourceObject, value); }
+        }
     }
 }
