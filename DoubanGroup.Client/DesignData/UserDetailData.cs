@@ -17,7 +17,7 @@ namespace DoubanGroup.Client.DesignData
 
         public List<Photo> TopPhotoList { get; private set; }
 
-        public List<Album> AlbumList { get; private set; }
+        public RefreshableData<Album> AlbumViewModel { get; private set; }
 
         public UserDetailData()
         {
@@ -61,14 +61,16 @@ namespace DoubanGroup.Client.DesignData
                 this.TopPhotoList.Add(photo);
             }
 
-            this.AlbumList = new List<Album>();
+            this.AlbumViewModel = new RefreshableData<Album>();
 
             for (var i = 0; i < 10; i++)
             {
-                this.AlbumList.Add(new Album
+                this.AlbumViewModel.ItemList.Add(new Album
                 {
-                    Cover = "https://img3.doubanio.com/view/photo/albumcover/public/p2223005146.jpg",
-
+                    Cover = "https://img2.doubanio.com/view/photo/albumcover/public/p2239424237.jpg",
+                    Thumb = "https://img2.doubanio.com/view/photo/thumb/public/p2239424237.jpg",
+                    Title = "那些年做过的早餐",
+                    Description = "自己查找用，不用吐槽我。。。。"
                 });
             }
         }

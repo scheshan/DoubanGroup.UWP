@@ -737,7 +737,7 @@ namespace DoubanGroup.Core.Api
         /// <param name="start"></param>
         /// <param name="count"></param>
         /// <returns></returns>
-        public async Task<AlbumPhotoList> GetPhotosByAlbum(long albumID, int start, int count)
+        public async Task<AlbumPhotoList> GetAlbumPhotos(long albumID, int start, int count)
         {
             string url = $"album/{albumID}/photos";
 

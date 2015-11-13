@@ -24,7 +24,7 @@
         </Grid.RowDefinitions>
 
         <controls:HeaderBar Title="用户详情">
-
+            
         </controls:HeaderBar>
 
         <Pivot Name="container" Grid.Row="1" Style="{StaticResource TabStyle}">
@@ -144,7 +144,36 @@
                     </i:Interaction.Behaviors>
                 </controls:RefreshGridView>        
             </PivotItem>
-            <PivotItem Header="相册"></PivotItem>
+            <PivotItem Header="相册">
+                <controls:RefreshGridView ItemsSource="{Binding AlbumViewModel.ItemList}">
+                    <i:Interaction.Behaviors>
+                        <behavior:GridViewItemFitWidthBehavior MaxWidth="260"/>
+                    </i:Interaction.Behaviors>
+                    
+                    <controls:RefreshGridView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <ItemsWrapGrid Orientation="Horizontal" ItemWidth="240"/>
+                        </ItemsPanelTemplate>
+                    </controls:RefreshGridView.ItemsPanel>
+                    <controls:RefreshGridView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="160"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <Image Source="{Binding Thumb}" Stretch="UniformToFill"/>
+                                
+                                <TextBlock Grid.Row="1" Text="{Binding Title}" Style="{StaticResource ListTitleTextBlockStyle}" Margin="0 10 0 0"/>
+                                
+                                <TextBlock Grid.Row="2" Text="{Binding Description}" Style="{StaticResource ListDescriptionTextBlockStyle}" Margin="0 5 0 0" MaxLines="2"/>
+                            </Grid>
+                        </DataTemplate>
+                    </controls:RefreshGridView.ItemTemplate>
+                </controls:RefreshGridView>
+            </PivotItem>
         </Pivot>
     </Grid>
 </mt:MtPage>

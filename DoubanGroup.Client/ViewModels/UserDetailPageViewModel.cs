@@ -38,6 +38,8 @@ namespace DoubanGroup.Client.ViewModels
 
         public RefreshableViewModel<Topic> LikeTopicViewModel { get; private set; }
 
+        public RefreshableViewModel<Album> AlbumViewModel { get; private set; }
+
         public UserDetailPageViewModel()
         {
             this.TopGroupList = new ObservableCollection<Group>();
@@ -46,6 +48,7 @@ namespace DoubanGroup.Client.ViewModels
             this.JoinedGroupViewModel = new RefreshableViewModel<Group>(this.LoadJoinedGroups, 100);
             this.RecommandTopicViewModel = new RefreshableViewModel<Topic>(this.LoadRecommandTopics, 30);
             this.LikeTopicViewModel = new RefreshableViewModel<Topic>(this.LoadLikeTopics, 30);
+            this.AlbumViewModel = new RefreshableViewModel<Album>(this.LoadAlbums, 30);
         }
 
         private async Task InitData()
@@ -105,6 +108,12 @@ namespace DoubanGroup.Client.ViewModels
         {
             var topicList = await this.ApiClient.GetUserLikeTopics(this.UserID, start, count);
             return topicList.Items;
+        }
+
+        private async Task<IEnumerable<Album>> LoadAlbums(int start, int count)
+        {
+            var albumList = await this.ApiClient.GetUserCreatedAlbums(this.UserID, start, count);
+            return albumList.Albums;
         }
 
         private DelegateCommand _viewImageCommand;
