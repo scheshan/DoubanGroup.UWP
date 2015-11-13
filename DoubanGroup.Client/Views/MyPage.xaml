@@ -45,7 +45,7 @@
 
                     <GridView.Header>
                         <StackPanel>
-                            <GridView ItemsSource="{Binding ManagedGroupList}" Style="{StaticResource GroupGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}" Padding="0">
+                            <GridView ItemsSource="{Binding ManagedGroupList}" Style="{StaticResource DefaultGridViewStyle}" ItemTemplate="{StaticResource MinimumGroupItemTemplate}" Padding="0">
                                 <i:Interaction.Behaviors>
                                     <behavior:GridViewItemFitWidthBehavior MaxWidth="300"/>
                                     <behavior:ItemClickBehavior Command="{StaticResource ViewGroupCommand}"/>
