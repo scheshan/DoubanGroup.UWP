@@ -207,6 +207,7 @@ namespace DoubanGroup.Client.ViewModels
 
             if (await this.RunTaskAsync(this.ApiClient.LikeTopic(this.TopicID)))
             {
+                this.ShowToast("添加喜欢主题成功");
                 this.Topic.Liked = true;
                 this.OnPropertyChanged(() => this.Liked);
             }
@@ -240,6 +241,7 @@ namespace DoubanGroup.Client.ViewModels
 
             if (await this.RunTaskAsync(this.ApiClient.DislikeTopic(this.TopicID)))
             {
+                this.ShowToast("取消喜欢主题");
                 this.Topic.Liked = false;
                 this.OnPropertyChanged(() => this.Liked);
             }
